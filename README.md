@@ -24,6 +24,10 @@
  > * Why is it important or interesting to you?
  > * What languages/tools/technologies do you plan to use? (This list may change over the course of the project)
  > * What will be the input/output of your project?
+ All user inputs and program outputs will be done in the terminal.
+ The initial output will be a menu screen that will prompt the user for a username to login and password or sign up for accounts.
+ Once user is in their account, the program outputs options to the user, prompting them to choose from a few options: borrow a book(if so, the user will be prompted for which book), display their balance, display available books, display books under a certain genre.
+ If the user account is an administrator, there are additional user inputs that allows the admin user to add, remove, or edit book entries.
  > * What are the features that the project provides?
  > This description should be in enough detail that the TA/instructor can determine the complexity of the project and if it is sufficient for the team members to complete in the time allotted. 
  > 
