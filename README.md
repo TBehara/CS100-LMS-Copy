@@ -20,6 +20,7 @@
  > Your project description should summarize the project you are proposing. Be sure to include:
  > * Why is it important or interesting to you?
  > * What languages/tools/technologies do you plan to use? (This list may change over the course of the project)
+ >      * We will be using C++ for our implementation of a library management system. We will use hashes to keep track of user passwords and accounts so users may securely log in. There will be classes for books/users/admins that will allow users to checkout books as well as keep information about each book such as ISB and page count. We will create an automatic backend system that will keep track of checkout times and appropiately indicate when users are overdue for returning their books.
  > * What will be the input/output of your project?<br/>
  All user inputs and program outputs will be done in the terminal.<br/>
  The initial output will be a menu screen that will prompt the user for a username to login and password or sign up for accounts.<br/>
