@@ -28,17 +28,17 @@
  If the user account is an administrator, there are additional user inputs that allows the admin user to add, remove, or edit book entries.<br/>
  > * What are the features that the project provides?<br/>
  >      Some of the features for our Library Management system include: <br/>
- >      * - Allow users to have library accounts with user names and passwords.
- >      * - Users will have to log in to access any features
- >      * - Checking out or borrowing a book.
- >      * - Returning a book.
- >      * - Paying a fine.
- >      * - The program can recommend certain books in the data base based on a users checkout history.
- >      * - Administrative users (ex. librarians) can add books to the system.
- >      * - These administrative users will have their own account that they will log in to.
- >      * - Authors can edit and publish books and send a request to librarians to add the books to the library.
- >      * - Users can search for books by Title, Genre, or Author
- >      * - Program can show a users debt and what book they owe the money for.
+ >      * Allow users to have library accounts with user names and passwords.
+ >      * Users will have to log in to access any features
+ >      * Checking out or borrowing a book.
+ >      * Returning a book.
+ >      * Paying a fine.
+ >      * The program can recommend certain books in the data base based on a users checkout history.
+ >      * Administrative users (ex. librarians) can add books to the system.
+ >      * These administrative users will have their own account that they will log in to.
+ >      * Authors can edit and publish books and send a request to librarians to add the books to the library.
+ >      * Users can search for books by Title, Genre, or Author
+ >      * Program can show a users debt and what book they owe the money for.
  > This description should be in enough detail that the TA/instructor can determine the complexity of the project and if it is sufficient for the team members to complete in the time allotted. 
  > 
  > You also need to set up an empty project board using GitHub projects (board view). Make sure you add the board under your project repository. You should also have a Product Backlog and In testing columns added.
