@@ -14,8 +14,8 @@
  The initial output will be a menu screen that will prompt the user for a username to login and password or sign up for accounts.
  Once user is in their account, the program outputs options to the user, prompting them to choose from a few options: borrow a book(if so, the user will be prompted for which book), display their balance, display available books, display books under a certain genre.
  If the user account is an administrator, there are additional user inputs that allows the admin user to add, remove, or edit book entries.
-* What are the features that the project provides?<br/>
-      Some of the features for our Library Management system include: <br/>
+ * What are the features that the project provides? </br>
+      Some of the features for our Library Management system include:
       * Allow users to have library accounts with user names and passwords.
       * Users will have to log in to access any features
       * Checking out or borrowing a book.
