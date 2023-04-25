@@ -5,15 +5,22 @@
  Authors: [Ryan Chien](https://github.com/Campionnn), [Andy Chen](https://github.com/achen409), [Taran Behara](https://github.com/TBehara), [William Bruce](https://github.com/Augustus-Caesar886)
 
 ## Project Description
- * Why is it important or interesting to us?
-       * This project is interesting to us because the Library Management System program will consist of many different objects of varying types (such as User, Book, etc.) working in tandem to create a complex, integrated program with features such as searchable databases and varying degrees of data manipulation based on user permissions. Similar programs are commonplace today and there are many web interfaces which integrate some of the features we will be implementing in our project, so we see this assignment as an opportunity to not only gain experience working on large projects with multiple collaboraters, but also to gain a greater, hands-on understanding of how modern systems and interfaces work under the hood.
- * What languages/tools/technologies do we plan to use? (This list may change over the course of the project)
-       * We will be using C++ for our implementation of a library management system. We will use hashes to keep track of user passwords and accounts so users may securely log in. There will be classes for books/users/admins that will allow users to checkout books as well as keep information about each book such as ISB and page count. We will create an automatic backend system that will keep track of checkout times and appropiately indicate when users are overdue for returning their books.
+ * Why did we choose this project?
+      * This project is interesting to us because the Library Management System program will consist of many different objects of varying types (such as User, Book, etc.) working in tandem to create a complex, integrated program with features such as searchable databases and varying degrees of data manipulation based on user permissions. Similar programs are commonplace today and there are many web interfaces which integrate some of the features we will be implementing in our project, so we see this assignment as an opportunity to not only gain experience working on large projects with multiple collaboraters, but also to gain a greater, hands-on understanding of how modern systems and interfaces work under the hood.
+ * Technologies we plan on using (This list may change over the course of the project):
+      * We will be using C++ for our implementation of a library management system. 
+      * We will use hashes to keep track of user passwords and accounts so users may securely log in.
+      * There will be classes for books/users/admins that will allow users to checkout books as well as keep information about each book such as ISB and page count. 
+      * We will create an automatic backend system that will keep track of checkout times and appropiately indicate when users are overdue for returning their books.
  * What will be the input/output of our project?
- All user inputs and program outputs will be done in the terminal.
- The initial output will be a menu screen that will prompt the user for a username to login and password or sign up for accounts.
- Once user is in their account, the program outputs options to the user, prompting them to choose from a few options: borrow a book(if so, the user will be prompted for which book), display their balance, display available books, display books under a certain genre.
- If the user account is an administrator, there are additional user inputs that allows the admin user to add, remove, or edit book entries.
+      * All user inputs and program outputs will be done in the terminal. 
+      * The initial output will be a menu screen that will prompt the user for a username to login and password or sign up for accounts. 
+      * Once the user is in their account, the program outputs options to the user, prompting them to choose from a few options listed below: 
+        * borrow a book(if so, the user will be prompted for which book)
+        * display their balance
+        * display available books
+        * display books under a certain genre.
+        * If the user account is an administrator, there are additional user inputs that allows the admin user to add, remove, or edit book entries.
  * What are the features that the project provides? </br>
       Some of the features for our Library Management system include:
       * Allow users to have library accounts with user names and passwords.
