@@ -53,8 +53,16 @@
 > ![Navigation Diagram](https://cdn.discordapp.com/attachments/1098140638211485696/1104182590895837237/image.png)
 
 ### Screen Layouts
-> Include the layout of each of your screens. The layout should describe the screen’s major components such as menus and prompts for user inputs, expected output, and buttons (if applicable). Explain what is on the layout, and the purpose of each menu item, button, etc. If many screens share the same layout, start by describing the general layout and then list the screens that will be using that layout and the differences between each of them.
-[Library Management System Screen Layout.pdf](https://github.com/cs100/final-project-rchie011-achen440-tbeha001-wbruc002/files/11417087/Library.Management.System.Screen.Layout.pdf)
+> ![Welcome Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007949857960017/Library.Management.System.Screen.Layout-02.png)
+> ![Register Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007950105432144/Library.Management.System.Screen.Layout-03.png)
+> ![Login Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007950369656842/Library.Management.System.Screen.Layout-04.png)
+> ![User Menu Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007950617128990/Library.Management.System.Screen.Layout-05.png)
+> ![Admin Menu Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007950881378365/Library.Management.System.Screen.Layout-06.png)
+> ![Browse Books Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007951133020170/Library.Management.System.Screen.Layout-07.png)
+> ![View Books Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007951472775218/Library.Management.System.Screen.Layout-08.png)
+> ![Admin Manage Books Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007951737000007/Library.Management.System.Screen.Layout-09.png)
+> ![Admin Add Admin Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007951992860724/Library.Management.System.Screen.Layout-10.png)
+> ![Checkout Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007958447890473/Library.Management.System.Screen.Layout-11.png)
 
 ## Class Diagram
  > Include a **class diagram(s)** for your project and a **description** of the diagram(s). Your class diagram(s) should include all the main classes you plan for the project. This should be in sufficient detail that another group could pick up the project this point and successfully complete it. Use proper UML notation (as discussed in the course slides).
