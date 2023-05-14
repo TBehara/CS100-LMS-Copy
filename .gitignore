@@ -1,1 +1,11 @@
-bin/*
+bin
+CMakeFiles
+cmake_install.cmake
+Makefile
+CMakeCache.txt
+src/CMakeFiles
+src/cmake_install.cmake
+src/Makefile
+test/CMakeFiles
+test/cmake_install.cmake
+test/googletest/googletest/generated
