@@ -32,6 +32,6 @@ void User::addBook(Book checkoutBook) {
 
 }
 
-virtual void User::displayMenu() {
+void User::displayMenu() {
 
 }
