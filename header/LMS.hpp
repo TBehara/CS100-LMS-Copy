@@ -10,6 +10,7 @@ class LMS {
         list<Book> bookDatabase;
         list <searchBase> searchBase;
     public:
+        LMS();
         void welcomePrompt();
         void signUpPrompt();
         void loginPrompt();
