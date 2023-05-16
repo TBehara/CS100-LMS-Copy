@@ -16,6 +16,6 @@ class LMS {
         void loginPrompt();
         void mainMenuPrompt();
         void logoutPrompt();
-        void displayUserDetails();
+        void displayUserDetails(); //test commit
 };
 #endif
