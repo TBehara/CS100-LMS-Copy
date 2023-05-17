@@ -42,18 +42,36 @@ void LMS::signUpPrompt() {
     std::string name;
     std::string username;
     std::string password;
+    std::string confirmPassword;
+    
     std::cout   << "\t\t\tRegister" << std::endl
                 << "Please fill out the following fields so we may create an account for you" << std::endl
                 << "Full Name: ";
     std::cin.ignore();
     std::getline(std::cin, name);
+    
     std::cout   << "Username: ";
     std::getline(std::cin, username);
+
     std::cout   << "Password: ";
     setStdInEcho(false);
     std::getline(std::cin, password);
     setStdInEcho(true);
     std::cout   << std::endl;
+
+    std::cout   << "Confirm Password: ";
+    setStdInEcho(false);
+    std::getline(std::cin, confirmPassword);
+    setStdInEcho(true);
+    std::cout   << std::endl;
+
+    if (password == confirmPassword) {
+        std::cout << "Account created successfully!" << std::endl;
+        // TODO: create account
+    } else {
+        std::cout << "Passwords do not match. Please try again" << std::endl;
+        signUpPrompt();
+    }
 }
 
 // stolen from https://stackoverflow.com/questions/1413445/reading-a-password-from-stdcin
