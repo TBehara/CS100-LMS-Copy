@@ -7,5 +7,5 @@ CMakeCache.txt
 Makefile
 
 test/googletest/googletest/generated
-
-.vscode/
+lib
+.vscode
