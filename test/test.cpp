@@ -27,6 +27,8 @@ TEST(userTests, testExampleUserLogin) {
     User exampleUser(username, password);
     EXPECT_EQ(exampleUser.getUsername(), username);
     EXPECT_EQ(exampleUser.hashPassword(), (int)hash<string>{}(password));
+    EXPECT_NE(exampleUser.getUsername(), username + "0");
+    EXPECT_NE(exampleUser.hashPassword(), (int)hash<string>{}(password + "1"));
 }
 
 TEST(userTests, testDefaultFine) {
