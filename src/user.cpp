@@ -1,5 +1,7 @@
 #include "../header/user.hpp"
 #include <functional>
+#include <stdexcept>
+using std::runtime_error;
 
 User::User() : username("Guest"), hashedPassword(0), fine(0) {
 }
@@ -28,14 +30,23 @@ void User::setFine(double fine) {
     this->fine = fine;
 }
 
-void User::removeBook(Book returnedBook) {
-    //THIS IS A STUB
+void User::removeBook(const Book& returnedBook) {
+    for(auto it : checkedOutBooks) {
+        if(it == returnedBook) {
+            checkedOutBooks.remove(it);
+            return;
+        }
+    }
     return;
 }
 
-void User::addBook(Book checkoutBook) {
-    //THIS IS A STUB
-    return;
+void User::addBook(const Book& checkoutBook) {
+    for(auto it : checkedOutBooks) {
+        if(it == checkoutBook) {
+            throw runtime_error(it.getTitle() + " by " + it.getAuthor() + " is already checked out");
+        }
+    }
+    checkedOutBooks.push_back(checkoutBook);
 }
 
 void User::displayMenu() {

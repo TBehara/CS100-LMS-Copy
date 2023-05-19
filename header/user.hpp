@@ -21,8 +21,8 @@ class User {
         double getFine() const;
         void setUsername(const string& username);
         void setFine(double fine); //fine is an int on the UML diagram so we should change the one on the diagram to a double
-        void removeBook(Book returnedBook);
-        void addBook(Book checkoutBook);
+        void removeBook(const Book& returnedBook);
+        void addBook(const Book& checkoutBook);
         const list<Book>& getBooks() const;
         virtual void displayMenu();
 };
