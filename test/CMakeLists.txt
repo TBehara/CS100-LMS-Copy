@@ -5,6 +5,8 @@ ADD_SUBDIRECTORY(googletest)
 
 ADD_EXECUTABLE(LMSTests
     test.cpp
+    ../src/user.cpp
+    ../src/book.cpp
 )
 
 target_link_libraries(LMSTests gmock gtest gtest_main)

@@ -10,3 +10,4 @@ test/CMakeFiles
 test/cmake_install.cmake
 test/googletest/googletest/generated
 lib
+.vscode
