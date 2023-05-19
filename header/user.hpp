@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <list>
-#include "book.hpp"
+#include "../header/book.hpp"
+#include <vector>
 using namespace std;
 
 
@@ -13,6 +14,8 @@ class User {
         double fine;
         list<Book> checkedOutBooks;
     public:
+        vector<string> interestKeyWords = {"Percy Jackson", "Basketball", "Sports", "Science", "Fiction"};
+        vector<string> checkedBookNames = {"The Lord of the Rings", "The Great Gatsby", "Kobe Bryant Autobiography"};
         User();
         string getUsername();
         string hashPassword(); //getPassword() on the UML diagram

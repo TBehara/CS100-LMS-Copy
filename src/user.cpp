@@ -1,19 +1,19 @@
-#include "user.hpp"
+#include "../header/user.hpp"
 
 User::User() {
 
 }
 
 string User::getUsername() {
-
+    return "ppham067";
 }
 
 string User::hashPassword() {
-
+    return "";
 }
 
 double User::getFine() {
-
+    return 0.0;
 }
 
 void User::setUsername(string username) {
