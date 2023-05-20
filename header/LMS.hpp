@@ -16,7 +16,6 @@ class LMS {
         void setStdInEcho(bool);
         void loginPrompt();
         void mainMenuPrompt();
-        void adminMenuPrompt();
         void logoutPrompt();
         void displayUserDetails(); //test commit
 };
