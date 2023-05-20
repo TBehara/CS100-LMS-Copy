@@ -107,7 +107,7 @@ void LMS::loginPrompt() {
 }
 
 void LMS::mainMenuPrompt() {
-    currentUser.displayMenu();
+    currentUser->displayMenu();
 }
 
 void LMS::logoutPrompt() {

@@ -6,7 +6,7 @@
 
 class LMS {
     private:
-        User currentUser;
+        User *currentUser;
         list<Book> bookDatabase;
         list<searchBase> searchBaseList;
     public:
