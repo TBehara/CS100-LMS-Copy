@@ -1,12 +1,8 @@
 #include "../header/admin.hpp"
 
-Admin::Admin() {
-    priority = 0;
-}
+Admin::Admin() : User(), priority(0) {}
 
-Admin::Admin(int _priority) {
-    priority = _priority;
-}
+Admin::Admin(const string& username, const string& password, int _priority) : User(username, password), priority(_priority) {}
 
 unsigned int Admin::getPriority() {
     return priority;
