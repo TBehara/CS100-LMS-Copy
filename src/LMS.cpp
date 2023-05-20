@@ -20,6 +20,7 @@ void LMS::loginPrompt() {
     std::string hashPassword;
 
 
+
     std::cout << "\t\t\tLogin" << std::endl;
     std::cout << std::endl;
     std::cout << "Username: ";
@@ -39,9 +40,7 @@ void LMS::loginPrompt() {
 }
 
 void LMS::mainMenuPrompt() {
-    /*
-    user.displayMenu();
-    */
+    
 }
 
 void LMS::logoutPrompt() {

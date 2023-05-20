@@ -13,9 +13,9 @@ class User {
         string username;
         double fine;
         list<Book> checkedOutBooks;
-        vector<string> interestKeyWords = {"Hello", "Taran", "WRLD"};
-        vector<string> prevCheckedBookNames = {"Hello", "Taran", "WRLD"};
-        vector<string> currCheckedBookNames = {"Hello", "Taran", "WRLD"};
+        vector<string> interestKeyWords;
+        vector<string> prevCheckedBookNames;
+        vector<string> currCheckedBookNames;
     public:
         User();
         string getUsername();
