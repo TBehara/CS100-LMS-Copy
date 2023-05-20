@@ -7,6 +7,7 @@ class Admin: public User {
         unsigned int priority;
     public:
         Admin();
+        Admin(int);
         unsigned int getPriority();
         void displayMenu();
 };

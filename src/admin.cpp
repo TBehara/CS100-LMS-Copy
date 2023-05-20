@@ -1,7 +1,11 @@
 #include "../header/admin.hpp"
 
 Admin::Admin() {
+    priority = 0;
+}
 
+Admin::Admin(int _priority) {
+    priority = _priority;
 }
 
 unsigned int Admin::getPriority() {
