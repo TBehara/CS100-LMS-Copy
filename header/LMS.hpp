@@ -6,7 +6,7 @@
 
 class LMS {
     private:
-        User currentUser;
+        User *currentUser;
         list<Book> bookDatabase;
         list<searchBase> searchBaseList;
     public:
@@ -16,7 +16,6 @@ class LMS {
         void setStdInEcho(bool);
         void loginPrompt();
         void mainMenuPrompt();
-        void adminMenuPrompt();
         void logoutPrompt();
         void displayUserDetails(); //test commit
 };

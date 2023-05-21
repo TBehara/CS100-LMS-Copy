@@ -50,8 +50,14 @@ void User::addBook(const Book& checkoutBook) {
 }
 
 void User::displayMenu() {
-    //THIS IS A STUB
-    return;
+    std::cout << "Welcome to the Main User Menu!" << std::endl;
+    std::cout << "1. Checkout books in cart" << std::endl;
+    std::cout << "2. Return a book" << std::endl;
+    std::cout << "3. Renew a book" << std::endl;
+    std::cout << "4. Browse/Search for Books/Add to Cart" << std::endl;
+    std::cout << "5. View Books on Account & Fees" << std::endl;
+    std::cout << "6. Get book recommendations" << std::endl;
+    std::cout << "7. Save and Logout" << std::endl;
 }
 
 const list<Book>& User::getBooks() const {
