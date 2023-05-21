@@ -241,3 +241,46 @@ TEST(userTests, testBookRemove) {
     EXPECT_EQ(defaultUser.getBooks().size(), 1);
     EXPECT_EQ(defaultUser.getBooks().front(), b2);
 }
+
+
+TEST(userTests, testSetPrevBookNames) {
+    User defaultUser("", "");
+    vector<string> bookNames = {"The Lord of the Rings"};
+
+    defaultUser.setPrevBookNames(bookNames);
+    EXPECT_EQ(defaultUser.getPrevBookNames(), bookNames);
+
+    bookNames.push_back("Harry Potter");
+    EXPECT_NE(defaultUser.getPrevBookNames(), bookNames);
+
+    defaultUser.getPrevBookNames().push_back("Harry Potter");
+    EXPECT_EQ(defaultUser.getPrevBookNames(), bookNames);
+}
+
+TEST(userTests, testSetCurrBookNames) {
+    User defaultUser("", "");
+    vector<string> bookNames = {"The Lord of the Rings"};
+
+    defaultUser.setCurrBookNames(bookNames);
+    EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
+
+    bookNames.push_back("Harry Potter");
+    EXPECT_NE(defaultUser.getCurrBookNames(), bookNames);
+
+    defaultUser.getCurrBookNames().push_back("Harry Potter");
+    EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
+}
+
+TEST(userTests, testSetInterestKeywords) {
+    User defaultUser("", "");
+    vector<string> keywords = {"fantasy", "mystery", "nonfiction"};
+
+    defaultUser.setInterestKeywords(keywords);
+    EXPECT_EQ(defaultUser.getInterestKeywords(), keywords);
+
+    keywords.push_back("adventure");
+    EXPECT_NE(defaultUser.getInterestKeywords(), keywords);
+
+    defaultUser.getInterestKeywords().push_back("adventure");
+    EXPECT_EQ(defaultUser.getInterestKeywords(), keywords);
+}
