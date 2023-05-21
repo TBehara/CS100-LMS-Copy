@@ -11,4 +11,5 @@ ADD_EXECUTABLE(LMS
     src/main.cpp
     src/jsonManager.cpp
     src/user.cpp
+    src/book.cpp
 )

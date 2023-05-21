@@ -6,13 +6,14 @@
 
 class LMS {
     private:
-        User* currentUser;
+        User *currentUser;
         list<Book> bookDatabase;
-        list <searchBase> searchBase;
+        list<searchBase> searchBaseList;
     public:
         LMS();
         void welcomePrompt();
         void signUpPrompt();
+        void setStdInEcho(bool);
         void loginPrompt();
         void mainMenuPrompt();
         void logoutPrompt();
