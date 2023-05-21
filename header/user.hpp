@@ -9,15 +9,14 @@ using namespace std;
 
 class User {
     private:
-        string username;
-        int hashedPassword;
+        string username, hashedPassword;
         double fine;
         list<Book> checkedOutBooks;
     public:
         User();
         User(const string&, const string&);
         string getUsername() const;
-        int hashPassword() const; //getPassword() on the UML diagram
+        string hashPassword() const; //getPassword() on the UML diagram
         double getFine() const;
         void setUsername(const string& username);
         void setFine(double fine); //fine is an int on the UML diagram so we should change the one on the diagram to a double

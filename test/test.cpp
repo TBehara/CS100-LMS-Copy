@@ -3,6 +3,8 @@
 #include "../header/user.hpp"
 #include "../header/book.hpp"
 
+#include "../libraries/hash/sha256.h"
+
 using ::testing::_;
 using ::testing::InSequence;
 using namespace std;
@@ -173,16 +175,16 @@ TEST(bookTests, testBookEqualityMultiGenre) {
 TEST(userTests, testGuestUser) {
     User defaultUser;
     EXPECT_EQ(defaultUser.getUsername(), "Guest");
-    EXPECT_EQ(defaultUser.hashPassword(), 0);
+    EXPECT_EQ(defaultUser.hashPassword(), "");
 }
 
 TEST(userTests, testExampleUserLogin) {
-    const string username = "JohnDoe47", password = "password";
+    const string username = "JohnDoe47", password = sha256("password");
     User exampleUser(username, password);
     EXPECT_EQ(exampleUser.getUsername(), username);
-    EXPECT_EQ(exampleUser.hashPassword(), (int)hash<string>{}(password));
+    EXPECT_EQ(exampleUser.hashPassword(), (password));
     EXPECT_NE(exampleUser.getUsername(), username + "0");
-    EXPECT_NE(exampleUser.hashPassword(), (int)hash<string>{}(password + "1"));
+    EXPECT_NE(exampleUser.hashPassword(), sha256("passwore"));
 }
 
 TEST(userTests, testDefaultFine) {

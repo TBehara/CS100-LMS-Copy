@@ -1,20 +1,18 @@
 #include "../header/user.hpp"
-#include <functional>
 #include <stdexcept>
 using std::runtime_error;
 
-User::User() : username("Guest"), hashedPassword(0), fine(0) {
+User::User() : username("Guest"), hashedPassword(""), fine(0) {
 }
 
-User::User(const string& username, const string& password) : username(username), fine(0) {
-    hashedPassword = hash<string>{}(password);
+User::User(const string& username, const string& hashedPassword) : username(username), hashedPassword(hashedPassword), fine(0) {
 }
 
 string User::getUsername() const {
     return username;
 }
 
-int User::hashPassword() const {
+string User::hashPassword() const {
     return hashedPassword;
 }
 
