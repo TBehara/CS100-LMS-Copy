@@ -8,7 +8,7 @@ void jsonManager::write(User toWrite) {
     string booksFileName = userName + "_checkedBooks.json";
     string currBooksFileName = userName + "_currBooks.json";
 
-    int passHash = toWrite.hashPassword();
+    string passHash = toWrite.hashPassword();
     double userFine = toWrite.getFine();
     string jsonFine = to_string(userFine);
 
