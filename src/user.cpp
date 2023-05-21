@@ -6,6 +6,30 @@ using std::runtime_error;
 User::User() : username("Guest"), hashedPassword(0), fine(0) {
 }
 
+vector<string>& User::getPrevBookNames() {
+    return this->prevCheckedBookNames;
+}
+
+vector<string>& User::getCurrBookNames() {
+    return this->currCheckedBookNames;
+}
+        
+vector<string>& User::getInterestKeywords() {
+    return this->interestKeyWords;
+}
+
+void User::setPrevBookNames(vector<string> &bookNames) {
+    this->prevCheckedBookNames = bookNames;
+}
+
+void User::setCurrBookNames(vector<string> &bookNames) {
+    this->currCheckedBookNames = bookNames;
+}
+
+void User::setInterestKeywords(vector<string> &interestWords) {
+    this->interestKeyWords = interestWords;
+}
+
 User::User(const string& username, const string& password) : username(username), fine(0) {
     hashedPassword = hash<string>{}(password);
 }
