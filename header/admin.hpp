@@ -10,5 +10,6 @@ class Admin: public User {
         Admin(const string&, const string&, int);
         unsigned int getPriority();
         void displayMenu();
+        bool getAdminStatus();
 };
 #endif

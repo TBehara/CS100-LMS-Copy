@@ -1,6 +1,6 @@
 #include "../header/jsonManager.hpp"
 #include "../header/user.hpp"
-//using namespace std;
+using namespace std;
 
 int main() {
     return 0;
