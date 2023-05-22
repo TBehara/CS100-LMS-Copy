@@ -19,3 +19,8 @@ void Admin::displayMenu() {
     std::cout << "7. Get book recommendations" << std::endl;
     std::cout << "8. Save and Logout" << std::endl;
 }
+
+bool Admin::getAdminStatus() {
+    return true;
+}
+

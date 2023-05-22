@@ -2,11 +2,11 @@
 #include <stdexcept>
 using std::runtime_error;
 
-User::User() : username("Guest"), hashedPassword(""), fine(0) {
+User::User() : username("Guest"), hashedPassword(""), fine(0){
 }
 
 
-User::User(const string& username, const string& hashedPassword) : username(username), hashedPassword(hashedPassword), fine(0) {
+User::User(const string& username, const string& hashedPassword) : username(username), hashedPassword(hashedPassword), fine(0){
 }
 
 vector<string>& User::getPrevBookNames() {
@@ -85,4 +85,8 @@ void User::displayMenu() {
 
 const list<Book>& User::getBooks() const {
     return checkedOutBooks;
+}
+
+bool User::getAdminStatus() {
+    return false;
 }

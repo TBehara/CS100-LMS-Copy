@@ -33,6 +33,7 @@ class User {
         void removeBook(const Book& returnedBook);
         void addBook(const Book& checkoutBook);
         const list<Book>& getBooks() const;
+        virtual bool getAdminStatus();
         virtual void displayMenu();
 };
 #endif

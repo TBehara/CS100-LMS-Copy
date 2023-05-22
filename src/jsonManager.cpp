@@ -11,6 +11,7 @@ void jsonManager::write(User toWrite) {
     string passHash = toWrite.hashPassword();
     double userFine = toWrite.getFine();
     string jsonFine = to_string(userFine);
+    bool adminStatus = toWrite.getAdminStatus();
 
     string dirName = "./JSON/" + userName;
     int makeUserDir = mkdir(dirName.c_str(), 0777);
@@ -22,7 +23,8 @@ void jsonManager::write(User toWrite) {
     json userObj = {
         {"Username", userName},
         {"UserHash", passHash},
-        {"UserFine", jsonFine}
+        {"UserFine", jsonFine},
+        {"AdminStatus", adminStatus}
     };
 
     json userInterests;
