@@ -4,6 +4,8 @@ Admin::Admin() : User(), priority(0) {}
 
 Admin::Admin(const string& username, const string& password, int _priority) : User(username, password), priority(_priority) {}
 
+Admin::Admin(User toConvert, int _priority) : User(toConvert), priority(_priority) {}
+
 unsigned int Admin::getPriority() {
     return priority;
 }
