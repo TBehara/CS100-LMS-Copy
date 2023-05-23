@@ -131,6 +131,52 @@ void LMS::loginPrompt() {
 
 void LMS::mainMenuPrompt() {
     currentUser->displayMenu();
+
+    bool adminStatus = currentUser->getAdminStatus();
+
+    std::string input;
+    std::cin >> input;
+    if (adminStatus) {
+        if (input == "1") {
+            // manage books in system
+        } else if (input == "2") {
+            // add lower level admin
+        } else if (input == "3") {
+            // checkout books in cart
+        } else if (input == "4") {
+            // return a book
+        } else if (input == "5") {
+            // browse/search for books/add books to cart
+        } else if (input == "6") {
+            // view books on account & fees
+        } else if (input == "7") {
+            // get book recommendations
+        } else if (input == "8") {
+            // save and logout
+        } else {
+            std::cout << "Invalid input. Please try again" << std::endl;
+            mainMenuPrompt();
+        }
+    } else {
+        if (input == "1") {
+            // checkout books in cart
+        } else if (input == "2") {
+            // return a book
+        } else if (input == "3") {
+            // renew a book
+        } else if (input == "4") {
+            // browse books
+        } else if (input == "5") {
+            // view books on account & fees
+        } else if (input == "6") {
+            // get book recommendations
+        } else if (input == "7") {
+            // save and logout
+        } else {
+            std::cout << "Invalid input. Please try again" << std::endl;
+            mainMenuPrompt();
+        }
+    }
 }
 
 void LMS::logoutPrompt() {
