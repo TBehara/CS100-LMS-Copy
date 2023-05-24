@@ -19,5 +19,14 @@ class LMS {
         void mainMenuPrompt();
         void logoutPrompt();
         void displayUserDetails();
+        void checkoutPrompt();
+        void returnPrompt();
+        void renewPrompt();
+        void browsePrompt();
+        void getRecommendationsPrompt();
+        void viewAccountPrompt(const User&);
+        // admin exclusive prompts
+        void manageBooksPrompt();
+        void addAdminPrompt();
 };
 #endif

@@ -146,12 +146,14 @@ void LMS::mainMenuPrompt() {
         } else if (input == "4") {
             // return a book
         } else if (input == "5") {
-            // browse/search for books/add books to cart
+            // renew a book
         } else if (input == "6") {
-            // view books on account & fees
+            // browse/search for books/add books to cart
         } else if (input == "7") {
-            // get book recommendations
+            // view books on account & fees
         } else if (input == "8") {
+            // get book recommendations
+        } else if (input == "9") {
             // save and logout
         } else {
             std::cout << "Invalid input. Please try again" << std::endl;
@@ -184,5 +186,41 @@ void LMS::logoutPrompt() {
 }
 
 void LMS::displayUserDetails() {
+
+}
+
+// main menu prompts
+
+void LMS::checkoutPrompt() {
+
+}
+
+void LMS::returnPrompt() {
+
+}
+
+void LMS::renewPrompt() {
+
+}
+
+void LMS::browsePrompt() {
+
+}
+
+void LMS::getRecommendationsPrompt() {
+
+}
+
+void LMS::viewAccountPrompt(const User &user) {
+
+}
+
+// admin prompts
+
+void LMS::manageBooksPrompt() {
+
+}
+
+void LMS::addAdminPrompt() {
 
 }
