@@ -15,9 +15,9 @@ using namespace std;
 
 class jsonManager {
     public:
-        void write(User toWrite);
-        void updateJSON(User toUpdate);
-        void loadUser(User& toRead);
-        string findUserFile(const string&);
+        static void write(User toWrite);
+        static void updateJSON(User toUpdate);
+        static void loadUser(User& toRead);
+        static string findUserFile(const string&);
 };
 #endif
