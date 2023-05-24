@@ -2,6 +2,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 
 PROJECT(LMS)
 
+set(CMAKE_CXX_STANDARD 17)
+
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(test)
 
@@ -12,4 +14,9 @@ ADD_EXECUTABLE(LMS
     src/jsonManager.cpp
     src/user.cpp
     src/book.cpp
+    src/LMS.cpp
+)
+
+TARGET_LINK_LIBRARIES(LMS
+    stdc++fs
 )
