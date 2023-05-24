@@ -1,4 +1,7 @@
 #include "../header/jsonManager.hpp"
+
+#include <filesystem>
+
 using namespace std;
 
 void jsonManager::write(User toWrite) {
@@ -113,4 +116,20 @@ void jsonManager::loadUser(User& toRead) {
         userCurrBooks.push_back(elem["Book"]);
     }
     toRead.setCurrBookNames(userCurrBooks);
+}
+
+string jsonManager::findUserFile(const string &username) {
+    string filePath;
+    string dirPath = "./JSON";
+    if (filesystem::exists(dirPath)) {
+        for (const auto &entry : filesystem::directory_iterator(dirPath)) {
+            string dirName = entry.path().filename().string();
+            if (dirName == username) {
+                string fileName = username + ".json";
+                filePath = entry.path().string() + "/" + fileName;
+                break;
+            }
+        }
+    }
+    return filePath;
 }

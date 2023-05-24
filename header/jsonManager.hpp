@@ -17,6 +17,7 @@ class jsonManager {
     public:
         void write(User toWrite);
         void updateJSON(User toUpdate);
-        void loadUser(User& toRead);      
+        void loadUser(User& toRead);
+        string findUserFile(const string&);
 };
 #endif
