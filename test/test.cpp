@@ -174,11 +174,18 @@ TEST(bookTests, testBookEqualityMultiGenre) {
     EXPECT_EQ(b1, b2);
     EXPECT_EQ(b2, b1);
 
+    genres2.pop_back();
     genres2.push_back(Book::Genre::FANTASY);
     EXPECT_EQ(b1, b2);
     EXPECT_EQ(b2, b1);
 
     Book b3("1", "1", genres2);
+    EXPECT_NE(b1, b3);
+    EXPECT_NE(b2, b3);
+    EXPECT_NE(b3, b1);
+    EXPECT_NE(b3, b2);
+
+    b3.addGenre(Book::Genre::NONFICTION);
     EXPECT_NE(b1, b3);
     EXPECT_NE(b2, b3);
     EXPECT_NE(b3, b1);
