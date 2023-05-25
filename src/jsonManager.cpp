@@ -1,17 +1,17 @@
 #include "../header/jsonManager.hpp"
 using namespace std;
 
-void jsonManager::write(User toWrite) {
-    string userName = toWrite.getUsername();
+void jsonManager::write(User* toWrite) {
+    string userName = toWrite->getUsername();
     string fileName = userName + ".json";
     string interestsFileName = userName + "_interests.json";
     string booksFileName = userName + "_checkedBooks.json";
     string currBooksFileName = userName + "_currBooks.json";
 
-    string passHash = toWrite.hashPassword();
-    double userFine = toWrite.getFine();
+    string passHash = toWrite->hashPassword();
+    double userFine = toWrite->getFine();
     string jsonFine = to_string(userFine);
-    bool adminStatus = toWrite.getAdminStatus();
+    bool adminStatus = toWrite->getAdminStatus();
 
     string dirName = "./JSON/" + userName;
     int makeUserDir = mkdir(dirName.c_str(), 0777);
@@ -30,9 +30,9 @@ void jsonManager::write(User toWrite) {
     json userInterests;
     auto interestsData = userInterests.array();
     unsigned int iterOne;
-    for (iterOne = 0; iterOne < toWrite.getInterestKeywords().size(); iterOne++) {
+    for (iterOne = 0; iterOne < toWrite->getInterestKeywords().size(); iterOne++) {
         userInterests = {
-            {"Interest", toWrite.getInterestKeywords().at(iterOne)}
+            {"Interest", toWrite->getInterestKeywords().at(iterOne)}
         };
         interestsData.push_back(userInterests);
     }
@@ -40,9 +40,9 @@ void jsonManager::write(User toWrite) {
     json userBooks;
     auto checkedBookData = userBooks.array();
     unsigned int iterTwo;
-    for (iterTwo = 0; iterTwo < toWrite.getPrevBookNames().size(); iterTwo++) {
+    for (iterTwo = 0; iterTwo < toWrite->getPrevBookNames().size(); iterTwo++) {
         userBooks = {
-            {"Book", toWrite.getPrevBookNames().at(iterTwo)}
+            {"Book", toWrite->getPrevBookNames().at(iterTwo)}
         };
         checkedBookData.push_back(userBooks);
     }
@@ -50,9 +50,9 @@ void jsonManager::write(User toWrite) {
     json userCheckedBooks;
     auto currBookData = userCheckedBooks.array();
     unsigned int iterThree;
-    for (iterThree = 0; iterThree < toWrite.getCurrBookNames().size(); iterThree++) {
+    for (iterThree = 0; iterThree < toWrite->getCurrBookNames().size(); iterThree++) {
         userCheckedBooks = {
-            {"Book", toWrite.getCurrBookNames().at(iterThree)}
+            {"Book", toWrite->getCurrBookNames().at(iterThree)}
         };
         currBookData.push_back(userCheckedBooks);
     }
@@ -68,28 +68,33 @@ void jsonManager::write(User toWrite) {
     userCurrBooksFS.close();
 }
 
-void jsonManager::updateJSON(User toUpdate) {
+void jsonManager::updateJSON(User* toUpdate) {
     write(toUpdate);
 }
 
-void jsonManager::loadUser(User& toRead) {
-    string userName = toRead.getUsername();
+string jsonManager::loadUser(User* toRead) {
+    string userName = toRead->getUsername();
 
     string fileName = userName + ".json";
     string interestsFileName = userName + "_interests.json";
     string booksFileName = userName + "_checkedBooks.json";
     string currBooksFileName = userName + "_currBooks.json";
 
+    ifstream userDataFS("JSON/" + userName + "/" + fileName);
+    if (!userDataFS.is_open()) {
+        return "false";
+    }
+
     ifstream userCurrBooksFS("JSON/" + userName + "/" + currBooksFileName);
     ifstream userPrevBooksFS("JSON/" + userName + "/" + booksFileName);
     ifstream userInterestsFS("JSON/" + userName + "/" + interestsFileName);
-    ifstream userDataFS("JSON/" + userName + "/" + fileName);
 
     json dataObj = json::parse(userDataFS);
-    toRead.setUsername(dataObj["Username"]);
+    toRead->setUsername(dataObj["Username"]);
     string userFine = dataObj["UserFine"];
     double fine = stod(userFine);
-    toRead.setFine(fine);
+    string userHash = dataObj["UserHash"];
+    toRead->setFine(fine);
     userDataFS.close();
 
     json interestObj = json::parse(userInterestsFS);
@@ -97,7 +102,7 @@ void jsonManager::loadUser(User& toRead) {
     for (auto& elem : interestObj) {
         userInterests.push_back(elem["Interest"]);
     }
-    toRead.setInterestKeywords(userInterests);
+    toRead->setInterestKeywords(userInterests);
     userInterestsFS.close();
 
     json prevBookObj = json::parse(userPrevBooksFS);
@@ -105,12 +110,13 @@ void jsonManager::loadUser(User& toRead) {
     for (auto& elem : prevBookObj) {
         userPrevBooks.push_back(elem["Book"]);
     }
-    toRead.setPrevBookNames(userPrevBooks);
+    toRead->setPrevBookNames(userPrevBooks);
 
     json currBookObj = json::parse(userCurrBooksFS);
     vector<string> userCurrBooks;
     for (auto& elem : currBookObj) {
         userCurrBooks.push_back(elem["Book"]);
     }
-    toRead.setCurrBookNames(userCurrBooks);
+    toRead->setCurrBookNames(userCurrBooks);
+    return userHash;
 }

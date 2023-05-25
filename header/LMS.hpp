@@ -3,6 +3,8 @@
 
 #include "user.hpp"
 #include "search_base.hpp"
+#include "../libraries/hash/sha256.h"
+#include "../header/jsonManager.hpp"
 
 class LMS {
     private:
