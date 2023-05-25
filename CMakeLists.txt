@@ -12,4 +12,6 @@ ADD_EXECUTABLE(LMS
     src/jsonManager.cpp
     src/user.cpp
     src/book.cpp
+    src/LMS.cpp
+    libraries/hash/sha256.cpp
 )
