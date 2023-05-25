@@ -166,10 +166,21 @@ TEST(bookTests, testBookEqualityMultiGenre) {
     list<Book::Genre> genres1, genres2;
     genres1.push_back(Book::Genre::NONFICTION);
     genres1.push_back(Book::Genre::FICTION);
+
     genres2.push_back(Book::Genre::FICTION);
     genres2.push_back(Book::Genre::NONFICTION);
+
     Book b1("1", "1", genres1), b2("1", "1", genres2);
     EXPECT_EQ(b1, b2);
+
+    genres2.push_back(Book::Genre::FANTASY);
+    EXPECT_EQ(b1, b2);
+
+    Book b3("1", "1", genres2);
+    EXPECT_NE(b1, b3);
+    EXPECT_NE(b2, b3);
+    EXPECT_NE(b3, b1);
+    EXPECT_NE(b3, b2);
 }
 
 TEST(userTests, testGuestUser) {
