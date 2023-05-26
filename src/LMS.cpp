@@ -176,7 +176,10 @@ void LMS::loginPrompt() {
     else {
         string userChoice;
         std::cout << "Password: ";
+        setStdInEcho(false);
         std::getline(std::cin, password);
+        setStdInEcho(true);
+        std::cout << std::endl;
 
         if (sha256(password) != foundUser) {
             std::cout << "The password you have entered is incorrect." << std::endl;
