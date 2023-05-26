@@ -13,12 +13,22 @@ class LMS {
         list<searchBase> searchBaseList;
     public:
         LMS();
+    private:
         void welcomePrompt();
         void signUpPrompt();
         void setStdInEcho(bool);
         void loginPrompt();
         void mainMenuPrompt();
         void logoutPrompt();
-        void displayUserDetails(); //test commit
+        void displayUserDetails();
+        void checkoutPrompt();
+        void returnPrompt();
+        void renewPrompt();
+        void browsePrompt();
+        void getRecommendationsPrompt();
+        void viewAccountPrompt(const User&);
+        // admin exclusive prompts
+        void manageBooksPrompt();
+        void addAdminPrompt();
 };
 #endif
