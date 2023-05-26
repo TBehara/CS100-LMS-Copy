@@ -1,8 +1,11 @@
 #include <iostream>
-#include "../header/LMS.hpp"
 #include <string>
 
 #include "../header/LMS.hpp"
+#include "../header/jsonManager.hpp"
+#include "../libraries/nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 // used to disable password echo
 #ifdef WIN32
@@ -11,8 +14,6 @@
 #include <termios.h>
 #include <unistd.h>
 #endif
-
-#include "../libraries/nlohmann/json.hpp"
 
 
 LMS::LMS() {
