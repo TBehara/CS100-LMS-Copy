@@ -15,6 +15,7 @@ ADD_EXECUTABLE(LMS
     src/user.cpp
     src/book.cpp
     src/LMS.cpp
+    libraries/hash/sha256.cpp
 )
 
 TARGET_LINK_LIBRARIES(LMS

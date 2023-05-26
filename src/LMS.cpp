@@ -30,9 +30,13 @@ void LMS::welcomePrompt() {
                 << "- View important account information" << std::endl
                 << std::endl
                 << "Press L to log into an existing account" << std::endl
-                << "Press S to sign up for a new account" << std::endl;
+                << "Press S to sign up for a new account" << std::endl
+                << "Press Q to quit the program" << std::endl;
     std::cin >> input;
-    if (input == "L" || input == "l") {
+    if (input == "Q" || input == "q") {
+        return;
+    }
+    else if (input == "L" || input == "l") {
         loginPrompt();
     } else if (input == "S" || input == "s") {
         signUpPrompt();
@@ -47,10 +51,19 @@ void LMS::signUpPrompt() {
     std::string username;
     std::string password;
     std::string confirmPassword;
+    std::string userChoice;
     
     std::cout   << "\t\t\tRegister" << std::endl
-                << "Please fill out the following fields so we may create an account for you" << std::endl
-                << "Full Name: ";
+                << "Type Q to exit back to the welcome page. Any other input to continue to signup." << std::endl;
+            
+    std::getline(std::cin, userChoice);
+    if (userChoice == "Q" || userChoice == "q") {
+        welcomePrompt();
+        return;
+    }        
+    std::cout << "Please fill out the following fields so we may create an account for you" << std::endl;
+    std::cout << "Full Name: ";
+
     std::cin.ignore();
     std::getline(std::cin, name);
     
@@ -69,14 +82,52 @@ void LMS::signUpPrompt() {
     setStdInEcho(true);
     std::cout   << std::endl;
 
+    while (password != confirmPassword) {
+        std::cout << "Passwords do not match. Please try again" << std::endl;
+        std::cout   << "Password: ";
+        setStdInEcho(false);
+        std::getline(std::cin, password);
+        setStdInEcho(true);
+        std::cout   << std::endl;
+
+        std::cout   << "Confirm Password: ";
+        setStdInEcho(false);
+        std::getline(std::cin, confirmPassword);
+        setStdInEcho(true);
+        std::cout   << std::endl;
+    }
+
     if (password == confirmPassword) {
         std::cout << "Account created successfully!" << std::endl;
-        // TODO: create account
-    } else {
-        std::cout << "Passwords do not match. Please try again" << std::endl;
-        signUpPrompt();
+    } 
+
+    std::cout << "Please enter a couple words, titles, or genres you may be interested in. Type Q to dismiss this prompt. Click ENTER after each word entry." << std::endl;
+    string userInterestInput;
+    vector<string> userInterests;
+    getline(cin, userInterestInput);
+    if (!(userInterestInput == "Q" || userInterestInput == "q")) {
+            userInterests.push_back(userInterestInput);
     }
+    while(userInterestInput != "Q" && userInterestInput != "q") {
+        getline(cin, userInterestInput);
+        if (!(userInterestInput == "Q" || userInterestInput == "q")) {
+            userInterests.push_back(userInterestInput);
+        }
+    }
+
+    //create password hash
+    string userHash = sha256(password);
+    //create user
+    currentUser = new User(username, userHash);
+    currentUser->setFine(0.0);
+    currentUser->setInterestKeywords(userInterests);
+    //add to JSON
+    jsonManager uploadFile;
+    uploadFile.write(currentUser);
+    //display menu
+    currentUser->displayMenu();
 }
+
 
 // stolen from https://stackoverflow.com/questions/1413445/reading-a-password-from-stdcin
 void LMS::setStdInEcho(bool enable = true) {
@@ -116,17 +167,49 @@ void LMS::loginPrompt() {
     std::cout << "Username: ";
     std::cin.ignore();
     std::getline(std::cin, username);
-    std::cout << "Password: ";
-    std::getline(std::cin, password);
-    //hashPasword = computeHash(password);
-    //if (hash == hash in the database) {
-        //"You have successfully logged in!"
-    //}
-    //else {
-        //please try again
-    //}
+    currentUser = new User();
+    currentUser->setUsername(username);
+    jsonManager userManager;
+    string foundUser = userManager.loadUser(currentUser);
+    if (foundUser == "false") {
+        std::cout << "This username does not exist in our system. We will redirect you to the sign up page where you can create an account." << std::endl;
+        signUpPrompt();
+    }
+    else {
+        string userChoice;
+        std::cout << "Password: ";
+        std::getline(std::cin, password);
 
-    mainMenuPrompt();
+        if (sha256(password) != foundUser) {
+            std::cout << "The password you have entered is incorrect." << std::endl;
+            std::cout << "Enter C to get 3 tries to get the correct password. If all three tries are incorrect, you will be directed to the sign up page. Any other input will direct you to the sign up page to create a new account." << std::endl;
+            std::getline(std::cin, userChoice);
+            if (userChoice == "C" || userChoice == "c") {
+                bool successLog = false;
+                for (int iter = 0; iter < 3; iter++) {
+                    std::cout << "Password: ";
+                    std::getline(std::cin, password);
+                    if (sha256(password) == foundUser) {
+                        successLog = true;
+                        break;
+                    }
+                }
+                if (!successLog) {
+                    std::cout << "You will be directed to the signup page to create a new account." << std::endl;
+                    signUpPrompt();
+                }
+                else {
+                    mainMenuPrompt();
+                }
+            }
+            else {
+                signUpPrompt();
+            }
+        }
+        else {
+            mainMenuPrompt();
+        }
+    }
 }
 
 void LMS::mainMenuPrompt() {
