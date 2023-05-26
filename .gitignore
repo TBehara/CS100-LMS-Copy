@@ -1,5 +1,6 @@
 bin/
 lib/
+JSON/
 
 CMakeFiles/
 cmake_install.cmake
