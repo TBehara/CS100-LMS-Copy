@@ -7,7 +7,6 @@ using namespace std;
 
 int main() {
     LMS lms;
-    lms.welcomePrompt();
     
     return 0;
 }
