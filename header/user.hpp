@@ -21,6 +21,7 @@ class User {
         User(const string&, const string&);
         string getUsername() const;
         string hashPassword() const; //getPassword() on the UML diagram
+        void setHash(const string&);
         double getFine() const;
         void setUsername(const string& username);
         void setFine(double fine); //fine is an int on the UML diagram so we should change the one on the diagram to a double

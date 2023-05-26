@@ -171,6 +171,7 @@ void LMS::loginPrompt() {
     currentUser->setUsername(username);
     jsonManager userManager;
     string foundUser = userManager.loadUser(currentUser);
+    currentUser->setHash(foundUser);
     if (foundUser == "false") {
         std::cout << "This username does not exist in our system. We will redirect you to the sign up page where you can create an account." << std::endl;
         signUpPrompt();
