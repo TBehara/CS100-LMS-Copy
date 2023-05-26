@@ -61,13 +61,13 @@ void jsonManager::write(User* toWrite) {
     }
 
 
-    userDataFS << userObj;
+    userDataFS << userObj.dump(4) << endl;
     userDataFS.close();
-    userInterestsFS << interestsData;
+    userInterestsFS << interestsData.dump(4) << endl;
     userInterestsFS.close();
-    userBooksFS << checkedBookData;
+    userBooksFS << checkedBookData.dump(4) << endl;
     userBooksFS.close();
-    userCurrBooksFS << currBookData;
+    userCurrBooksFS << currBookData.dump(4) << endl;
     userCurrBooksFS.close();
 }
 
