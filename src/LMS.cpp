@@ -48,7 +48,7 @@ void LMS::welcomePrompt() {
 }
 
 void LMS::signUpPrompt() {
-    std::string name;
+    // std::string name;
     std::string username;
     std::string password;
     std::string confirmPassword;
@@ -171,6 +171,7 @@ void LMS::loginPrompt() {
     currentUser = new User();
     currentUser->setUsername(username);
     string foundUser = jsonManager::loadUser(currentUser);
+    // TODO: only tell user that username does not exist or incorrect password after they attempt to login for security reasons
     if (foundUser == "false") {
         std::cout << "This username does not exist in our system. We will redirect you to the sign up page where you can create an account." << std::endl;
         signUpPrompt();
@@ -308,5 +309,29 @@ void LMS::manageBooksPrompt() {
 }
 
 void LMS::addAdminPrompt() {
+    std::cout   << "\t\tAdd Admin" << std::endl
+                << "Enter the username of the user you would like to make an admin. Enter \"quit\" to go back" << std::endl
+                << "Username: ";
+    std::string username;
+    std::getline(std::cin, username);
 
+    if (username == "quit") {
+        mainMenuPrompt();
+    }
+
+    std::string userFile = jsonManager::findUserFile(username);
+    if (userFile == "") {
+        std::cout << "User " << username << " does not exist. Please try again" << std::endl;
+        addAdminPrompt();
+    }
+    std::ifstream userFileStream(userFile);
+    json userJson = json::parse(userFileStream);
+
+    userJson["AdminStatus"] = true;
+
+    std::ofstream userFileOutStream(userFile);
+    userFileOutStream << userJson.dump(4) << std::endl;
+
+    std::cout << "User " << username << " is now an admin." << std::endl;
+    mainMenuPrompt();
 }
