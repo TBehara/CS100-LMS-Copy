@@ -10,7 +10,8 @@ class LMS {
     private:
         User *currentUser;
         list<Book> bookDatabase;
-        list<searchBase> searchBaseList;
+        SearchBase searchBase;
+        list<Book> cart;
     public:
         LMS();
         void welcomePrompt();
@@ -18,6 +19,8 @@ class LMS {
         void setStdInEcho(bool);
         void loginPrompt();
         void mainMenuPrompt();
+        void browsePrompt();
+        void checkoutCart();
         void logoutPrompt();
         void displayUserDetails(); //test commit
 };

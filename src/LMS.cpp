@@ -213,7 +213,99 @@ void LMS::loginPrompt() {
 }
 
 void LMS::mainMenuPrompt() {
-    currentUser->displayMenu();
+    int option = 0;
+    while(option != 7) {
+        option = 0;
+        while(option < 1 or option > 9) {
+            currentUser->displayMenu();
+            std::cin >> option;
+            if(option > 7 and not currentUser->getAdminStatus()) {
+                option = 0;
+                continue;
+            }
+        }
+        switch(option) {
+            case 1: //Checkout books in cart
+                checkoutCart();
+                break;
+            case 4: //Browse books to add to cart
+                browsePrompt();
+                break;
+            case 5: //Display checked out books and fines
+                displayUserDetails();
+                break;
+            default: //Case 7 save and quit
+                jsonManager saveAndQuit;
+                saveAndQuit.updateJSON(currentUser);
+                break;
+        }
+    }
+}
+
+void LMS::browsePrompt() {
+    std::cout << std::endl;
+    std::cout << "What criterion would you like to browse by?" << std::endl;
+    std::cout << "1. Browse by Genre" << std::endl;
+    std::cout << "2. Browse by Title" << std::endl;
+    std::cout << "3. Browse by Author" << std::endl;
+    std::cout << "4. Browse by ISBN" << std::endl;
+    std::cout << "5. Exit" << std::endl;
+    int option = 0;
+    std::cin >> option;
+
+    //BELOW IS PART OF A PROTOTYPE/EXAMPLE
+    std::list<Book> results; //Real results will be Book pointers fetched from SearchBase after getting the search criteria
+    results.push_back(Book("The Lord of the Rings", "J.R.R. Tolkien", std::list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION})));
+    results.push_back(Book("Harry Potter", "J.K. Rowling", std::list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION})));
+    
+    int searchOption = 0;
+    while(searchOption != 2) {
+        std::cout << std::endl;
+        std::cout << "Results:" << std::endl;
+        auto it = results.begin();
+        for(unsigned i = 0; i < results.size(); ++i) {
+            std::cout << (i+1) << ". " << it->getTitle() << std::endl;
+            ++it;
+        }
+        std::cout << std::endl;
+        std::cout << "Options: " << std::endl;
+        std::cout << "1. Add to cart" << std::endl;
+        std::cout << "2. Return to Main Menu" << std::endl;
+        std::cin >> searchOption;
+        switch(searchOption) {
+            case 1:
+                std::cout << "Enter the numerical result of the book to add: " << std::endl;
+                {
+                    int bookOption = 0;
+                    std::cin >> bookOption;
+                    auto it = results.begin();
+                    for(unsigned i = 0; i < bookOption-1; ++i) {
+                        ++it;
+                    }
+                    cart.push_back(*it);
+                }
+                std::cout << "Current cart: " << std::endl;
+                for(auto it : cart) {
+                    std::cout << it.getTitle() << ", ";
+                }
+                std::cout << std::endl;
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void LMS::checkoutCart() {
+
+    for(auto it : cart) {
+        currentUser->addBook(it);
+        std::cout << "Checked out " << it.getTitle() << std::endl;
+    }
+    std::cout << std::endl;
+    cart.clear();
 }
 
 void LMS::logoutPrompt() {
@@ -221,5 +313,12 @@ void LMS::logoutPrompt() {
 }
 
 void LMS::displayUserDetails() {
-
+    std::cout << std::endl;
+    std::cout << "Details for " << currentUser->getUsername() << std::endl;
+    std::cout << "Fines: " << currentUser->getFine() << std::endl;
+    std::cout << "Books currently checked out: ";
+    for(auto it : currentUser->getBooks()) {
+        std::cout << it.getTitle() << ", ";
+    }
+    std::cout << std::endl;
 }
