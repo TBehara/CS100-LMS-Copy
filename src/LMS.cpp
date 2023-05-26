@@ -328,6 +328,7 @@ void LMS::addAdminPrompt() {
     json userJson = json::parse(userFileStream);
 
     userJson["AdminStatus"] = true;
+    // TODO: add admin priority once it gets implemented
 
     std::ofstream userFileOutStream(userFile);
     userFileOutStream << userJson.dump(4) << std::endl;
