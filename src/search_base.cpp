@@ -14,6 +14,7 @@ void SearchBase::addBook(const Book& toAdd) {
 
 void SearchBase::removeBook(list<Book>::iterator &toRemove) {
     bookDatabase.erase(toRemove);
+    //TODO: remove search entries from tables
 }
 
 list<Book>& SearchBase::getBooks() {
