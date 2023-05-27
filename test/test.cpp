@@ -2,6 +2,7 @@
 #include "gmock/gmock.h"
 #include "../header/user.hpp"
 #include "../header/book.hpp"
+#include "../header/search_base.hpp"
 
 #include "../libraries/hash/sha256.h"
 
@@ -155,9 +156,9 @@ TEST(bookTests, testBookEquality) {
     genres1.push_back(Book::Genre::FICTION);
     genres2.push_back(Book::Genre::FICTION);
     genres3.push_back(Book::Genre::NONFICTION);
-    Book b1("1", "1", genres1);
-    Book b2("1", "1", genres2);
-    Book b3("3", "3", genres3);
+    Book b1("1", "a", genres1);
+    Book b2("1", "a", genres2);
+    Book b3("3", "c", genres3);
     EXPECT_EQ(b1, b2);
     EXPECT_NE(b2, b3);
 }
@@ -284,3 +285,34 @@ TEST(userTests, testSetInterestKeywords) {
     defaultUser.getInterestKeywords().push_back("adventure");
     EXPECT_EQ(defaultUser.getInterestKeywords(), keywords);
 }
+
+
+template<typename T>
+bool pointerListContains(const list<T*>& container, const T& element) {
+    for(auto it : container) {
+        if(*it == element) return true;
+    }
+    return false;
+}
+
+TEST(searchBaseTests, addBook) {
+    SearchBase sb;
+    Book toAdd = Book("Example", "John Doe", list<Book::Genre>());
+    sb.addBook(toAdd);
+    EXPECT_EQ(sb.getBooks(), list<Book>({toAdd}));
+}
+
+TEST(searchBaseTests, removeBook) {
+    SearchBase sb;
+
+    Book toAdd1 = Book("Example1", "John Doe", list<Book::Genre>());
+    sb.addBook(toAdd1);
+
+    Book toAdd2 = Book("Example2", "John Doe", list<Book::Genre>());
+    sb.addBook(toAdd2);
+
+    list<Book>::iterator start = sb.getBooks().begin();
+    sb.removeBook(start);
+    EXPECT_EQ(sb.getBooks(), list<Book>({toAdd2}));
+}
+

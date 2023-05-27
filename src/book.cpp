@@ -93,7 +93,7 @@ bool Book::genresEqual(const list<Genre>& operand1, const list<Genre>& operand2)
 
 bool Book::operator==(const Book& operand) const {
     return title == operand.title and
-            author == operand.title and
+            author == operand.author and
             genresEqual(genres, operand.genres);
 }
 
