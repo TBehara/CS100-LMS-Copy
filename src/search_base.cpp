@@ -3,6 +3,7 @@
 void SearchBase::addBook(const Book& toAdd) {
     bookDatabase.push_back(toAdd);
     list<Book>::iterator added = bookDatabase.end();
+    --added;
     vector<string> stringTerms = parseString(toAdd.getTitle() + " " + toAdd.getAuthor());
     for(auto it : stringTerms) {
         addBookTermEntry(added, it);
