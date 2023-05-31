@@ -1,8 +1,11 @@
 #include <iostream>
-#include "../header/LMS.hpp"
 #include <string>
 
 #include "../header/LMS.hpp"
+#include "../header/jsonManager.hpp"
+#include "../libraries/nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 // used to disable password echo
 #ifdef WIN32
@@ -11,8 +14,6 @@
 #include <termios.h>
 #include <unistd.h>
 #endif
-
-#include "../libraries/nlohmann/json.hpp"
 
 
 LMS::LMS() {
@@ -47,7 +48,7 @@ void LMS::welcomePrompt() {
 }
 
 void LMS::signUpPrompt() {
-    std::string name;
+    // std::string name;
     std::string username;
     std::string password;
     std::string confirmPassword;
@@ -61,13 +62,14 @@ void LMS::signUpPrompt() {
         welcomePrompt();
         return;
     }        
-    std::cout << "Please fill out the following fields so we may create an account for you" << std::endl;
-    std::cout << "Full Name: ";
+    // std::cout << "Please fill out the following fields so we may create an account for you" << std::endl;
+    // std::cout << "Full Name: ";
 
-    std::cin.ignore();
-    std::getline(std::cin, name);
+    // std::cin.ignore();
+    // std::getline(std::cin, name);
     
     std::cout   << "Username: ";
+    std::cin.ignore();
     std::getline(std::cin, username);
 
     std::cout   << "Password: ";
@@ -122,8 +124,7 @@ void LMS::signUpPrompt() {
     currentUser->setFine(0.0);
     currentUser->setInterestKeywords(userInterests);
     //add to JSON
-    jsonManager uploadFile;
-    uploadFile.write(currentUser);
+    jsonManager::write(currentUser);
     //display menu
     currentUser->displayMenu();
 }
@@ -179,7 +180,10 @@ void LMS::loginPrompt() {
     else {
         string userChoice;
         std::cout << "Password: ";
+        setStdInEcho(false);
         std::getline(std::cin, password);
+        setStdInEcho(true);
+        std::cout << std::endl;
 
         if (sha256(password) != foundUser) {
             std::cout << "The password you have entered is incorrect." << std::endl;
@@ -300,13 +304,61 @@ void LMS::browsePrompt() {
 }
 
 void LMS::checkoutCart() {
-
     for(auto it : cart) {
         currentUser->addBook(it);
         std::cout << "Checked out " << it.getTitle() << std::endl;
     }
     std::cout << std::endl;
     cart.clear();
+    currentUser->displayMenu();
+
+    bool adminStatus = currentUser->getAdminStatus();
+
+    std::string input;
+    std::cin >> input;
+    if (adminStatus) {
+        if (input == "1") {
+            // manage books in system
+        } else if (input == "2") {
+            // add lower level admin
+        } else if (input == "3") {
+            // checkout books in cart
+        } else if (input == "4") {
+            // return a book
+        } else if (input == "5") {
+            // renew a book
+        } else if (input == "6") {
+            // browse/search for books/add books to cart
+        } else if (input == "7") {
+            // view books on account & fees
+        } else if (input == "8") {
+            // get book recommendations
+        } else if (input == "9") {
+            // save and logout
+        } else {
+            std::cout << "Invalid input. Please try again" << std::endl;
+            mainMenuPrompt();
+        }
+    } else {
+        if (input == "1") {
+            // checkout books in cart
+        } else if (input == "2") {
+            // return a book
+        } else if (input == "3") {
+            // renew a book
+        } else if (input == "4") {
+            // browse books
+        } else if (input == "5") {
+            // view books on account & fees
+        } else if (input == "6") {
+            // get book recommendations
+        } else if (input == "7") {
+            // save and logout
+        } else {
+            std::cout << "Invalid input. Please try again" << std::endl;
+            mainMenuPrompt();
+        }
+    }
 }
 
 void LMS::logoutPrompt() {
@@ -322,4 +374,65 @@ void LMS::displayUserDetails() {
         std::cout << it.getTitle() << ", ";
     }
     std::cout << std::endl;
+}
+
+// main menu prompts
+
+void LMS::checkoutPrompt() {
+
+}
+
+void LMS::returnPrompt() {
+
+}
+
+void LMS::renewPrompt() {
+
+}
+
+void LMS::browsePrompt() {
+
+}
+
+void LMS::getRecommendationsPrompt() {
+
+}
+
+void LMS::viewAccountPrompt(const User &user) {
+
+}
+
+// admin prompts
+
+void LMS::manageBooksPrompt() {
+
+}
+
+void LMS::addAdminPrompt() {
+    std::cout   << "\t\tAdd Admin" << std::endl
+                << "Enter the username of the user you would like to make an admin. Enter \"quit\" to go back" << std::endl
+                << "Username: ";
+    std::string username;
+    std::getline(std::cin, username);
+
+    if (username == "quit") {
+        mainMenuPrompt();
+    }
+
+    std::string userFile = jsonManager::findUserFile(username);
+    if (userFile == "") {
+        std::cout << "User " << username << " does not exist. Please try again" << std::endl;
+        addAdminPrompt();
+    }
+    std::ifstream userFileStream(userFile);
+    json userJson = json::parse(userFileStream);
+
+    userJson["AdminStatus"] = true;
+    // TODO: add admin priority once it gets implemented
+
+    std::ofstream userFileOutStream(userFile);
+    userFileOutStream << userJson.dump(4) << std::endl;
+
+    std::cout << "User " << username << " is now an admin." << std::endl;
+    mainMenuPrompt();
 }
