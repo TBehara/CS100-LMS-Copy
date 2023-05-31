@@ -2,8 +2,8 @@
 
 SearchBase::SearchBase(){
     bookDatabase = list<Book>();
-    genreTable = unordered_map<Book::Genre, list<Book>::iterator>();
-    stringsTable = unordered_map<string, list<Book>::iterator>();
+    genreTable = unordered_map<Book::Genre, list<list<Book>::iterator>>();
+    stringsTable = unordered_map<string, list<list<Book>::iterator>>();
 }
 
 void SearchBase::addBook(const Book& toAdd) {
