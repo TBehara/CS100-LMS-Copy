@@ -1,40 +1,61 @@
 #include "../header/search_base.hpp"
 
-// private
-vector<string> SearchBase::parseString(string){
-    return vector<string>();
-}
-void SearchBase::searchByTerm(unordered_map<list<Book*>, int>, string){
-
-}
-void SearchBase::removeBookTermEntry(Book*, string){
-
-}
-void SearchBase::addBookTermEntry(Book*, string){
-
-}
-
-// public
 SearchBase::SearchBase(){
     bookDatabase = list<Book>();
     genreTable = unordered_map<Book::Genre, list<Book>::iterator>();
     stringsTable = unordered_map<string, list<Book>::iterator>();
 }
-list<Book*> SearchBase::searchGenre(Book::Genre){
-    return list<Book*>();
+
+void SearchBase::addBook(const Book& toAdd) {
+    bookDatabase.push_back(toAdd);
+    list<Book>::iterator added = bookDatabase.end();
+    --added;
+    vector<string> stringTerms = parseString(toAdd.getTitle() + " " + toAdd.getAuthor());
+    for(auto it : stringTerms) {
+        addBookTermEntry(added, it);
+    }
+    for(auto it : toAdd.getGenres()) {
+        addBookGenreEntry(added, it);
+    }
 }
-list<list<Book>::iterator> SearchBase::searchByTerms(string){
+
+void SearchBase::removeBook(list<Book>::iterator &toRemove) {
+    bookDatabase.erase(toRemove);
+    //TODO: remove search entries from tables
+}
+
+list<Book>& SearchBase::getBooks() {
+    return bookDatabase;
+}
+
+vector<string> SearchBase::parseString(const string&) {
+    return vector<string>();
+}
+
+list<list<Book>::iterator> SearchBase::searchByTerm(const string&) {
     return list<list<Book>::iterator>();
 }
-void SearchBase::removeBookGenreEntry(Book*, Book::Genre){
 
+list<list<Book>::iterator> SearchBase::searchByTerms(const string&) {
+    return list<list<Book>::iterator>();
 }
-void SearchBase::removeBookTermEntries(Book*, string){
 
+list<list<Book>::iterator> SearchBase::searchByGenre(Book::Genre) {
+    return list<list<Book>::iterator>();
 }
-void SearchBase::addBookGenreEntry(Book*, Book::Genre){
 
+void SearchBase::addBookGenreEntry(list<Book>::iterator&, Book::Genre) {
+    return;
 }
-void SearchBase::addBookTermEntries(Book*, string){
 
+void SearchBase::removeBookGenreEntry(list<Book>::iterator&, Book::Genre) {
+    return;
+}
+
+void SearchBase::addBookTermEntry(list<Book>::iterator&, const string&) {
+    return;
+}
+
+void SearchBase::removeBookTermEntry(list<Book>::iterator&, const string&) {
+    return;
 }

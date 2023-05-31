@@ -1,30 +1,34 @@
 #ifndef SEARCH_BASE_HPP
 #define SEARCH_BASE_HPP
 
-#include "book.hpp"
+#include <list>
+#include <string>
 #include <unordered_map>
 #include <vector>
-#include <list>
+#include "book.hpp"
 
-using namespace std;
+using std::list;
+using std::string;
+using std::vector;
+using std::unordered_map;
 
 class SearchBase {
-
     private:
         list<Book> bookDatabase;
-        unordered_map<Book::Genre, list<Book>::iterator> genreTable;
-        unordered_map<string, list<Book>::iterator> stringsTable;
-        vector<string> parseString(string);
-        void searchByTerm(unordered_map<list<Book*>, int>, string);
-        void removeBookTermEntry(Book*, string);
-        void addBookTermEntry(Book*, string);
+        unordered_map<Book::Genre, list<list<Book>::iterator>> genreTable;
+        unordered_map<string, list<list<Book>::iterator>> stringsTable;
     public:
         SearchBase();
-        list<Book*> searchGenre(Book::Genre);
-        list<list<Book>::iterator> searchByTerms(string);
-        void removeBookGenreEntry(Book*, Book::Genre);
-        void removeBookTermEntries(Book*, string);
-        void addBookGenreEntry(Book*, Book::Genre);
-        void addBookTermEntries(Book*, string);
+        void addBook(const Book&);
+        void removeBook(list<Book>::iterator&);
+        list<Book> &getBooks();
+        static vector<string> parseString(const string&);
+        list<list<Book>::iterator> searchByTerm(const string&);
+        list<list<Book>::iterator> searchByTerms(const string&);
+        list<list<Book>::iterator> searchByGenre(Book::Genre);
+        void addBookGenreEntry(list<Book>::iterator&, Book::Genre);
+        void removeBookGenreEntry(list<Book>::iterator&, Book::Genre);
+        void addBookTermEntry(list<Book>::iterator&, const string&);
+        void removeBookTermEntry(list<Book>::iterator&, const string&);
 };
 #endif
