@@ -379,3 +379,7 @@ TEST(searchBaseTests, removeGenreEntry) {
     EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FANTASY), toSearch));
     EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FICTION), toSearch));
 }
+
+TEST(searchBaseTests, removeRemovesAllReferences) {
+    
+}
