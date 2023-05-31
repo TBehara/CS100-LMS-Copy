@@ -4,7 +4,8 @@
 #include "book.hpp"
 #include <unordered_map>
 
-class searchBase {
+class SearchBase {
+
     private:
         list<Book> bookDatabase;
         unordered_map<Book::Genre, list<Book>> genreTable;
