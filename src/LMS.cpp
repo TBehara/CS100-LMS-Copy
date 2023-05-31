@@ -390,10 +390,6 @@ void LMS::renewPrompt() {
 
 }
 
-void LMS::browsePrompt() {
-
-}
-
 void LMS::getRecommendationsPrompt() {
 
 }

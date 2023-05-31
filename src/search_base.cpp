@@ -1,40 +1,40 @@
 #include "../header/search_base.hpp"
 
 // private
-vector<string> searchBase::parseString(string){
-    
+vector<string> SearchBase::parseString(string){
+    return vector<string>();
 }
-void searchBase::searchByTerm(unordered_map<list<Book*>, int>, string){
+void SearchBase::searchByTerm(unordered_map<list<Book*>, int>, string){
 
 }
-void searchBase::removeBookTermEntry(Book*, string){
+void SearchBase::removeBookTermEntry(Book*, string){
 
 }
-void searchBase::addBookTermEntry(Book*, string){
+void SearchBase::addBookTermEntry(Book*, string){
 
 }
 
 // public
-searchBase::searchBase(){
-    bookDatabase = new List<Book>();
-    genreTable = new unordered_map<Book::Genre, list<Book>>();
-    stringsTable = new unordered_map<string, list<Book>>();
+SearchBase::SearchBase(){
+    bookDatabase = list<Book>();
+    genreTable = unordered_map<Book::Genre, list<Book>>();
+    stringsTable = unordered_map<string, list<Book>>();
 }
-list<Book*> searchBase::searchGenre(Book::Genre){
-    return nullptr;
+list<Book*> SearchBase::searchGenre(Book::Genre){
+    return list<Book*>();
 }
-unordered_map<list<Book*>, int> searchBase::searchByTerms(string){
-    return nullptr;
+unordered_map<list<Book*>, int> SearchBase::searchByTerms(string){
+    return unordered_map<list<Book*>, int>();
 }
-void searchBase::removeBookGenreEntry(Book*, Book::Genre){
+void SearchBase::removeBookGenreEntry(Book*, Book::Genre){
 
 }
-void searchBase::removeBookTermEntries(Book*, string){
+void SearchBase::removeBookTermEntries(Book*, string){
 
 }
-void searchBase::addBookGenreEntry(Book*, Book::Genre){
+void SearchBase::addBookGenreEntry(Book*, Book::Genre){
 
 }
-void searchBase::addBookTermEntries(Book*, string){
+void SearchBase::addBookTermEntries(Book*, string){
 
 }

@@ -27,7 +27,6 @@ class LMS {
         void checkoutPrompt();
         void returnPrompt();
         void renewPrompt();
-        void browsePrompt();
         void getRecommendationsPrompt();
         void viewAccountPrompt(const User&);
         // admin exclusive prompts

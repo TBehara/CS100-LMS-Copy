@@ -3,6 +3,10 @@
 
 #include "book.hpp"
 #include <unordered_map>
+#include <vector>
+#include <list>
+
+using namespace std;
 
 class SearchBase {
 
@@ -15,7 +19,7 @@ class SearchBase {
         void removeBookTermEntry(Book*, string);
         void addBookTermEntry(Book*, string);
     public:
-        searchBase();
+        SearchBase();
         list<Book*> searchGenre(Book::Genre);
         unordered_map<list<Book*>, int> searchByTerms(string);
         void removeBookGenreEntry(Book*, Book::Genre);
