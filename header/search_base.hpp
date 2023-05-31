@@ -12,8 +12,8 @@ class SearchBase {
 
     private:
         list<Book> bookDatabase;
-        unordered_map<Book::Genre, list<Book>> genreTable;
-        unordered_map<string, list<Book>> stringsTable;
+        unordered_map<Book::Genre, list<Book>::iterator> genreTable;
+        unordered_map<string, list<Book>::iterator> stringsTable;
         vector<string> parseString(string);
         void searchByTerm(unordered_map<list<Book*>, int>, string);
         void removeBookTermEntry(Book*, string);
@@ -21,7 +21,7 @@ class SearchBase {
     public:
         SearchBase();
         list<Book*> searchGenre(Book::Genre);
-        unordered_map<list<Book*>, int> searchByTerms(string);
+        list<list<Book>::iterator> searchByTerms(string);
         void removeBookGenreEntry(Book*, Book::Genre);
         void removeBookTermEntries(Book*, string);
         void addBookGenreEntry(Book*, Book::Genre);

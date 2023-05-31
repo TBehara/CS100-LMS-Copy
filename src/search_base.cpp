@@ -17,14 +17,14 @@ void SearchBase::addBookTermEntry(Book*, string){
 // public
 SearchBase::SearchBase(){
     bookDatabase = list<Book>();
-    genreTable = unordered_map<Book::Genre, list<Book>>();
-    stringsTable = unordered_map<string, list<Book>>();
+    genreTable = unordered_map<Book::Genre, list<Book>::iterator>();
+    stringsTable = unordered_map<string, list<Book>::iterator>();
 }
 list<Book*> SearchBase::searchGenre(Book::Genre){
     return list<Book*>();
 }
-unordered_map<list<Book*>, int> SearchBase::searchByTerms(string){
-    return unordered_map<list<Book*>, int>();
+list<list<Book>::iterator> SearchBase::searchByTerms(string){
+    return list<list<Book>::iterator>();
 }
 void SearchBase::removeBookGenreEntry(Book*, Book::Genre){
 
