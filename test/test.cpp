@@ -406,8 +406,8 @@ TEST(searchBaseTests, removeRemovesAllReferences) {
     sb.addBook(toTest);
 
     EXPECT_TRUE(resultContains(sb.searchByTerm("Tolkien"), toTest));
-
-    sb.removeBook(toTest);
+    list<Book>::iterator toRemove = sb.getBooks().end();
+    sb.removeBook(--toRemove);
 
     EXPECT_FALSE(resultContains(sb.searchByTerm("Tolkien"), toTest));
     EXPECT_FALSE(resultContains(sb.searchByTerm("J.R.R."), toTest));
