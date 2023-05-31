@@ -1,5 +1,11 @@
 #include "../header/search_base.hpp"
 
+SearchBase::SearchBase(){
+    bookDatabase = list<Book>();
+    genreTable = unordered_map<Book::Genre, list<Book>::iterator>();
+    stringsTable = unordered_map<string, list<Book>::iterator>();
+}
+
 void SearchBase::addBook(const Book& toAdd) {
     bookDatabase.push_back(toAdd);
     list<Book>::iterator added = bookDatabase.end();

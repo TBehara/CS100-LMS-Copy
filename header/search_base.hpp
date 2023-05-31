@@ -18,6 +18,7 @@ class SearchBase {
         unordered_map<Book::Genre, list<list<Book>::iterator>> genreTable;
         unordered_map<string, list<list<Book>::iterator>> stringsTable;
     public:
+        SearchBase();
         void addBook(const Book&);
         void removeBook(list<Book>::iterator&);
         list<Book> &getBooks();

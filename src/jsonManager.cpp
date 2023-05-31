@@ -77,7 +77,6 @@ void jsonManager::updateJSON(User* toUpdate) {
 
 string jsonManager::loadUser(User* toRead) {
     string userName = toRead->getUsername();
-
     string fileName = userName + ".json";
     string interestsFileName = userName + "_interests.json";
     string booksFileName = userName + "_checkedBooks.json";

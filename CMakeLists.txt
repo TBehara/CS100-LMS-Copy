@@ -11,6 +11,8 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 ADD_EXECUTABLE(LMS 
     src/main.cpp
+    src/LMS.cpp
+    src/search_base.cpp
     src/jsonManager.cpp
     src/user.cpp
     src/book.cpp
