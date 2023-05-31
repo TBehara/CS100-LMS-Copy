@@ -381,5 +381,20 @@ TEST(searchBaseTests, removeGenreEntry) {
 }
 
 TEST(searchBaseTests, removeRemovesAllReferences) {
-    
+    SearchBase sb;
+    Book toTest("The Lord of the Rings", "J.R.R. Tolkien", list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION}));
+    sb.addBook(toTest);
+
+    EXPECT_TRUE(resultContains(sb.searchByTerm("Tolkien"), toTest));
+
+    sb.removeBook(toTest);
+
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Tolkien"), toTest));
+    EXPECT_FALSE(resultContains(sb.searchByTerm("J.R.R."), toTest));
+    EXPECT_FALSE(resultContains(sb.searchByTerm("The"), toTest));
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Lord"), toTest));
+    EXPECT_FALSE(resultContains(sb.searchByTerm("of"), toTest));
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Rings"), toTest));
+    EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FANTASY), toTest));
+    EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FICTION), toTest));
 }
