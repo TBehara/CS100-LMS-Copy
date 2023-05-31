@@ -41,6 +41,10 @@ string User::hashPassword() const {
     return hashedPassword;
 }
 
+void User::setHash(const string& newHash) {
+    hashedPassword = newHash;
+}
+
 double User::getFine() const {
     return fine;
 }
@@ -70,6 +74,8 @@ void User::addBook(const Book& checkoutBook) {
         }
     }
     checkedOutBooks.push_back(checkoutBook);
+    currCheckedBookNames.push_back(checkoutBook.getTitle());
+    prevCheckedBookNames.push_back(checkoutBook.getTitle());
 }
 
 void User::displayMenu() {
