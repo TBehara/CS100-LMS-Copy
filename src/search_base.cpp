@@ -31,36 +31,14 @@ void SearchBase::addBook(const Book& toAdd) {
 }
 
 void SearchBase::removeBook(list<Book>::iterator toRemove) {
-    /*vector<string> titleTerms = parseString(toRemove->getTitle());
-    vector<string> authorTerms = parseString(toRemove->getAuthor());
-    list<Book::Genre> genres = toRemove->getGenres();
+    vector<string> termsToRemove = parseString(toRemove->getTitle() + " " + toRemove->getAuthor());
 
-    //TODO: remove duplicate terms from containers
-
-    for(auto it1 : titleTerms) {
-        list<list<Book>::iterator> searchResults = searchByTerm(it1);
-        for(auto it2 : searchResults) {
-            if(*it2 == *toRemove) {
-                removeBookTermEntry(it2, it1);
-            }
-        }
+    for(auto it : termsToRemove) {
+        removeBookTermEntry(toRemove, it);
     }
-    for(auto it1 : authorTerms) {
-        list<list<Book>::iterator> searchResults = searchByTerm(it1);
-        for(auto it2 : searchResults) {
-            if(*it2 == *toRemove) {
-                removeBookTermEntry(it2, it1);
-            }
-        }
+    for(auto it : toRemove->getGenres()) {
+        removeBookGenreEntry(toRemove, it);
     }
-    for(auto it1 : genres) {
-        list<list<Book>::iterator> searchResults = searchByGenre(it1);
-        for(auto it2 : searchResults) {
-            if(*it2 == *toRemove) {
-                removeBookGenreEntry(it2, it1);
-            }
-        }
-    }*/
 
     bookDatabase.erase(toRemove);
 }
@@ -102,8 +80,13 @@ void SearchBase::addBookGenreEntry(list<Book>::iterator bookReference, Book::Gen
     genreTable[genre].push_back(bookReference);
 }
 
-void SearchBase::removeBookGenreEntry(list<Book>::iterator, Book::Genre) {
-    return;
+void SearchBase::removeBookGenreEntry(list<Book>::iterator bookReference, Book::Genre genre) {
+    list<list<Book>::iterator>& toChange = genreTable[genre]; //We need a reference to the table here to modify it
+    for(auto it = toChange.begin(); it != toChange.end(); ++it) {
+        if(*it == bookReference) {
+            it = toChange.erase(it);
+        }
+    }
 }
 
 void SearchBase::addBookTermEntry(list<Book>::iterator bookReference, const string& term) {
@@ -111,5 +94,10 @@ void SearchBase::addBookTermEntry(list<Book>::iterator bookReference, const stri
 }
 
 void SearchBase::removeBookTermEntry(list<Book>::iterator bookReference, const string& term) {
-    return;
+    list<list<Book>::iterator>& toChange = stringsTable[toLower(term)]; //We need a reference to the table here to modify it
+    for(auto it = toChange.begin(); it != toChange.end(); ++it) {
+        if(*it == bookReference) {
+            it = toChange.erase(it);
+        }
+    }
 }
