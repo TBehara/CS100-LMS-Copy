@@ -470,8 +470,9 @@ void LMS::returnPrompt() {
         auto it = checkedOutBooks.begin();
         advance(it, bookIndex - 1);
         const Book& book = *it;
+        string title = book.getTitle();
         currentUser->removeBook(book);
-        cout << "The book \"" << book.getTitle() << "\" has been returned." << endl;
+        cout << "The book \"" << title << "\" has been returned." << endl;
     } else {
         cout << "Invalid book number." << endl;
     }
