@@ -62,14 +62,8 @@ void LMS::signUpPrompt() {
         welcomePrompt();
         return;
     }        
-    // std::cout << "Please fill out the following fields so we may create an account for you" << std::endl;
-    // std::cout << "Full Name: ";
-
-    // std::cin.ignore();
-    // std::getline(std::cin, name);
     
     std::cout   << "Username: ";
-    std::cin.ignore();
     std::getline(std::cin, username);
 
     std::cout   << "Password: ";
@@ -126,7 +120,7 @@ void LMS::signUpPrompt() {
     //add to JSON
     jsonManager::write(currentUser);
     //display menu
-    currentUser->displayMenu();
+    mainMenuPrompt();
 }
 
 
