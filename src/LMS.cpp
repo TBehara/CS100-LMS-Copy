@@ -457,16 +457,31 @@ void LMS::manageBooksPrompt() {
         std::cout << "1. Add Book to System" << std::endl;
         std::cout << "2. Remove Book from System" << std::endl;
         std::cout << "3. Back to Menu" << std::endl;
-        std::cin >> adminInput;
+        std::getline(std::cin, adminInput);
 
         if(adminInput == "1"){
+            std::cout << "Enter the Book's Genre" << std::endl;
+            
+            std::cout << "Enter the Book's Title" << std::endl;
 
+            std::cout << "Enter the Book's Author" << std::endl;
+
+            std::cout << "Enter the Book's ISBN" << std::endl;
+
+            //TODO: Add Book through SearchBase
         }
         else if(adminInput == "2"){
+            std::cout << "Delete Book by:" << std::endl;
+            std::cout << "1. Delete Book by Genre" << std::endl;
+            std::cout << "2. Delete Book by Title" << std::endl;
+            std::cout << "3. Delete Book by Author" << std::endl;
+            std::cout << "4. Delete Book by ISBN" << std::endl;
+            std::getline(std::cin, adminInput);
 
+            //TODO: Delete Book through SearchBase
         }
         else{
-
+            std::cout << "Invalid Input" << std::endl << std::endl;
         }
         std::cin.clear();
     }
