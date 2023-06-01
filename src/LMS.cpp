@@ -193,7 +193,9 @@ void LMS::loginPrompt() {
                 bool successLog = false;
                 for (int iter = 0; iter < 3; iter++) {
                     std::cout << "Password: ";
+                    setStdInEcho(false);
                     std::getline(std::cin, password);
+                    setStdInEcho(true);
                     if (sha256(password) == foundUser) {
                         successLog = true;
                         break;
