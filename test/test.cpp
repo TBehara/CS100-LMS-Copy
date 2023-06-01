@@ -410,11 +410,21 @@ TEST(searchBaseTests, removeRemovesAllReferences) {
     sb.removeBook(--toRemove);
 
     EXPECT_FALSE(resultContains(sb.searchByTerm("Tolkien"), toTest));
+    EXPECT_EQ(sb.searchByTerm("Tolkien").size(), 0);
     EXPECT_FALSE(resultContains(sb.searchByTerm("J.R.R."), toTest));
+    EXPECT_EQ(sb.searchByTerm("J.R.R").size(), 0);
     EXPECT_FALSE(resultContains(sb.searchByTerm("The"), toTest));
+    EXPECT_EQ(sb.searchByTerm("The").size(), 0);
     EXPECT_FALSE(resultContains(sb.searchByTerm("Lord"), toTest));
+    EXPECT_EQ(sb.searchByTerm("Lord").size(), 0);
     EXPECT_FALSE(resultContains(sb.searchByTerm("of"), toTest));
+    EXPECT_EQ(sb.searchByTerm("of").size(), 0);
     EXPECT_FALSE(resultContains(sb.searchByTerm("Rings"), toTest));
+    EXPECT_EQ(sb.searchByTerm("Rings").size(), 0);
     EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FANTASY), toTest));
+    EXPECT_EQ(sb.searchByGenre(Book::Genre::FANTASY).size(), 0);
     EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FICTION), toTest));
+    EXPECT_EQ(sb.searchByGenre(Book::Genre::FICTION).size(), 0);
+
+    EXPECT_EQ(sb.searchByTerms("The Lord of the Rings by J.R.R. Tolkien").size(), 0);
 }
