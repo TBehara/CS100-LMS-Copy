@@ -226,24 +226,24 @@ void LMS::mainMenuPrompt() {
     std::cin >> input;
     if (adminStatus) {
         if (input == "1") {
-            // manage books in system
-        } else if (input == "2") {
-            // add lower level admin
-        } else if (input == "3") {
             checkoutCart();
-        } else if (input == "4") {
+        } else if (input == "2") {
             // return a book
-        } else if (input == "5") {
+        } else if (input == "3") {
             // renew a book
-        } else if (input == "6") {
+        } else if (input == "4") {
             browsePrompt();
-        } else if (input == "7") {
+        } else if (input == "5") {
             displayUserDetails();
-        } else if (input == "8") {
+        } else if (input == "6") {
             // get book recommendations
-        } else if (input == "9") {
+        } else if (input == "7") {
             jsonManager::updateJSON(currentUser);
             return;
+        } else if(input == "8"){
+            manageBooksPrompt();
+        } else if(input == "9") {
+            addAdminPrompt();
         } else {
             std::cout << "Invalid input. Please try again" << std::endl;
             mainMenuPrompt();
@@ -450,7 +450,26 @@ void LMS::viewAccountPrompt(const User &user) {
 // admin prompts
 
 void LMS::manageBooksPrompt() {
+    string adminInput = " ";
+    while(adminInput != "3"){
+        string input;
+        std::cout << "Manage Books in Library System" << std::endl;
+        std::cout << "1. Add Book to System" << std::endl;
+        std::cout << "2. Remove Book from System" << std::endl;
+        std::cout << "3. Back to Menu" << std::endl;
+        std::cin >> adminInput;
 
+        if(adminInput == "1"){
+
+        }
+        else if(adminInput == "2"){
+
+        }
+        else{
+
+        }
+        std::cin.clear();
+    }
 }
 
 void LMS::addAdminPrompt() {
