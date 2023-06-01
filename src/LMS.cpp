@@ -451,6 +451,7 @@ void LMS::viewAccountPrompt(const User &user) {
 
 void LMS::manageBooksPrompt() {
     string adminInput = " ";
+    std::cin.clear();
     while(adminInput != "3"){
         string input;
         std::cout << "Manage Books in Library System" << std::endl;
@@ -460,15 +461,23 @@ void LMS::manageBooksPrompt() {
         std::getline(std::cin, adminInput);
 
         if(adminInput == "1"){
-            std::cout << "Enter the Book's Genre" << std::endl;
-            
+            list<Book::Genre> genres;
+            string title, author;
+            int amount;
+
+            std::cout << "Enter the Book's Genre(s)" << std::endl;
+            //TODO: Prompt user for genre(s)
             std::cout << "Enter the Book's Title" << std::endl;
-
+            std::getline(std::cin, title);
             std::cout << "Enter the Book's Author" << std::endl;
+            std::getline(std::cin, author);
+            std::cout << "How many of this Book is there" << std::endl;
+            std::cin.clear();
+            std::cin >> amount;
+            std::cin.clear();
 
-            std::cout << "Enter the Book's ISBN" << std::endl;
-
-            //TODO: Add Book through SearchBase
+            Book book = Book(title, author, genres, amount);
+            searchBase.addBook(book);
         }
         else if(adminInput == "2"){
             std::cout << "Delete Book by:" << std::endl;
