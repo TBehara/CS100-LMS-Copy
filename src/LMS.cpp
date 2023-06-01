@@ -218,34 +218,132 @@ void LMS::loginPrompt() {
 }
 
 void LMS::mainMenuPrompt() {
-    int option = 0;
-    while(option != 7) {
-        option = 0;
-        while(option < 1 or option > 9) {
-            currentUser->displayMenu();
-            std::cin >> option;
-            if(option > 7 and not currentUser->getAdminStatus()) {
-                option = 0;
-                continue;
-            }
+    currentUser->displayMenu();
+
+    bool adminStatus = currentUser->getAdminStatus();
+
+    std::string input;
+    std::cin >> input;
+    if (adminStatus) {
+        if (input == "1") {
+            // manage books in system
+        } else if (input == "2") {
+            // add lower level admin
+        } else if (input == "3") {
+            checkoutCart();
+        } else if (input == "4") {
+            // return a book
+        } else if (input == "5") {
+            // renew a book
+        } else if (input == "6") {
+            browsePrompt();
+        } else if (input == "7") {
+            displayUserDetails();
+        } else if (input == "8") {
+            // get book recommendations
+        } else if (input == "9") {
+            jsonManager::updateJSON(currentUser);
+            return;
+        } else {
+            std::cout << "Invalid input. Please try again" << std::endl;
+            mainMenuPrompt();
         }
-        switch(option) {
-            case 1: //Checkout books in cart
-                checkoutCart();
-                break;
-            case 4: //Browse books to add to cart
-                browsePrompt();
-                break;
-            case 5: //Display checked out books and fines
-                displayUserDetails();
-                break;
-            default: //Case 7 save and quit
-                jsonManager saveAndQuit;
-                saveAndQuit.updateJSON(currentUser);
-                break;
+    } else {
+        if (input == "1") {
+            checkoutCart();
+        } else if (input == "2") {
+            // return a book
+        } else if (input == "3") {
+            // renew a book
+        } else if (input == "4") {
+            browsePrompt();
+        } else if (input == "5") {
+            displayUserDetails();
+        } else if (input == "6") {
+            // get book recommendations
+        } else if (input == "7") {
+            jsonManager::updateJSON(currentUser);
+            return;
+        } else {
+            std::cout << "Invalid input. Please try again" << std::endl;
+            mainMenuPrompt();
         }
     }
 }
+
+// switch case version of main menu prompt, keeping in case we need it later
+// void LMS::mainMenuPrompt() {
+//     currentUser->displayMenu();
+
+//     bool adminStatus = currentUser->getAdminStatus();
+
+//     int input;
+//     std::cin >> input;
+
+//     if (adminStatus) {
+//         switch (input) {
+//             case 1:
+//                 // manage books in system
+//                 break;
+//             case 2:
+//                 // add lower level admin
+//                 break;
+//             case 3:
+//                 checkoutCart();
+//                 break;
+//             case 4:
+//                 // return a book
+//                 break;
+//             case 5:
+//                 // renew a book
+//                 break;
+//             case 6:
+//                 browsePrompt();
+//                 break;
+//             case 7:
+//                 displayUserDetails();
+//                 break;
+//             case 8:
+//                 // get book recommendations
+//                 break;
+//             case 9:
+//                 jsonManager::updateJSON(currentUser);
+//                 return;
+//             default:
+//                 std::cout << "Invalid input. Please try again" << std::endl;
+//                 mainMenuPrompt();
+//                 break;
+//         }
+//     } else {
+//         switch (input) {
+//             case 1:
+//                 checkoutCart();
+//                 break;
+//             case 2:
+//                 // return a book
+//                 break;
+//             case 3:
+//                 // renew a book
+//                 break;
+//             case 4:
+//                 browsePrompt();
+//                 break;
+//             case 5:
+//                 displayUserDetails();
+//                 break;
+//             case 6:
+//                 // get book recommendations
+//                 break;
+//             case 7:
+//                 jsonManager::updateJSON(currentUser);
+//                 return;
+//             default:
+//                 std::cout << "Invalid input. Please try again" << std::endl;
+//                 mainMenuPrompt();
+//                 break;
+//         }
+//     }
+// }
 
 void LMS::browsePrompt() {
     std::cout << std::endl;
@@ -310,55 +408,6 @@ void LMS::checkoutCart() {
     }
     std::cout << std::endl;
     cart.clear();
-    currentUser->displayMenu();
-
-    bool adminStatus = currentUser->getAdminStatus();
-
-    std::string input;
-    std::cin >> input;
-    if (adminStatus) {
-        if (input == "1") {
-            // manage books in system
-        } else if (input == "2") {
-            // add lower level admin
-        } else if (input == "3") {
-            // checkout books in cart
-        } else if (input == "4") {
-            // return a book
-        } else if (input == "5") {
-            // renew a book
-        } else if (input == "6") {
-            // browse/search for books/add books to cart
-        } else if (input == "7") {
-            // view books on account & fees
-        } else if (input == "8") {
-            // get book recommendations
-        } else if (input == "9") {
-            // save and logout
-        } else {
-            std::cout << "Invalid input. Please try again" << std::endl;
-            mainMenuPrompt();
-        }
-    } else {
-        if (input == "1") {
-            // checkout books in cart
-        } else if (input == "2") {
-            // return a book
-        } else if (input == "3") {
-            // renew a book
-        } else if (input == "4") {
-            // browse books
-        } else if (input == "5") {
-            // view books on account & fees
-        } else if (input == "6") {
-            // get book recommendations
-        } else if (input == "7") {
-            // save and logout
-        } else {
-            std::cout << "Invalid input. Please try again" << std::endl;
-            mainMenuPrompt();
-        }
-    }
 }
 
 void LMS::logoutPrompt() {
