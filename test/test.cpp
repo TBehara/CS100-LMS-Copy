@@ -2,7 +2,7 @@
 #include "gmock/gmock.h"
 #include "../header/user.hpp"
 #include "../header/book.hpp"
-
+#include "../header/jsonManager.hpp"
 #include "../libraries/hash/sha256.h"
 
 using ::testing::_;
@@ -283,4 +283,12 @@ TEST(userTests, testSetInterestKeywords) {
 
     defaultUser.getInterestKeywords().push_back("adventure");
     EXPECT_EQ(defaultUser.getInterestKeywords(), keywords);
+}
+
+//testing if the jsonManager will handle it properly when the username does not exist in the system
+TEST(JsonFileTests, testNonExistantUsername) {
+    jsonManager read;
+    User* currUser = new User("Guest", "x");
+    string userHash = read.loadUser(currUser);
+    EXPECT_TRUE(userHash == "false");
 }
