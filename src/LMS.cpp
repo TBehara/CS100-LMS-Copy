@@ -465,8 +465,45 @@ void LMS::manageBooksPrompt() {
             string title, author;
             int amount;
 
-            std::cout << "Enter the Book's Genre(s)" << std::endl;
-            //TODO: Prompt user for genre(s)
+            std::cout << "Enter the Book's Genre(s). At least 1 is required." << std::endl;
+            string genre;
+            while(genre!="q" || genres.empty()){
+                std::cout << "Enter 'q' to quit:" << std::endl;
+                std::getline(std::cin, genre);
+
+                if(genre=="Fiction"){
+                    genres.push_back(Book::Genre::FICTION);
+                }
+                else if(genre=="Nonfiction"){
+                    genres.push_back(Book::Genre::NONFICTION);
+                }
+                else if(genre=="Fantasy"){
+                    genres.push_back(Book::Genre::FANTASY);
+                }
+                else if(genre=="Novel"){
+                    genres.push_back(Book::Genre::NOVEL);
+                }
+                else if(genre=="Mystery"){
+                    genres.push_back(Book::Genre::MYSTERY);
+                }
+                else if(genre=="SciFi"){
+                    genres.push_back(Book::Genre::SCIFI);
+                }
+                else if(genre=="Historical Fiction"){
+                    genres.push_back(Book::Genre::HISTORICAL_FICTION);
+                }
+                else if(genre=="Literary Fiction"){
+                    genres.push_back(Book::Genre::LITERARY_FICTION);
+                }
+                else if(genre=="Narrative"){
+                    genres.push_back(Book::Genre::NARRATIVE);
+                }
+                else{
+                    std::cout << "Invalid Genre. Try Again." << std::endl;
+                }
+                // genres can be entered more than once currently
+            }
+
             std::cout << "Enter the Book's Title" << std::endl;
             std::getline(std::cin, title);
             std::cout << "Enter the Book's Author" << std::endl;
@@ -484,10 +521,24 @@ void LMS::manageBooksPrompt() {
             std::cout << "1. Delete Book by Genre" << std::endl;
             std::cout << "2. Delete Book by Title" << std::endl;
             std::cout << "3. Delete Book by Author" << std::endl;
-            std::cout << "4. Delete Book by ISBN" << std::endl;
             std::getline(std::cin, adminInput);
 
             //TODO: Delete Book through SearchBase
+            if(adminInput=="1"){
+                std::cout << "Enter a genre: " << std::endl;
+                std::getline(std::cin, adminInput);
+            }
+            else if(adminInput=="2"){
+                std::cout << "Enter a title: " << std::endl;
+                std::getline(std::cin, adminInput);
+            }
+            else if(adminInput=="3"){
+                std::cout << "Enter an author: " << std::endl;
+                std::getline(std::cin, adminInput);
+            }
+            else{
+                std::cout << "Invalid Input" << std::endl;
+            }
         }
         else{
             std::cout << "Invalid Input" << std::endl << std::endl;
