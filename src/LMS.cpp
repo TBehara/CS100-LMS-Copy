@@ -15,6 +15,7 @@ using json = nlohmann::json;
 #include <unistd.h>
 #endif
 
+Book::Genre stringToGenre(string genre);
 
 LMS::LMS() {
     welcomePrompt();
@@ -449,6 +450,40 @@ void LMS::viewAccountPrompt(const User &user) {
 
 // admin prompts
 
+Book::Genre stringToGenre(string genre){
+    if(genre=="Fiction"){
+        return Book::Genre::FICTION;
+    }
+    else if(genre=="Nonfiction"){
+        return Book::Genre::NONFICTION;
+    }
+    else if(genre=="Fantasy"){
+        return Book::Genre::FANTASY;
+    }
+    else if(genre=="Novel"){
+        return Book::Genre::NOVEL;
+    }
+    else if(genre=="Mystery"){
+        return Book::Genre::MYSTERY;
+    }
+    else if(genre=="SciFi"){
+        return Book::Genre::SCIFI;
+    }
+    else if(genre=="Historical Fiction"){
+        return Book::Genre::HISTORICAL_FICTION;
+    }
+    else if(genre=="Literary Fiction"){
+        return Book::Genre::LITERARY_FICTION;
+    }
+    else if(genre=="Narrative"){
+        return Book::Genre::NARRATIVE;
+    }
+    else{
+        return Book::Genre::ALWAYS_AT_END;
+        std::cout << "Invalid Genre. Try Again." << std::endl;
+    }
+}
+
 void LMS::manageBooksPrompt() {
     string adminInput = " ";
     std::cin.clear();
@@ -471,37 +506,19 @@ void LMS::manageBooksPrompt() {
                 std::cout << "Enter 'q' to quit:" << std::endl;
                 std::getline(std::cin, genre);
 
-                if(genre=="Fiction"){
-                    genres.push_back(Book::Genre::FICTION);
+                Book::Genre genreToAdd = stringToGenre(genre);
+                if(genreToAdd!=Book::Genre::ALWAYS_AT_END){
+                    bool alreadyPresent = false;
+                    for(auto it : genres){
+                        if(it==genreToAdd){
+                            alreadyPresent = true;
+                            break;
+                        }
+                    }
+                    if(!alreadyPresent){
+                        genres.push_back(genreToAdd);
+                    }
                 }
-                else if(genre=="Nonfiction"){
-                    genres.push_back(Book::Genre::NONFICTION);
-                }
-                else if(genre=="Fantasy"){
-                    genres.push_back(Book::Genre::FANTASY);
-                }
-                else if(genre=="Novel"){
-                    genres.push_back(Book::Genre::NOVEL);
-                }
-                else if(genre=="Mystery"){
-                    genres.push_back(Book::Genre::MYSTERY);
-                }
-                else if(genre=="SciFi"){
-                    genres.push_back(Book::Genre::SCIFI);
-                }
-                else if(genre=="Historical Fiction"){
-                    genres.push_back(Book::Genre::HISTORICAL_FICTION);
-                }
-                else if(genre=="Literary Fiction"){
-                    genres.push_back(Book::Genre::LITERARY_FICTION);
-                }
-                else if(genre=="Narrative"){
-                    genres.push_back(Book::Genre::NARRATIVE);
-                }
-                else{
-                    std::cout << "Invalid Genre. Try Again." << std::endl;
-                }
-                // genres can be entered more than once currently
             }
 
             std::cout << "Enter the Book's Title" << std::endl;
@@ -520,24 +537,60 @@ void LMS::manageBooksPrompt() {
             std::cout << "Delete Book by:" << std::endl;
             std::cout << "1. Delete Book by Genre" << std::endl;
             std::cout << "2. Delete Book by Title" << std::endl;
-            std::cout << "3. Delete Book by Author" << std::endl;
+            std::cout << "3. Delete Book by Keyword (Author or Title)" << std::endl;
             std::getline(std::cin, adminInput);
 
             //TODO: Delete Book through SearchBase
+            string searchTerm = "";
+            list<list<Book>::iterator> booksToDelete = list<list<Book>::iterator>();
             if(adminInput=="1"){
                 std::cout << "Enter a genre: " << std::endl;
-                std::getline(std::cin, adminInput);
+                std::getline(std::cin, searchTerm);
+                Book::Genre genre = stringToGenre(searchTerm);
+                if(genre==Book::Genre::ALWAYS_AT_END){
+                    std::cout << "Invalid Genre" << std::endl;
+                }
+                else{
+                    booksToDelete = searchBase.searchByGenre(genre);
+                }
             }
             else if(adminInput=="2"){
                 std::cout << "Enter a title: " << std::endl;
-                std::getline(std::cin, adminInput);
+                std::getline(std::cin, searchTerm);
+                booksToDelete = searchBase.searchByTerm(searchTerm);
             }
             else if(adminInput=="3"){
-                std::cout << "Enter an author: " << std::endl;
-                std::getline(std::cin, adminInput);
+                std::cout << "Enter an keyword: " << std::endl;
+                std::getline(std::cin, searchTerm);
+                booksToDelete = searchBase.searchByTerms(searchTerm);
             }
             else{
                 std::cout << "Invalid Input" << std::endl;
+            }
+
+            if(adminInput=="1" || adminInput=="2" || adminInput=="3" && !booksToDelete.empty()){
+                std::cout << "Search Results:" << std::endl;
+                for(auto it : booksToDelete){
+                    std::cout << it->getTitle() << std::endl;
+                }
+
+                bool bookDeleted = false;
+                std::cout << std::endl << "Enter a book to Delete:" << std::endl;
+                std::getline(std::cin, adminInput);
+                for(auto it : booksToDelete){
+                    if(it->getTitle()==adminInput){
+                        bookDeleted = true;
+                        searchBase.removeBook(it);
+                        std::cout << adminInput << " has been deleted." << std::endl;
+                        break;
+                    }
+                }
+                if(!bookDeleted){
+                    std::cout << "Could not find " << adminInput << std::endl;
+                }
+            }
+            else{
+                std::cout << "No results found" << std::endl;
             }
         }
         else{
