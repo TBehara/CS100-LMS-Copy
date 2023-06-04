@@ -447,6 +447,7 @@ TEST(searchBaseTests, onlyModifySpecifiedBook) {
 
     list<Book>::iterator toRemove = sb.searchByTerms("Harry Potter by J.K. Rowling").front();
     sb.removeBook(toRemove);
+    
     EXPECT_FALSE(resultContains(sb.searchByTerm("Lord"), harryPotter));
     EXPECT_TRUE(resultContains(sb.searchByTerm("Lord"), lotr));
     EXPECT_FALSE(resultContains(sb.searchByTerm("Potter"), harryPotter));
