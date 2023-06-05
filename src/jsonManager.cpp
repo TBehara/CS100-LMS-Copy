@@ -22,7 +22,7 @@ void jsonManager::write(User* toWrite) {
     ofstream userDataFS("JSON/" + userName + "/" + fileName);
     ofstream userInterestsFS("JSON/" + userName + "/" + interestsFileName);
     ofstream userBooksFS("JSON/" + userName + "/" + booksFileName);
-    ofstream userCurrBooksFS("JSON/" + userName + "/" + currBooksFileName);
+    //ofstream userCurrBooksFS("JSON/" + userName + "/" + currBooksFileName);
     
     json userObj;
     if (!toWrite->getAdminStatus()) {
@@ -64,14 +64,8 @@ void jsonManager::write(User* toWrite) {
         checkedBookData.push_back(userBooks);
     }
 
-    json userCheckedBooks;
-    auto currBookData = userCheckedBooks.array();
-    unsigned int iterThree;
     for (auto it: toWrite->getCheckedOutBooks()) {
-        userCheckedBooks = {
-            {"Book", it.getTitle()}
-        };
-        currBookData.push_back(userCheckedBooks);
+        addToUserBase(it, userName + "/" + currBooksFileName);
     }
 
 
@@ -81,8 +75,6 @@ void jsonManager::write(User* toWrite) {
     userInterestsFS.close();
     userBooksFS << checkedBookData.dump(4) << endl;
     userBooksFS.close();
-    userCurrBooksFS << currBookData.dump(4) << endl;
-    userCurrBooksFS.close();
 }
 
 void jsonManager::updateJSON(User* toUpdate) {
@@ -128,12 +120,10 @@ string jsonManager::loadUser(User* toRead) {
     }
     toRead->setPrevBookNames(userPrevBooks);
 
-    // json currBookObj = json::parse(userCurrBooksFS);
-    // list<Book> userCurrBooks;
-    // for (auto& elem : currBookObj) {
-    //     userCurrBooks.push_back(elem["Book"]);
-    // }
-    // toRead->setCurrBookNames(userCurrBooks);
+    json currBookObj = json::parse(userCurrBooksFS);
+    list<Book> userCurrBooks = loadUserBooks(toRead);
+    toRead->setCheckedOutBooks(userCurrBooks);
+    
     return userHash;
 }
 
@@ -222,12 +212,77 @@ void jsonManager::addToSearchBase(Book &book) {
     bookBaseOFS << bookBaseData;
     bookBaseOFS.close();
 }
-//figure out what to return if the book is not found
-//write a function that loads all books into a list of books and returns the list
-    //just loop through the json and pass in the title to this below function and add the book to the list
-//finish debugging the json manager after merging into main
-bool jsonManager::findBook(string bookTitle, Book& toReturn) {
-    string fileName = "BookBase.json";
+
+void jsonManager::addToUserBase(Book &book, string fileName) {
+    json bookBase;
+    auto bookBaseData = bookBase.array();
+    ifstream bookBaseINFS("JSON/" + fileName);
+    if (bookBaseINFS.is_open()) {
+        json booksObj = json::parse(bookBaseINFS);
+        for (auto& obj: booksObj) {
+            bookBaseData.push_back(obj);
+        }
+        bookBaseINFS.close();
+        string rmFile = "JSON/" + fileName;
+        int deleteFile = remove(rmFile.c_str());
+    }
+    ofstream bookBaseOFS("JSON/" + fileName);
+    list<Book::Genre> bookGenres = book.getGenres();
+    vector<string> bookGenreStrings;
+    for (auto it: bookGenres) {
+        string genre;
+        if (it == Book::Genre::FICTION) {
+            genre = "FICTION";
+        }
+        else if (it == Book::Genre::NONFICTION) {
+            genre = "NONFICTION";
+        }
+        else if (it == Book::Genre::FANTASY) {
+            genre = "FANTASY";
+        }
+        else if (it == Book::Genre::NOVEL) {
+            genre = "NOVEL";
+        }
+        else if (it == Book::Genre::MYSTERY) {
+            genre = "MYSTERY";
+        }
+        else if (it == Book::Genre::SCIFI) {
+            genre = "SCIFI";
+        }
+        else if (it == Book::Genre::HISTORICAL_FICTION) {
+            genre = "HISTORICAL_FICTION";
+        }
+        else if (it == Book::Genre::LITERARY_FICTION) {
+            genre = "LITERARY_FICTION";
+        }
+        else if (it == Book::Genre::NARRATIVE) {
+            genre = "NARRATIVE";
+        }
+        else if (it == Book::Genre::ALWAYS_AT_END) {
+            genre = "ALWAYS_AT_END";
+        }
+        bookGenreStrings.push_back(genre);
+    }
+    bookBase = {
+            {"Title", book.getTitle()},
+            {"Author", book.getAuthor()},
+    };
+
+    int iter;
+    for (iter = 0; iter < bookGenreStrings.size(); iter++) {
+        string iterString = std::to_string(iter);
+        string genreNum = "Genre" + iterString;
+        bookBase[genreNum] = bookGenreStrings.at(iter);
+    }
+
+    bookBase["NumGenres"] = bookGenreStrings.size();
+
+    bookBaseData.push_back(bookBase);
+    bookBaseOFS << bookBaseData;
+    bookBaseOFS.close();
+}
+
+bool jsonManager::findBook(string bookTitle, Book& toReturn, string fileName) {
     ifstream bookBaseINFS("JSON/" + fileName);
     json booksObj = json::parse(bookBaseINFS);
     for (auto& obj: booksObj) {
@@ -287,8 +342,24 @@ list<Book> jsonManager::loadBooks() {
     for (auto& obj: booksObj) {
         list<Book::Genre> genres;
         Book toAdd = Book("", "", genres);
-        bool foundBook = findBook(obj["Title"], toAdd);
+        bool foundBook = findBook(obj["Title"], toAdd, fileName);
         toReturn.push_back(toAdd);
     }
+    loadINFS.close();
+    return toReturn;
+}
+
+list<Book> jsonManager::loadUserBooks(User* toLoad) {
+    list<Book> toReturn;
+    string fileName = toLoad->getUsername() + "/" + toLoad->getUsername() + "_currBooks.json";
+    ifstream loadINFS("JSON/" + fileName);
+    json booksObj = json::parse(loadINFS);
+    for (auto& obj: booksObj) {
+        list<Book::Genre> genres;
+        Book toAdd = Book("", "", genres);
+        bool foundBook = findBook(obj["Title"], toAdd, fileName);
+        toReturn.push_back(toAdd);
+    }
+    loadINFS.close();
     return toReturn;
 }
