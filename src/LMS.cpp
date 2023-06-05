@@ -350,11 +350,21 @@ void LMS::browsePrompt() {
     std::cout << "5. Exit" << std::endl;
     int option = 0;
     std::cin >> option;
-
+    std::list<Book> results; 
+    switch(option) {
+        case 1:
+            results = browseByGenre();
+            break;
+        case 2:
+            results = browseByTitle();
+            break;
+        case 3:
+            results = browseByAuthor();
+            break;
+        default:
+            return;
+    }
     //BELOW IS PART OF A PROTOTYPE/EXAMPLE
-    std::list<Book> results; //Real results will be Book pointers fetched from SearchBase after getting the search criteria
-    results.push_back(Book("The Lord of the Rings", "J.R.R. Tolkien", std::list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION})));
-    results.push_back(Book("Harry Potter", "J.K. Rowling", std::list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION})));
     
     int searchOption = 0;
     while(searchOption != 2) {
@@ -389,11 +399,51 @@ void LMS::browsePrompt() {
                 std::cout << std::endl;
                 break;
             case 2:
+                mainMenuPrompt();
                 break;
             default:
+                mainMenuPrompt();
                 break;
         }
     }
+}
+
+list<Book> LMS::browseByGenre() {
+    string genreInput = "";
+    std::cout << "What genre of book are you looking for?" << std::endl;
+    string userInput = "";
+    cin.get();
+    getline(cin, userInput);
+    //TODO: search by actual genre input
+    auto resultEntries = searchBase.searchByGenre(Book::Genre::FICTION); //Hardcoded for now
+    return bookEntriesToBooks(resultEntries);
+}
+
+list<Book> LMS::browseByTitle() {
+    string userInput = "";
+    std::cout << "What is the title of the book you are looking for?" << std::endl;
+    return browseByStringInput();
+}
+
+list<Book> LMS::browseByAuthor() {
+    std::cout << "Who is the author of the book(s) you are looking for?" << std::endl;
+    return browseByStringInput();
+}
+
+list<Book> LMS::browseByStringInput() {
+    string userInput = "";
+    cin.get();
+    getline(cin, userInput);
+    auto resultEntries = searchBase.searchByTerms(userInput); //Results are currently iterators
+    return bookEntriesToBooks(resultEntries); //Convert from iterator list to pure books
+}
+
+list<Book> LMS::bookEntriesToBooks(const list<list<Book>::iterator> &entries) {
+    list<Book> rawBooks;
+    for(auto it : entries) {
+        rawBooks.push_back(*it);
+    }
+    return rawBooks;
 }
 
 void LMS::checkoutCart() {
@@ -403,6 +453,7 @@ void LMS::checkoutCart() {
     }
     std::cout << std::endl;
     cart.clear();
+    mainMenuPrompt();
 }
 
 void LMS::logoutPrompt() {
@@ -418,6 +469,7 @@ void LMS::displayUserDetails() {
         std::cout << it.getTitle() << ", ";
     }
     std::cout << std::endl;
+    mainMenuPrompt();
 }
 
 // main menu prompts
