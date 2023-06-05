@@ -19,5 +19,8 @@ class jsonManager {
         static void updateJSON(User* toUpdate);
         static string loadUser(User* toRead);
         static string findUserFile(const string&);
+        void addToSearchBase(Book &book);
+        bool findBook(string bookTitle, Book& toReturn);
+        list<Book> loadBooks();
 };
 #endif

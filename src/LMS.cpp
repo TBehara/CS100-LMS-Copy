@@ -4,6 +4,7 @@
 #include "../header/LMS.hpp"
 #include "../header/jsonManager.hpp"
 #include "../libraries/nlohmann/json.hpp"
+#include "../header/book.hpp"
 
 using json = nlohmann::json;
 
@@ -17,7 +18,23 @@ using json = nlohmann::json;
 
 
 LMS::LMS() {
-    welcomePrompt();
+    //welcomePrompt();
+    jsonManager ex;
+    list<Book> test = ex.loadBooks();
+    for (Book iter: test) {
+        std::cout << iter.getTitle() << " ";
+    }
+    //Book::Genre testG = Book::Genre::FICTION;
+    //Book::Genre testX = Book::Genre::FANTASY;
+    //test.push_back(testG);
+    //test.push_back(testX);
+    //Book book ("Lord of the Rings", "Tolkein", test);
+    //Book book2("Harry Potter", "JK Rowling", test);
+    // //Book book3("LMS", "LSNJ", list<Book::Genre>());
+    //ex.addToSearchBase(book);
+    //ex.addToSearchBase(book2);
+    // // ex.addToSearchBase(book3);
+    // // //ex.addToSearchBase(book);
 }
 
 void LMS::welcomePrompt() {

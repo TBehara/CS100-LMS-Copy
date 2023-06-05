@@ -15,6 +15,7 @@ string Book::getTitle() const {
     return title;
 }
 
+
 void Book::setTitle(const string& newTitle) {
     title = newTitle;
 }
