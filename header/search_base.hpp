@@ -20,15 +20,15 @@ class SearchBase {
     public:
         SearchBase();
         void addBook(const Book&);
-        void removeBook(list<Book>::iterator&);
+        void removeBook(list<Book>::iterator);
         list<Book> &getBooks();
         static vector<string> parseString(const string&);
         list<list<Book>::iterator> searchByTerm(const string&);
         list<list<Book>::iterator> searchByTerms(const string&);
         list<list<Book>::iterator> searchByGenre(Book::Genre);
-        void addBookGenreEntry(list<Book>::iterator&, Book::Genre);
-        void removeBookGenreEntry(list<Book>::iterator&, Book::Genre);
-        void addBookTermEntry(list<Book>::iterator&, const string&);
-        void removeBookTermEntry(list<Book>::iterator&, const string&);
+        void addBookGenreEntry(list<Book>::iterator, Book::Genre);
+        void removeBookGenreEntry(list<Book>::iterator, Book::Genre);
+        void addBookTermEntry(list<Book>::iterator, const string&);
+        void removeBookTermEntry(list<Book>::iterator, const string&);
 };
 #endif
