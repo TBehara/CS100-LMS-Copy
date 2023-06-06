@@ -188,7 +188,9 @@ void LMS::loginPrompt() {
                 bool successLog = false;
                 for (int iter = 0; iter < 3; iter++) {
                     std::cout << "Password: ";
+                    setStdInEcho(false);
                     std::getline(std::cin, password);
+                    setStdInEcho(true);
                     if (sha256(password) == foundUser) {
                         successLog = true;
                         break;
@@ -227,7 +229,7 @@ void LMS::mainMenuPrompt() {
         } else if (input == "3") {
             checkoutCart();
         } else if (input == "4") {
-            // return a book
+            returnPrompt();
         } else if (input == "5") {
             // renew a book
         } else if (input == "6") {
@@ -247,7 +249,7 @@ void LMS::mainMenuPrompt() {
         if (input == "1") {
             checkoutCart();
         } else if (input == "2") {
-            // return a book
+            returnPrompt();
         } else if (input == "3") {
             // renew a book
         } else if (input == "4") {
@@ -264,6 +266,8 @@ void LMS::mainMenuPrompt() {
             mainMenuPrompt();
         }
     }
+
+    mainMenuPrompt();
 }
 
 // switch case version of main menu prompt, keeping in case we need it later
@@ -479,7 +483,46 @@ void LMS::checkoutPrompt() {
 }
 
 void LMS::returnPrompt() {
+    // Get the user's checked out books
+    const list<Book>& checkedOutBooks = currentUser->getBooks();
 
+    // Check if the user has any books checked out
+    if (checkedOutBooks.empty()) {
+        cout << "You don't have any books checked out." << endl;
+        return;
+    }
+
+    // Display the user's checked out books
+    cout << "You have the following books checked out:" << endl;
+    int i = 1;
+    for (const Book& book : checkedOutBooks) {
+        cout << i << ". " << book.getTitle() << " by " << book.getAuthor() << endl;
+        i++;
+    }
+
+    // Prompt the user to select a book to return
+    cout << "Enter the number of the book you want to return (or 0 to return all books): ";
+    int bookIndex;
+    cin >> bookIndex;
+
+    // Return the selected book or all books
+    if (bookIndex == 0) {
+        // Return all books
+        for (const Book& book : checkedOutBooks) {
+            currentUser->removeBook(book);
+        }
+        cout << "All books have been returned." << endl;
+    } else if (bookIndex > 0 && bookIndex <= checkedOutBooks.size()) {
+        // Return the selected book
+        auto it = checkedOutBooks.begin();
+        advance(it, bookIndex - 1);
+        const Book& book = *it;
+        string title = book.getTitle();
+        currentUser->removeBook(book);
+        cout << "The book \"" << title << "\" has been returned." << endl;
+    } else {
+        cout << "Invalid book number." << endl;
+    }
 }
 
 void LMS::renewPrompt() {

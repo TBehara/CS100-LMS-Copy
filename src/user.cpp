@@ -9,6 +9,10 @@ User::User() : username("Guest"), hashedPassword(""), fine(0){
 User::User(const string& username, const string& hashedPassword) : username(username), hashedPassword(hashedPassword), fine(0){
 }
 
+unsigned int User::getPriority() {
+    return 0;
+}
+
 vector<string>& User::getPrevBookNames() {
     return this->prevCheckedBookNames;
 }
