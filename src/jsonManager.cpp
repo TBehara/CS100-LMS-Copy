@@ -75,7 +75,7 @@ void jsonManager::updateJSON(User* toUpdate) {
     write(toUpdate);
 }
 
-string jsonManager::loadUser(User* toRead) {
+bool jsonManager::loadUser(User* toRead) {
     //cout << "CALLED LOAD USER" << endl;
     string userName = toRead->getUsername();
     string fileName = userName + ".json";
@@ -96,8 +96,9 @@ string jsonManager::loadUser(User* toRead) {
     toRead->setUsername(dataObj["Username"]);
     string userFine = dataObj["UserFine"];
     double fine = stod(userFine);
-    string userHash = dataObj["UserHash"];
     toRead->setFine(fine);
+    toRead->setHash(dataObj["UserHash"]);
+    bool adminStatus = dataObj["AdminStatus"];
     userDataFS.close();
 
     json interestObj = json::parse(userInterestsFS);
@@ -119,8 +120,8 @@ string jsonManager::loadUser(User* toRead) {
     json currBookObj = json::parse(userCurrBooksFS);
     list<Book> userCurrBooks = loadUserBooks(toRead);
     toRead->setCheckedOutBooks(userCurrBooks);
-    
-    return userHash;
+
+    return adminStatus;
 }
 
 string jsonManager::findUserFile(const string &username) {
