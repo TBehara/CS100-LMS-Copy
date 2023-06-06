@@ -66,6 +66,16 @@ void LMS::signUpPrompt() {
     
     std::cout   << "Username: ";
     std::getline(std::cin, username);
+    std::string userFile = username;
+    std::string userFilePath;
+    userFilePath = jsonManager::findUserFile(userFile);
+    while (userFilePath != "") {
+        std::cout << "This username is already taken. Please choose a new username." << std::endl;
+        std::cout << "Username: ";
+        std::getline(std::cin, username);
+        userFile = username;
+        userFilePath = jsonManager::findUserFile(userFile);
+    }
 
     std::cout   << "Password: ";
     setStdInEcho(false);
@@ -188,7 +198,10 @@ void LMS::loginPrompt() {
                 bool successLog = false;
                 for (int iter = 0; iter < 3; iter++) {
                     std::cout << "Password: ";
+                    setStdInEcho(false);
                     std::getline(std::cin, password);
+                    setStdInEcho(true);
+                    std::cout << std::endl;
                     if (sha256(password) == foundUser) {
                         successLog = true;
                         break;
