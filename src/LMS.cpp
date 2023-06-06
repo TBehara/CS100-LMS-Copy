@@ -57,7 +57,6 @@ void LMS::signUpPrompt() {
     
     std::cout   << "\t\t\tRegister" << std::endl
                 << "Type Q to exit back to the welcome page. Any other input to continue to signup." << std::endl;
-            
     std::getline(std::cin, userChoice);
     if (userChoice == "Q" || userChoice == "q") {
         welcomePrompt();
@@ -69,8 +68,14 @@ void LMS::signUpPrompt() {
     std::string userFile = username;
     std::string userFilePath;
     userFilePath = jsonManager::findUserFile(userFile);
+    std::string userInput;
     while (userFilePath != "") {
         std::cout << "This username is already taken. Please choose a new username." << std::endl;
+        std::cout << "Type Q to quit the program. Any other input to continue to sign up with a different username." << std::endl;
+        std::getline(std::cin, userInput);
+        if (userInput == "Q" || userInput == "q") {
+            return;
+        }
         std::cout << "Username: ";
         std::getline(std::cin, username);
         userFile = username;
