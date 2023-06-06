@@ -25,25 +25,14 @@ void jsonManager::write(User* toWrite) {
     ofstream userCurrBooksFS("JSON/" + userName + "/" + currBooksFileName);
     
     json userObj;
-    unsigned int userPriority;
-    if (!toWrite->getAdminStatus()) {
-       userObj = {
+    unsigned int userPriority = toWrite->getPriority();
+    userObj = {
         {"Username", userName},
         {"UserHash", passHash},
         {"UserFine", jsonFine},
-        {"AdminStatus", adminStatus}
-        };
-    }
-    else {
-        userPriority = toWrite->getPriority();
-        userObj = {
-            {"Username", userName},
-            {"UserHash", passHash},
-            {"UserFine", jsonFine},
-            {"AdminStatus", adminStatus},
-            {"Priority", userPriority}
-        };
-    }
+        {"AdminStatus", adminStatus},
+        {"Priority", userPriority}
+    };
 
     json userInterests;
     auto interestsData = userInterests.array();
