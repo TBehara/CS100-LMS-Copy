@@ -11,5 +11,6 @@ class Admin: public User {
         unsigned int getPriority();
         void displayMenu();
         bool getAdminStatus();
+        void setPriority(int priority);
 };
 #endif

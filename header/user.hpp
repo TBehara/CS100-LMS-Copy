@@ -36,5 +36,6 @@ class User {
         const list<Book>& getBooks() const;
         virtual bool getAdminStatus();
         virtual void displayMenu();
+        virtual unsigned int getPriority();
 };
 #endif
