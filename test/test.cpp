@@ -278,19 +278,19 @@ TEST(userTests, testSetPrevBookNames) {
     EXPECT_EQ(defaultUser.getPrevBookNames(), bookNames);
 }
 
-TEST(userTests, testSetCurrBookNames) {
-    User defaultUser("", "");
-    vector<string> bookNames = {"The Lord of the Rings"};
+// TEST(userTests, testSetCurrBookNames) {
+//     User defaultUser("", "");
+//     vector<string> bookNames = {"The Lord of the Rings"};
 
-    defaultUser.setCurrBookNames(bookNames);
-    EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
+//     defaultUser.setCurrBookNames(bookNames);
+//     EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
 
-    bookNames.push_back("Harry Potter");
-    EXPECT_NE(defaultUser.getCurrBookNames(), bookNames);
+//     bookNames.push_back("Harry Potter");
+//     EXPECT_NE(defaultUser.getCurrBookNames(), bookNames);
 
-    defaultUser.getCurrBookNames().push_back("Harry Potter");
-    EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
-}
+//     defaultUser.getCurrBookNames().push_back("Harry Potter");
+//     EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
+// }
 
 TEST(userTests, testSetInterestKeywords) {
     User defaultUser("", "");

@@ -4,6 +4,7 @@
 #include "../header/LMS.hpp"
 #include "../header/jsonManager.hpp"
 #include "../libraries/nlohmann/json.hpp"
+#include "../header/book.hpp"
 
 using json = nlohmann::json;
 
