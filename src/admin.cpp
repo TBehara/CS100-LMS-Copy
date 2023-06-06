@@ -21,3 +21,7 @@ bool Admin::getAdminStatus() {
     return true;
 }
 
+void Admin::setPriority(unsigned int priorityNum) {
+    this->priority = priorityNum;
+}
+
