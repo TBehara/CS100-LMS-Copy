@@ -10,6 +10,8 @@ void jsonManager::write(User* toWrite) {
     string interestsFileName = userName + "_interests.json";
     string booksFileName = userName + "_checkedBooks.json";
     string currBooksFileName = userName + "_currBooks.json";
+    json currUserBooks;
+    auto currBooksData = currUserBooks.array();
 
     string passHash = toWrite->hashPassword();
     double userFine = toWrite->getFine();
@@ -22,7 +24,7 @@ void jsonManager::write(User* toWrite) {
     ofstream userDataFS("JSON/" + userName + "/" + fileName);
     ofstream userInterestsFS("JSON/" + userName + "/" + interestsFileName);
     ofstream userBooksFS("JSON/" + userName + "/" + booksFileName);
-    //ofstream userCurrBooksFS("JSON/" + userName + "/" + currBooksFileName);
+    ofstream userCurrBooksFS("JSON/" + userName + "/" + currBooksFileName);
     
     json userObj;
     if (!toWrite->getAdminStatus()) {
@@ -75,6 +77,8 @@ void jsonManager::write(User* toWrite) {
     userInterestsFS.close();
     userBooksFS << checkedBookData.dump(4) << endl;
     userBooksFS.close();
+    userCurrBooksFS << currBooksData.dump(4) << endl;
+    userCurrBooksFS.close();
 }
 
 void jsonManager::updateJSON(User* toUpdate) {
@@ -82,6 +86,7 @@ void jsonManager::updateJSON(User* toUpdate) {
 }
 
 string jsonManager::loadUser(User* toRead) {
+    //cout << "CALLED LOAD USER" << endl;
     string userName = toRead->getUsername();
     string fileName = userName + ".json";
     string interestsFileName = userName + "_interests.json";
@@ -120,6 +125,7 @@ string jsonManager::loadUser(User* toRead) {
     }
     toRead->setPrevBookNames(userPrevBooks);
 
+    //cout << "UP till here good" << endl;
     json currBookObj = json::parse(userCurrBooksFS);
     list<Book> userCurrBooks = loadUserBooks(toRead);
     toRead->setCheckedOutBooks(userCurrBooks);

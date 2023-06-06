@@ -18,7 +18,7 @@ using json = nlohmann::json;
 
 
 LMS::LMS() {
-    //welcomePrompt();
+    welcomePrompt();
 }
 
 void LMS::welcomePrompt() {
