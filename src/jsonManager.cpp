@@ -1,6 +1,7 @@
 #include "../header/jsonManager.hpp"
 
 #include <filesystem>
+#include <stdexcept>
 
 using namespace std;
 
@@ -75,7 +76,7 @@ void jsonManager::updateJSON(User* toUpdate) {
     write(toUpdate);
 }
 
-string jsonManager::loadUser(User* toRead) {
+bool jsonManager::loadUser(User* toRead) {
     //cout << "CALLED LOAD USER" << endl;
     string userName = toRead->getUsername();
     string fileName = userName + ".json";
@@ -85,7 +86,7 @@ string jsonManager::loadUser(User* toRead) {
 
     ifstream userDataFS("JSON/" + userName + "/" + fileName);
     if (!userDataFS.is_open()) {
-        return "false";
+        throw runtime_error("User does not exist");
     }
 
     ifstream userCurrBooksFS("JSON/" + userName + "/" + currBooksFileName);
@@ -96,8 +97,9 @@ string jsonManager::loadUser(User* toRead) {
     toRead->setUsername(dataObj["Username"]);
     string userFine = dataObj["UserFine"];
     double fine = stod(userFine);
-    string userHash = dataObj["UserHash"];
     toRead->setFine(fine);
+    toRead->setHash(dataObj["UserHash"]);
+    bool adminStatus = dataObj["AdminStatus"];
     userDataFS.close();
 
     json interestObj = json::parse(userInterestsFS);
@@ -120,7 +122,7 @@ string jsonManager::loadUser(User* toRead) {
     list<Book> userCurrBooks = loadUserBooks(toRead);
     toRead->setCheckedOutBooks(userCurrBooks);
     
-    return userHash;
+    return adminStatus;
 }
 
 string jsonManager::findUserFile(const string &username) {

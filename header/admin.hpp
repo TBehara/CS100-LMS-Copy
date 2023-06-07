@@ -8,6 +8,7 @@ class Admin: public User {
     public:
         Admin();
         Admin(const string&, const string&, int);
+        Admin(User*, int);
         unsigned int getPriority();
         void displayMenu();
         bool getAdminStatus();
