@@ -7,6 +7,5 @@ using namespace std;
 
 int main() {
     LMS lms;
-    
     return 0;
 }

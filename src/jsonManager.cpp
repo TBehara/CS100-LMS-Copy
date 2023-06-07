@@ -141,7 +141,7 @@ string jsonManager::findUserFile(const string &username) {
     return filePath;
 }
 
-void jsonManager::addToSearchBase(Book &book) {
+void jsonManager::addToSearchBase(const Book &book) {
     json bookBase;
     auto bookBaseData = bookBase.array();
     string fileName = "BookBase.json";
@@ -322,7 +322,9 @@ bool jsonManager::findBook(string bookTitle, Book& toReturn, string fileName) {
                 else if (genre == "ALWAYS_AT_END") {
                     enumGenre = Book::Genre::ALWAYS_AT_END;
                 }
-                genreList.push_back(enumGenre);
+                if (genre != "") {
+                    genreList.push_back(enumGenre);
+                }
             }
             Book returnBook = Book(obj["Title"], obj["Author"], genreList);
             toReturn = returnBook;

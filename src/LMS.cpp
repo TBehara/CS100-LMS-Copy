@@ -458,7 +458,67 @@ void LMS::viewAccountPrompt(const User &user) {
 // admin prompts
 
 void LMS::manageBooksPrompt() {
-    //std::cout << 
+    std::string adminResponse;
+    cin.ignore();
+    std::cout << "Would you like to add or remove a book from the system? Type A to add and R to remove. Type Q to exit back to the main menu." << std::endl;
+    getline(std::cin, adminResponse);
+    if (adminResponse == "A" || adminResponse == "a") {
+        adminAddBookPrompt();
+    }
+    else if (adminResponse == "R" || adminResponse == "r") {
+        adminRemoveBookPrompt();
+    }
+    else if (adminResponse == "Q" || adminResponse == "q") {
+        mainMenuPrompt();
+    }
+    else {
+        std::cout << "Invalid response. You will be directed back to the main menu where you can select an option." << std::endl;
+        mainMenuPrompt();
+    }
+}
+
+void LMS::adminAddBookPrompt() {
+    std::string bookTitleResponse;
+    std::string bookAuthorResponse;
+    std::string bookGenresResponse;
+    list<Book::Genre> bookGenreList;
+    std::cout << "Please enter the title of the book you would like to add to the system." << std::endl;
+    getline(std::cin, bookTitleResponse);
+    std::cout << "Please enter the author of the book you would like to add to the system." << std::endl;
+    getline(std::cin, bookAuthorResponse);
+    
+    while(bookTitleResponse == "" && bookAuthorResponse == "") {
+        std::cout << "You skipped entry of the previous two fields. Please re-answer the prompts." << std::endl;
+        std::cout << "Please enter the title of the book you would like to add to the system." << std::endl;
+        getline(std::cin, bookTitleResponse);
+        std::cout << "Please enter the author of the book you would like to add to the system." << std::endl;
+        getline(std::cin, bookAuthorResponse);
+    }
+
+    std::cout << "Please enter some of the genres that this book pertains to. Enter Q to stop entering genres." << std::endl;
+    std::cout << "Your options are: FICTION, NONFICTION, FANTASY, NOVEL, MYSTERY, SCIFI, HISTORICAL_FICTION, LITERARY_FICTION, NARRATIVE, and ALWAYS_AT_END" << std::endl;
+    std::cout << "Entering a different value will automatically add FICTION as the book's genre." << std::endl;
+    getline(std::cin, bookGenresResponse);
+    if (bookGenresResponse != "Q" && bookGenresResponse != "q") {
+        bookGenreList.push_back(stringToGenre(bookGenresResponse));
+    }
+    while(bookGenresResponse != "Q" && bookGenresResponse != "q") {
+        getline(std::cin, bookGenresResponse);
+        if (bookGenresResponse != "Q" && bookGenresResponse != "q") {
+            bookGenreList.push_back(stringToGenre(bookGenresResponse));
+        }
+    }
+
+    const Book toAdd(bookTitleResponse, bookAuthorResponse, bookGenreList);
+    SearchBase bookBase;
+    bookBase.addBook(toAdd);
+    jsonManager::addToSearchBase(toAdd);
+    std::cout << "You have successfully added a book to our system!" << std::endl;
+    mainMenuPrompt();
+}
+
+void LMS::adminRemoveBookPrompt() {
+
 }
 
 void LMS::addAdminPrompt() {
@@ -488,4 +548,39 @@ void LMS::addAdminPrompt() {
 
     std::cout << "User " << username << " is now an admin." << std::endl;
     mainMenuPrompt();
+}
+
+enum Book::Genre LMS::stringToGenre(const string& genre) {
+    Book::Genre enumGenre;
+    if (genre == "FICTION" || genre == "fiction") {
+        enumGenre = Book::Genre::FICTION;
+    }
+    else if (genre == "NONFICTION" || genre == "nonfiction") {
+        enumGenre = Book::Genre::NONFICTION;
+    }
+    else if (genre == "FANTASY" || genre == "fantasy") {
+        enumGenre = Book::Genre::FANTASY;
+    }
+    else if (genre == "NOVEL" || genre == "novel") {
+        enumGenre = Book::Genre::NOVEL;
+    }
+    else if (genre == "MYSTERY" || genre == "mystery") {
+        enumGenre = Book::Genre::MYSTERY;
+    }
+    else if (genre == "SCIFI" || genre == "scifi") {
+        enumGenre = Book::Genre::SCIFI;
+    }
+    else if (genre == "HISTORICAL_FICTION" || genre == "historical_fiction") {
+        enumGenre = Book::Genre::HISTORICAL_FICTION;
+    }
+    else if (genre == "LITERARY_FICTION" || genre == "literary_fiction") {
+        enumGenre = Book::Genre::LITERARY_FICTION;
+    }
+    else if (genre == "NARRATIVE" || genre == "narrative") {
+        enumGenre = Book::Genre::NARRATIVE;
+    }
+    else if (genre == "ALWAYS_AT_END" || genre == "always_at_end") {
+        enumGenre = Book::Genre::ALWAYS_AT_END;
+    }
+    return enumGenre;
 }

@@ -34,8 +34,13 @@ class LMS {
         void renewPrompt();
         void getRecommendationsPrompt();
         void viewAccountPrompt(const User&);
+        public:
+        enum Book::Genre stringToGenre(const string& genre);
         // admin exclusive prompts
+        private:
         void manageBooksPrompt();
         void addAdminPrompt();
+        void adminAddBookPrompt();
+        void adminRemoveBookPrompt();
 };
 #endif
