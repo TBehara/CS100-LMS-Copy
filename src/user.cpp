@@ -9,13 +9,25 @@ User::User() : username("Guest"), hashedPassword(""), fine(0){
 User::User(const string& username, const string& hashedPassword) : username(username), hashedPassword(hashedPassword), fine(0){
 }
 
+unsigned int User::getPriority() {
+    return 0;
+}
+
 vector<string>& User::getPrevBookNames() {
     return this->prevCheckedBookNames;
 }
 
-vector<string>& User::getCurrBookNames() {
-    return this->currCheckedBookNames;
+list<Book>& User::getCheckedOutBooks() {
+    return this->checkedOutBooks;
 }
+
+void User::setCheckedOutBooks(list<Book> &books) {
+    this->checkedOutBooks = books;
+}
+
+// vector<string>& User::getCurrBookNames() {
+//     return this->currCheckedBookNames;
+// }
         
 vector<string>& User::getInterestKeywords() {
     return this->interestKeyWords;
@@ -25,9 +37,9 @@ void User::setPrevBookNames(vector<string> &bookNames) {
     this->prevCheckedBookNames = bookNames;
 }
 
-void User::setCurrBookNames(vector<string> &bookNames) {
-    this->currCheckedBookNames = bookNames;
-}
+// void User::setCurrBookNames(vector<string> &bookNames) {
+//     this->currCheckedBookNames = bookNames;
+// }
 
 void User::setInterestKeywords(vector<string> &interestWords) {
     this->interestKeyWords = interestWords;
@@ -74,7 +86,7 @@ void User::addBook(const Book& checkoutBook) {
         }
     }
     checkedOutBooks.push_back(checkoutBook);
-    currCheckedBookNames.push_back(checkoutBook.getTitle());
+    //currCheckedBookNames.push_back(checkoutBook.getTitle());
     prevCheckedBookNames.push_back(checkoutBook.getTitle());
 }
 

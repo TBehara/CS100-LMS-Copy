@@ -1,9 +1,13 @@
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 #include "../header/LMS.hpp"
 #include "../header/jsonManager.hpp"
 #include "../libraries/nlohmann/json.hpp"
+#include "../header/book.hpp"
+#include "../header/user.hpp"
+#include "../header/admin.hpp"
 
 using json = nlohmann::json;
 
@@ -63,14 +67,8 @@ void LMS::signUpPrompt() {
         welcomePrompt();
         return;
     }        
-    // std::cout << "Please fill out the following fields so we may create an account for you" << std::endl;
-    // std::cout << "Full Name: ";
-
-    // std::cin.ignore();
-    // std::getline(std::cin, name);
     
     std::cout   << "Username: ";
-    std::cin.ignore();
     std::getline(std::cin, username);
 
     std::cout   << "Password: ";
@@ -127,7 +125,7 @@ void LMS::signUpPrompt() {
     //add to JSON
     jsonManager::write(currentUser);
     //display menu
-    currentUser->displayMenu();
+    mainMenuPrompt();
 }
 
 
@@ -162,8 +160,6 @@ void LMS::loginPrompt() {
     std::string password;
     std::string hashPassword;
 
-
-
     std::cout << "\t\t\tLogin" << std::endl;
     std::cout << std::endl;
     std::cout << "Username: ";
@@ -171,50 +167,62 @@ void LMS::loginPrompt() {
     std::getline(std::cin, username);
     currentUser = new User();
     currentUser->setUsername(username);
-    jsonManager userManager;
-    string foundUser = userManager.loadUser(currentUser);
-    currentUser->setHash(foundUser);
-    if (foundUser == "false") {
+    bool adminStatus = false;
+    try {
+        adminStatus = jsonManager::loadUser(currentUser);
+    }
+    catch (...) {
         std::cout << "This username does not exist in our system. We will redirect you to the sign up page where you can create an account." << std::endl;
         signUpPrompt();
     }
-    else {
-        string userChoice;
-        std::cout << "Password: ";
-        setStdInEcho(false);
-        std::getline(std::cin, password);
-        setStdInEcho(true);
-        std::cout << std::endl;
+    string foundUser = currentUser->hashPassword();
+    string userChoice;
+    std::cout << "Password: ";
+    setStdInEcho(false);
+    std::getline(std::cin, password);
+    setStdInEcho(true);
+    std::cout << std::endl;
 
-        if (sha256(password) != foundUser) {
-            std::cout << "The password you have entered is incorrect." << std::endl;
-            std::cout << "Enter C to get 3 tries to get the correct password. If all three tries are incorrect, you will be directed to the sign up page. Any other input will direct you to the sign up page to create a new account." << std::endl;
-            std::getline(std::cin, userChoice);
-            if (userChoice == "C" || userChoice == "c") {
-                bool successLog = false;
-                for (int iter = 0; iter < 3; iter++) {
-                    std::cout << "Password: ";
-                    std::getline(std::cin, password);
-                    if (sha256(password) == foundUser) {
-                        successLog = true;
-                        break;
-                    }
-                }
-                if (!successLog) {
-                    std::cout << "You will be directed to the signup page to create a new account." << std::endl;
-                    signUpPrompt();
-                }
-                else {
-                    mainMenuPrompt();
+    if (sha256(password) != foundUser) {
+        std::cout << "The password you have entered is incorrect." << std::endl;
+        std::cout << "Enter C to get 3 tries to get the correct password. If all three tries are incorrect, you will be directed to the sign up page. Any other input will direct you to the sign up page to create a new account." << std::endl;
+        std::getline(std::cin, userChoice);
+        if (userChoice == "C" || userChoice == "c") {
+            bool successLog = false;
+            for (int iter = 0; iter < 3; iter++) {
+                std::cout << "Password: ";
+                setStdInEcho(false);
+                std::getline(std::cin, password);
+                setStdInEcho(true);
+                if (sha256(password) == foundUser) {
+                    successLog = true;
+                    break;
                 }
             }
-            else {
+            if (!successLog) {
+                std::cout << "You will be directed to the signup page to create a new account." << std::endl;
                 signUpPrompt();
+            }
+            else {
+                if (adminStatus) {
+                    Admin *admin = new Admin(currentUser, 0);
+                    delete currentUser;
+                    currentUser = admin;
+                }
+                mainMenuPrompt();
             }
         }
         else {
-            mainMenuPrompt();
+            signUpPrompt();
         }
+    }
+    else {
+        if (adminStatus) {
+            Admin *admin = new Admin(currentUser, 0);
+            delete currentUser;
+            currentUser = admin;
+        }
+        mainMenuPrompt();
     }
 }
 
@@ -225,126 +233,35 @@ void LMS::mainMenuPrompt() {
 
     std::string input;
     std::cin >> input;
-    if (adminStatus) {
-        if (input == "1") {
-            checkoutCart();
-        } else if (input == "2") {
-            // return a book
-        } else if (input == "3") {
-            // renew a book
-        } else if (input == "4") {
-            browsePrompt();
-        } else if (input == "5") {
-            displayUserDetails();
-        } else if (input == "6") {
-            // get book recommendations
-        } else if (input == "7") {
-            jsonManager::updateJSON(currentUser);
-            return;
-        } else if(input == "8"){
+
+    if (input == "1") {
+        checkoutCart();
+    } else if (input == "2") {
+        returnPrompt();
+    } else if (input == "3") {
+        // renew a book
+    } else if (input == "4") {
+        browsePrompt();
+    } else if (input == "5") {
+        displayUserDetails();
+    } else if (input == "6") {
+        // get book recommendations
+    } else if (input == "7") {
+        jsonManager::updateJSON(currentUser);
+        exit(0);
+    } else if (adminStatus) {
+        if (input == "8") {
             manageBooksPrompt();
-        } else if(input == "9") {
+        } else if (input == "9") {
+            std::cin.ignore();
             addAdminPrompt();
-        } else {
-            std::cout << "Invalid input. Please try again" << std::endl;
-            mainMenuPrompt();
         }
     } else {
-        if (input == "1") {
-            checkoutCart();
-        } else if (input == "2") {
-            // return a book
-        } else if (input == "3") {
-            // renew a book
-        } else if (input == "4") {
-            browsePrompt();
-        } else if (input == "5") {
-            displayUserDetails();
-        } else if (input == "6") {
-            // get book recommendations
-        } else if (input == "7") {
-            jsonManager::updateJSON(currentUser);
-            return;
-        } else {
-            std::cout << "Invalid input. Please try again" << std::endl;
-            mainMenuPrompt();
-        }
+        std::cout << "Invalid input. Please try again" << std::endl;
+        mainMenuPrompt();
     }
+    mainMenuPrompt();
 }
-
-// switch case version of main menu prompt, keeping in case we need it later
-// void LMS::mainMenuPrompt() {
-//     currentUser->displayMenu();
-
-//     bool adminStatus = currentUser->getAdminStatus();
-
-//     int input;
-//     std::cin >> input;
-
-//     if (adminStatus) {
-//         switch (input) {
-//             case 1:
-//                 // manage books in system
-//                 break;
-//             case 2:
-//                 // add lower level admin
-//                 break;
-//             case 3:
-//                 checkoutCart();
-//                 break;
-//             case 4:
-//                 // return a book
-//                 break;
-//             case 5:
-//                 // renew a book
-//                 break;
-//             case 6:
-//                 browsePrompt();
-//                 break;
-//             case 7:
-//                 displayUserDetails();
-//                 break;
-//             case 8:
-//                 // get book recommendations
-//                 break;
-//             case 9:
-//                 jsonManager::updateJSON(currentUser);
-//                 return;
-//             default:
-//                 std::cout << "Invalid input. Please try again" << std::endl;
-//                 mainMenuPrompt();
-//                 break;
-//         }
-//     } else {
-//         switch (input) {
-//             case 1:
-//                 checkoutCart();
-//                 break;
-//             case 2:
-//                 // return a book
-//                 break;
-//             case 3:
-//                 // renew a book
-//                 break;
-//             case 4:
-//                 browsePrompt();
-//                 break;
-//             case 5:
-//                 displayUserDetails();
-//                 break;
-//             case 6:
-//                 // get book recommendations
-//                 break;
-//             case 7:
-//                 jsonManager::updateJSON(currentUser);
-//                 return;
-//             default:
-//                 std::cout << "Invalid input. Please try again" << std::endl;
-//                 mainMenuPrompt();
-//                 break;
-//         }
-//     }
-// }
 
 void LMS::browsePrompt() {
     std::cout << std::endl;
@@ -356,11 +273,21 @@ void LMS::browsePrompt() {
     std::cout << "5. Exit" << std::endl;
     int option = 0;
     std::cin >> option;
-
+    std::list<Book> results; 
+    switch(option) {
+        case 1:
+            results = browseByGenre();
+            break;
+        case 2:
+            results = browseByTitle();
+            break;
+        case 3:
+            results = browseByAuthor();
+            break;
+        default:
+            return;
+    }
     //BELOW IS PART OF A PROTOTYPE/EXAMPLE
-    std::list<Book> results; //Real results will be Book pointers fetched from SearchBase after getting the search criteria
-    results.push_back(Book("The Lord of the Rings", "J.R.R. Tolkien", std::list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION})));
-    results.push_back(Book("Harry Potter", "J.K. Rowling", std::list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION})));
     
     int searchOption = 0;
     while(searchOption != 2) {
@@ -395,11 +322,51 @@ void LMS::browsePrompt() {
                 std::cout << std::endl;
                 break;
             case 2:
+                mainMenuPrompt();
                 break;
             default:
+                mainMenuPrompt();
                 break;
         }
     }
+}
+
+list<Book> LMS::browseByGenre() {
+    string genreInput = "";
+    std::cout << "What genre of book are you looking for?" << std::endl;
+    string userInput = "";
+    cin.get();
+    getline(cin, userInput);
+    //TODO: search by actual genre input
+    auto resultEntries = searchBase.searchByGenre(Book::Genre::FICTION); //Hardcoded for now
+    return bookEntriesToBooks(resultEntries);
+}
+
+list<Book> LMS::browseByTitle() {
+    string userInput = "";
+    std::cout << "What is the title of the book you are looking for?" << std::endl;
+    return browseByStringInput();
+}
+
+list<Book> LMS::browseByAuthor() {
+    std::cout << "Who is the author of the book(s) you are looking for?" << std::endl;
+    return browseByStringInput();
+}
+
+list<Book> LMS::browseByStringInput() {
+    string userInput = "";
+    cin.get();
+    getline(cin, userInput);
+    auto resultEntries = searchBase.searchByTerms(userInput); //Results are currently iterators
+    return bookEntriesToBooks(resultEntries); //Convert from iterator list to pure books
+}
+
+list<Book> LMS::bookEntriesToBooks(const list<list<Book>::iterator> &entries) {
+    list<Book> rawBooks;
+    for(auto it : entries) {
+        rawBooks.push_back(*it);
+    }
+    return rawBooks;
 }
 
 void LMS::checkoutCart() {
@@ -409,6 +376,7 @@ void LMS::checkoutCart() {
     }
     std::cout << std::endl;
     cart.clear();
+    mainMenuPrompt();
 }
 
 void LMS::logoutPrompt() {
@@ -424,6 +392,7 @@ void LMS::displayUserDetails() {
         std::cout << it.getTitle() << ", ";
     }
     std::cout << std::endl;
+    mainMenuPrompt();
 }
 
 // main menu prompts
@@ -433,7 +402,46 @@ void LMS::checkoutPrompt() {
 }
 
 void LMS::returnPrompt() {
+    // Get the user's checked out books
+    const list<Book>& checkedOutBooks = currentUser->getBooks();
 
+    // Check if the user has any books checked out
+    if (checkedOutBooks.empty()) {
+        cout << "You don't have any books checked out." << endl;
+        return;
+    }
+
+    // Display the user's checked out books
+    cout << "You have the following books checked out:" << endl;
+    int i = 1;
+    for (const Book& book : checkedOutBooks) {
+        cout << i << ". " << book.getTitle() << " by " << book.getAuthor() << endl;
+        i++;
+    }
+
+    // Prompt the user to select a book to return
+    cout << "Enter the number of the book you want to return (or 0 to return all books): ";
+    int bookIndex;
+    cin >> bookIndex;
+
+    // Return the selected book or all books
+    if (bookIndex == 0) {
+        // Return all books
+        for (const Book& book : checkedOutBooks) {
+            currentUser->removeBook(book);
+        }
+        cout << "All books have been returned." << endl;
+    } else if (bookIndex > 0 && bookIndex <= checkedOutBooks.size()) {
+        // Return the selected book
+        auto it = checkedOutBooks.begin();
+        advance(it, bookIndex - 1);
+        const Book& book = *it;
+        string title = book.getTitle();
+        currentUser->removeBook(book);
+        cout << "The book \"" << title << "\" has been returned." << endl;
+    } else {
+        cout << "Invalid book number." << endl;
+    }
 }
 
 void LMS::renewPrompt() {

@@ -21,6 +21,11 @@ class LMS {
         void loginPrompt();
         void mainMenuPrompt();
         void browsePrompt();
+        list<Book> browseByGenre();
+        list<Book> browseByTitle();
+        list<Book> browseByAuthor();
+        list<Book> browseByStringInput();
+        list<Book> bookEntriesToBooks(const list<list<Book>::iterator> &);
         void checkoutCart();
         void logoutPrompt();
         void displayUserDetails();

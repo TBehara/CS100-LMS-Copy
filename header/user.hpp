@@ -15,10 +15,12 @@ class User {
         list<Book> checkedOutBooks;
         vector<string> interestKeyWords;
         vector<string> prevCheckedBookNames;
-        vector<string> currCheckedBookNames;
+        //vector<string> currCheckedBookNames;
     public:
         User();
         User(const string&, const string&);
+        list<Book>& getCheckedOutBooks();
+        void setCheckedOutBooks(list<Book> &books);
         string getUsername() const;
         string hashPassword() const; //getPassword() on the UML diagram
         void setHash(const string&);
@@ -26,15 +28,16 @@ class User {
         void setUsername(const string& username);
         void setFine(double fine); //fine is an int on the UML diagram so we should change the one on the diagram to a double
         vector<string>& getPrevBookNames();
-        vector<string>& getCurrBookNames();
+        //vector<string>& getCurrBookNames();
         vector<string>& getInterestKeywords();
         void setPrevBookNames(vector<string> &bookNames);
-        void setCurrBookNames(vector<string> &bookNames);
+        //void setCurrBookNames(vector<string> &bookNames);
         void setInterestKeywords(vector<string> &interestWords);
         void removeBook(const Book& returnedBook);
         void addBook(const Book& checkoutBook);
         const list<Book>& getBooks() const;
         virtual bool getAdminStatus();
         virtual void displayMenu();
+        virtual unsigned int getPriority();
 };
 #endif

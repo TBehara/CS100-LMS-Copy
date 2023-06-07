@@ -278,19 +278,19 @@ TEST(userTests, testSetPrevBookNames) {
     EXPECT_EQ(defaultUser.getPrevBookNames(), bookNames);
 }
 
-TEST(userTests, testSetCurrBookNames) {
-    User defaultUser("", "");
-    vector<string> bookNames = {"The Lord of the Rings"};
+// TEST(userTests, testSetCurrBookNames) {
+//     User defaultUser("", "");
+//     vector<string> bookNames = {"The Lord of the Rings"};
 
-    defaultUser.setCurrBookNames(bookNames);
-    EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
+//     defaultUser.setCurrBookNames(bookNames);
+//     EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
 
-    bookNames.push_back("Harry Potter");
-    EXPECT_NE(defaultUser.getCurrBookNames(), bookNames);
+//     bookNames.push_back("Harry Potter");
+//     EXPECT_NE(defaultUser.getCurrBookNames(), bookNames);
 
-    defaultUser.getCurrBookNames().push_back("Harry Potter");
-    EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
-}
+//     defaultUser.getCurrBookNames().push_back("Harry Potter");
+//     EXPECT_EQ(defaultUser.getCurrBookNames(), bookNames);
+// }
 
 TEST(userTests, testSetInterestKeywords) {
     User defaultUser("", "");
@@ -333,8 +333,7 @@ TEST(searchBaseTests, parseString) {
     EXPECT_EQ(SearchBase::parseString(toParse), expected);
 }
 
-template<typename T>
-bool resultContains(list<list<Book>::iterator> container, const T& element) {
+bool resultContains(list<list<Book>::iterator> container, const Book& element) {
     for(auto it : container) {
         if(*it == element) return true;
     }
@@ -398,4 +397,63 @@ TEST(searchBaseTests, removeGenreEntry) {
 
     EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FANTASY), toSearch));
     EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FICTION), toSearch));
+}
+
+TEST(searchBaseTests, removeRemovesAllReferences) {
+    SearchBase sb;
+    Book toTest("The Lord of the Rings", "J.R.R. Tolkien", list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION}));
+    sb.addBook(toTest);
+
+    EXPECT_TRUE(resultContains(sb.searchByTerm("Tolkien"), toTest));
+    list<Book>::iterator toRemove = sb.getBooks().end();
+    sb.removeBook(--toRemove);
+
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Tolkien"), toTest));
+    EXPECT_EQ(sb.searchByTerm("Tolkien").size(), 0);
+    EXPECT_FALSE(resultContains(sb.searchByTerm("J.R.R."), toTest));
+    EXPECT_EQ(sb.searchByTerm("J.R.R").size(), 0);
+    EXPECT_FALSE(resultContains(sb.searchByTerm("The"), toTest));
+    EXPECT_EQ(sb.searchByTerm("The").size(), 0);
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Lord"), toTest));
+    EXPECT_EQ(sb.searchByTerm("Lord").size(), 0);
+    EXPECT_FALSE(resultContains(sb.searchByTerm("of"), toTest));
+    EXPECT_EQ(sb.searchByTerm("of").size(), 0);
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Rings"), toTest));
+    EXPECT_EQ(sb.searchByTerm("Rings").size(), 0);
+    EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FANTASY), toTest));
+    EXPECT_EQ(sb.searchByGenre(Book::Genre::FANTASY).size(), 0);
+    EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FICTION), toTest));
+    EXPECT_EQ(sb.searchByGenre(Book::Genre::FICTION).size(), 0);
+
+    EXPECT_EQ(sb.searchByTerms("The Lord of the Rings by J.R.R. Tolkien").size(), 0);
+}
+
+TEST(searchBaseTests, onlyModifySpecifiedBook) {
+    SearchBase sb;
+    Book harryPotter("Harry Potter", "J.K. Rowling", list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION})),
+    lotr("Lord of the Rings", "J.R.R. Tolkien", list<Book::Genre>({Book::Genre::FANTASY, Book::Genre::FICTION}));
+
+    sb.addBook(harryPotter);
+    sb.addBook(lotr);
+
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Lord"), harryPotter));
+    EXPECT_TRUE(resultContains(sb.searchByTerm("Lord"), lotr));
+    EXPECT_TRUE(resultContains(sb.searchByTerm("Potter"), harryPotter));
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Potter"), lotr));
+    EXPECT_TRUE(resultContains(sb.searchByGenre(Book::Genre::FANTASY), lotr));
+    EXPECT_TRUE(resultContains(sb.searchByGenre(Book::Genre::FICTION), lotr));
+    EXPECT_TRUE(resultContains(sb.searchByGenre(Book::Genre::FANTASY), harryPotter));
+    EXPECT_TRUE(resultContains(sb.searchByGenre(Book::Genre::FICTION), harryPotter));
+
+    list<Book>::iterator toRemove = sb.searchByTerms("Harry Potter by J.K. Rowling").front();
+    sb.removeBook(toRemove);
+    
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Lord"), harryPotter));
+    EXPECT_TRUE(resultContains(sb.searchByTerm("Lord"), lotr));
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Potter"), harryPotter));
+    EXPECT_FALSE(resultContains(sb.searchByTerm("Potter"), lotr));
+    EXPECT_TRUE(resultContains(sb.searchByGenre(Book::Genre::FANTASY), lotr));
+    EXPECT_TRUE(resultContains(sb.searchByGenre(Book::Genre::FICTION), lotr));
+    EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FANTASY), harryPotter));
+    EXPECT_FALSE(resultContains(sb.searchByGenre(Book::Genre::FICTION), harryPotter));
 }
