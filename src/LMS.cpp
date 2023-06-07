@@ -236,7 +236,7 @@ void LMS::mainMenuPrompt() {
         } else if (input == "7") {
             displayUserDetails();
         } else if (input == "8") {
-            // get book recommendations
+            getRecommendationsPrompt();
         } else if (input == "9") {
             jsonManager::updateJSON(currentUser);
             exit(0);
@@ -256,7 +256,7 @@ void LMS::mainMenuPrompt() {
         } else if (input == "5") {
             displayUserDetails();
         } else if (input == "6") {
-            // get book recommendations
+            getRecommendationsPrompt();
         } else if (input == "7") {
             jsonManager::updateJSON(currentUser);
             exit(0);
@@ -267,6 +267,38 @@ void LMS::mainMenuPrompt() {
     }
 
     mainMenuPrompt();
+}
+
+void LMS::getRecommendationsPrompt() {
+    string keywords = getRecommendationKeywords();
+    set<Book> results = compressResults(searchBase.searchByTerms(keywords));
+    cout << endl << "Recommended Books: ";
+    for(auto it : results) {
+        cout << it.getTitle() << " by " << it.getAuthor() << ", ";
+    }
+    cout << endl << endl;
+}
+
+set<Book> LMS::compressResults(list<list<Book>::iterator> results) {
+    set<Book> compressedResults;
+    for(auto it : results) {
+        compressedResults.insert(*it);
+    }
+    return compressedResults;
+}
+
+string LMS::getRecommendationKeywords() {
+    string keywords;
+    for(auto it : currentUser->getPrevBookNames()) {
+        keywords += it + " ";
+    }
+    for(auto it : currentUser->getCheckedOutBooks()) {
+        keywords += it.getTitle() + " " + it.getAuthor() + " ";
+    }
+    for(auto it : currentUser->getInterestKeywords()) {
+        keywords += it + " ";
+    }
+    return keywords;
 }
 
 // switch case version of main menu prompt, keeping in case we need it later
@@ -525,10 +557,6 @@ void LMS::returnPrompt() {
 }
 
 void LMS::renewPrompt() {
-
-}
-
-void LMS::getRecommendationsPrompt() {
 
 }
 

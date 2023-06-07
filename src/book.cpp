@@ -101,3 +101,7 @@ bool Book::operator==(const Book& operand) const {
 bool Book::operator!=(const Book& operand) const {
     return !(*this == operand);
 }
+
+bool Book::operator<(const Book& operand) const {
+    return ( title + author ) < ( operand.title + operand.author );
+}

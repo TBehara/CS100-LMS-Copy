@@ -193,6 +193,27 @@ TEST(bookTests, testBookEqualityMultiGenre) {
     EXPECT_NE(b3, b2);
 }
 
+TEST(bookTests, testInequality) {
+    Book b1("abc", "def", list<Book::Genre>());
+    Book b2("zyx", "wvu", list<Book::Genre>());
+    EXPECT_TRUE(b1 < b2);
+    EXPECT_FALSE(b2 < b1);
+}
+
+TEST(bookTests, testSameTitleInequality) {
+    Book b1("abc", "def", list<Book::Genre>());
+    Book b2("abc", "zyx", list<Book::Genre>());
+    EXPECT_TRUE(b1 < b2);
+    EXPECT_FALSE(b2 < b1);
+}
+
+TEST(bookTests, testSameAuthorInequality) {
+    Book b1("abc", "def", list<Book::Genre>());
+    Book b2("zyx", "def", list<Book::Genre>());
+    EXPECT_TRUE(b1 < b2);
+    EXPECT_FALSE(b2 < b1);
+}
+
 TEST(userTests, testGuestUser) {
     User defaultUser;
     EXPECT_EQ(defaultUser.getUsername(), "Guest");
