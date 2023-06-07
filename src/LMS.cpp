@@ -19,8 +19,6 @@ using json = nlohmann::json;
 #include <unistd.h>
 #endif
 
-Book::Genre stringToGenre(string genre);
-
 LMS::LMS() {
     welcomePrompt();
 }
@@ -337,8 +335,8 @@ list<Book> LMS::browseByGenre() {
     string userInput = "";
     cin.get();
     getline(cin, userInput);
-    //TODO: search by actual genre input
-    auto resultEntries = searchBase.searchByGenre(Book::Genre::FICTION); //Hardcoded for now
+    auto resultEntries = searchBase.searchByGenre(Book::stringToGenre(userInput)); 
+
     return bookEntriesToBooks(resultEntries);
 }
 
@@ -457,41 +455,6 @@ void LMS::viewAccountPrompt(const User &user) {
 }
 
 // admin prompts
-
-Book::Genre stringToGenre(string genre){
-    if(genre=="Fiction"){
-        return Book::Genre::FICTION;
-    }
-    else if(genre=="Nonfiction"){
-        return Book::Genre::NONFICTION;
-    }
-    else if(genre=="Fantasy"){
-        return Book::Genre::FANTASY;
-    }
-    else if(genre=="Novel"){
-        return Book::Genre::NOVEL;
-    }
-    else if(genre=="Mystery"){
-        return Book::Genre::MYSTERY;
-    }
-    else if(genre=="SciFi"){
-        return Book::Genre::SCIFI;
-    }
-    else if(genre=="Historical Fiction"){
-        return Book::Genre::HISTORICAL_FICTION;
-    }
-    else if(genre=="Literary Fiction"){
-        return Book::Genre::LITERARY_FICTION;
-    }
-    else if(genre=="Narrative"){
-        return Book::Genre::NARRATIVE;
-    }
-    else{
-        return Book::Genre::ALWAYS_AT_END;
-        std::cout << "Invalid Genre. Try Again." << std::endl;
-    }
-}
-
 void LMS::manageBooksPrompt() {
     string adminInput = " ";
     std::cin.clear();
@@ -514,7 +477,7 @@ void LMS::manageBooksPrompt() {
                 std::cout << "Enter 'q' to quit:" << std::endl;
                 std::getline(std::cin, genre);
 
-                Book::Genre genreToAdd = stringToGenre(genre);
+                Book::Genre genreToAdd = Book::stringToGenre(genre);
                 if(genreToAdd!=Book::Genre::ALWAYS_AT_END){
                     bool alreadyPresent = false;
                     for(auto it : genres){
@@ -554,7 +517,7 @@ void LMS::manageBooksPrompt() {
             if(adminInput=="1"){
                 std::cout << "Enter a genre: " << std::endl;
                 std::getline(std::cin, searchTerm);
-                Book::Genre genre = stringToGenre(searchTerm);
+                Book::Genre genre = Book::stringToGenre(searchTerm);
                 if(genre==Book::Genre::ALWAYS_AT_END){
                     std::cout << "Invalid Genre" << std::endl;
                 }

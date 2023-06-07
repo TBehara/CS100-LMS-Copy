@@ -26,6 +26,8 @@ class Book {
 
         void removeGenre(Genre);
 
+        static Genre stringToGenre(const string &genre);
+
         string getAuthor() const;
 
         void setAuthor(const string&);

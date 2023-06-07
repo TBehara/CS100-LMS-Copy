@@ -3,10 +3,13 @@
 #include <list>
 #include <stdexcept>
 #include <cassert>
+#include <iostream>
 
 using std::string;
 using std::list;
 using std::runtime_error;
+using std::cout;
+using std::endl;
 
 Book::Book(const string& title, const string& author, const list<Book::Genre> &genres, int total) : title(title), author(author), genres(genres), available(total), total(total) {
 }
@@ -90,6 +93,40 @@ bool Book::genresEqual(const list<Genre>& operand1, const list<Genre>& operand2)
         if(it == 1) return false;
     }
     return true;
+}
+
+Book::Genre Book::stringToGenre(const string &genre) {
+    if(genre=="Fiction"){
+        return Book::Genre::FICTION;
+    }
+    else if(genre=="Nonfiction"){
+        return Book::Genre::NONFICTION;
+    }
+    else if(genre=="Fantasy"){
+        return Book::Genre::FANTASY;
+    }
+    else if(genre=="Novel"){
+        return Book::Genre::NOVEL;
+    }
+    else if(genre=="Mystery"){
+        return Book::Genre::MYSTERY;
+    }
+    else if(genre=="SciFi"){
+        return Book::Genre::SCIFI;
+    }
+    else if(genre=="Historical Fiction"){
+        return Book::Genre::HISTORICAL_FICTION;
+    }
+    else if(genre=="Literary Fiction"){
+        return Book::Genre::LITERARY_FICTION;
+    }
+    else if(genre=="Narrative"){
+        return Book::Genre::NARRATIVE;
+    }
+    else{
+        return Book::Genre::ALWAYS_AT_END;
+        std::cout << "Invalid Genre. Try Again." << std::endl;
+    }
 }
 
 bool Book::operator==(const Book& operand) const {
