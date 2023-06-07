@@ -205,6 +205,7 @@ void LMS::loginPrompt() {
             else {
                 if (adminStatus) {
                     Admin *admin = new Admin(currentUser, 0);
+                    delete currentUser;
                     currentUser = admin;
                 }
                 mainMenuPrompt();
@@ -217,6 +218,7 @@ void LMS::loginPrompt() {
     else {
         if (adminStatus) {
             Admin *admin = new Admin(currentUser, 0);
+            delete currentUser;
             currentUser = admin;
         }
         mainMenuPrompt();
@@ -246,18 +248,17 @@ void LMS::mainMenuPrompt() {
     } else if (input == "7") {
         jsonManager::updateJSON(currentUser);
         return;
-    } 
-    if (adminStatus) {
+    } else if (adminStatus) {
         if (input == "8") {
             manageBooksPrompt();
         } else if (input == "9") {
+            std::cin.ignore();
             addAdminPrompt();
         }
     } else {
         std::cout << "Invalid input. Please try again" << std::endl;
         mainMenuPrompt();
     }
-
     mainMenuPrompt();
 }
 
