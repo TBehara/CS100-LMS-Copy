@@ -15,6 +15,7 @@ ADD_EXECUTABLE(LMS
     src/search_base.cpp
     src/jsonManager.cpp
     src/user.cpp
+    src/admin.cpp
     src/book.cpp
     src/LMS.cpp
     libraries/hash/sha256.cpp
