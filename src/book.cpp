@@ -124,8 +124,8 @@ Book::Genre Book::stringToGenre(const string &genre) {
         return Book::Genre::NARRATIVE;
     }
     else{
-        return Book::Genre::ALWAYS_AT_END;
         std::cout << "Invalid Genre. Try Again." << std::endl;
+        return Book::Genre::ALWAYS_AT_END;
     }
 }
 

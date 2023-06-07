@@ -336,7 +336,6 @@ list<Book> LMS::browseByGenre() {
     cin.get();
     getline(cin, userInput);
     auto resultEntries = searchBase.searchByGenre(Book::stringToGenre(userInput)); 
-
     return bookEntriesToBooks(resultEntries);
 }
 
