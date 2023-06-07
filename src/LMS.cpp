@@ -239,7 +239,7 @@ void LMS::mainMenuPrompt() {
             // get book recommendations
         } else if (input == "9") {
             jsonManager::updateJSON(currentUser);
-            return;
+            exit(0);
         } else {
             std::cout << "Invalid input. Please try again" << std::endl;
             mainMenuPrompt();
