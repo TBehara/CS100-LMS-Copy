@@ -247,7 +247,7 @@ void LMS::mainMenuPrompt() {
         // get book recommendations
     } else if (input == "7") {
         jsonManager::updateJSON(currentUser);
-        return;
+        exit(0);
     } else if (adminStatus) {
         if (input == "8") {
             manageBooksPrompt();
