@@ -4,6 +4,13 @@ Admin::Admin() : User(), priority(0) {}
 
 Admin::Admin(const string& username, const string& password, int _priority) : User(username, password), priority(_priority) {}
 
+Admin::Admin(User* user, int _priority) : User(user->getUsername(), user->hashPassword()), priority(_priority) {
+    this->setCheckedOutBooks(user->getCheckedOutBooks());
+    this->setFine(user->getFine());
+    this->setPrevBookNames(user->getPrevBookNames());
+    this->setInterestKeywords(user->getInterestKeywords());
+}
+
 unsigned int Admin::getPriority() {
     return priority;
 }

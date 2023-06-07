@@ -1,10 +1,13 @@
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 #include "../header/LMS.hpp"
 #include "../header/jsonManager.hpp"
 #include "../libraries/nlohmann/json.hpp"
 #include "../header/book.hpp"
+#include "../header/user.hpp"
+#include "../header/admin.hpp"
 
 using json = nlohmann::json;
 
@@ -16,6 +19,7 @@ using json = nlohmann::json;
 #include <unistd.h>
 #endif
 
+Book::Genre stringToGenre(string genre);
 
 LMS::LMS() {
     welcomePrompt();
@@ -156,8 +160,6 @@ void LMS::loginPrompt() {
     std::string password;
     std::string hashPassword;
 
-
-
     std::cout << "\t\t\tLogin" << std::endl;
     std::cout << std::endl;
     std::cout << "Username: ";
@@ -165,51 +167,62 @@ void LMS::loginPrompt() {
     std::getline(std::cin, username);
     currentUser = new User();
     currentUser->setUsername(username);
-    string foundUser = jsonManager::loadUser(currentUser);
-    currentUser->setHash(foundUser);
-    if (foundUser == "false") {
+    bool adminStatus = false;
+    try {
+        adminStatus = jsonManager::loadUser(currentUser);
+    }
+    catch (...) {
         std::cout << "This username does not exist in our system. We will redirect you to the sign up page where you can create an account." << std::endl;
         signUpPrompt();
     }
-    else {
-        string userChoice;
-        std::cout << "Password: ";
-        setStdInEcho(false);
-        std::getline(std::cin, password);
-        setStdInEcho(true);
-        std::cout << std::endl;
+    string foundUser = currentUser->hashPassword();
+    string userChoice;
+    std::cout << "Password: ";
+    setStdInEcho(false);
+    std::getline(std::cin, password);
+    setStdInEcho(true);
+    std::cout << std::endl;
 
-        if (sha256(password) != foundUser) {
-            std::cout << "The password you have entered is incorrect." << std::endl;
-            std::cout << "Enter C to get 3 tries to get the correct password. If all three tries are incorrect, you will be directed to the sign up page. Any other input will direct you to the sign up page to create a new account." << std::endl;
-            std::getline(std::cin, userChoice);
-            if (userChoice == "C" || userChoice == "c") {
-                bool successLog = false;
-                for (int iter = 0; iter < 3; iter++) {
-                    std::cout << "Password: ";
-                    setStdInEcho(false);
-                    std::getline(std::cin, password);
-                    setStdInEcho(true);
-                    if (sha256(password) == foundUser) {
-                        successLog = true;
-                        break;
-                    }
-                }
-                if (!successLog) {
-                    std::cout << "You will be directed to the signup page to create a new account." << std::endl;
-                    signUpPrompt();
-                }
-                else {
-                    mainMenuPrompt();
+    if (sha256(password) != foundUser) {
+        std::cout << "The password you have entered is incorrect." << std::endl;
+        std::cout << "Enter C to get 3 tries to get the correct password. If all three tries are incorrect, you will be directed to the sign up page. Any other input will direct you to the sign up page to create a new account." << std::endl;
+        std::getline(std::cin, userChoice);
+        if (userChoice == "C" || userChoice == "c") {
+            bool successLog = false;
+            for (int iter = 0; iter < 3; iter++) {
+                std::cout << "Password: ";
+                setStdInEcho(false);
+                std::getline(std::cin, password);
+                setStdInEcho(true);
+                if (sha256(password) == foundUser) {
+                    successLog = true;
+                    break;
                 }
             }
-            else {
+            if (!successLog) {
+                std::cout << "You will be directed to the signup page to create a new account." << std::endl;
                 signUpPrompt();
+            }
+            else {
+                if (adminStatus) {
+                    Admin *admin = new Admin(currentUser, 0);
+                    delete currentUser;
+                    currentUser = admin;
+                }
+                mainMenuPrompt();
             }
         }
         else {
-            mainMenuPrompt();
+            signUpPrompt();
         }
+    }
+    else {
+        if (adminStatus) {
+            Admin *admin = new Admin(currentUser, 0);
+            delete currentUser;
+            currentUser = admin;
+        }
+        mainMenuPrompt();
     }
 }
 
@@ -220,52 +233,32 @@ void LMS::mainMenuPrompt() {
 
     std::string input;
     std::cin >> input;
-    if (adminStatus) {
-        if (input == "1") {
-            // manage books in system
-        } else if (input == "2") {
-            // add lower level admin
-        } else if (input == "3") {
-            checkoutCart();
-        } else if (input == "4") {
-            returnPrompt();
-        } else if (input == "5") {
-            // renew a book
-        } else if (input == "6") {
-            browsePrompt();
-        } else if (input == "7") {
-            displayUserDetails();
-        } else if (input == "8") {
-            getRecommendationsPrompt();
+
+    if (input == "1") {
+        checkoutCart();
+    } else if (input == "2") {
+        returnPrompt();
+    } else if (input == "3") {
+        // renew a book
+    } else if (input == "4") {
+        browsePrompt();
+    } else if (input == "5") {
+        displayUserDetails();
+    } else if (input == "6") {
+        getRecommendationsPrompt();
+    } else if (input == "7") {
+        jsonManager::updateJSON(currentUser);
+        exit(0);
+    } else if (adminStatus) {
+        if (input == "8") {
+            manageBooksPrompt();
         } else if (input == "9") {
-            jsonManager::updateJSON(currentUser);
-            exit(0);
-        } else {
-            std::cout << "Invalid input. Please try again" << std::endl;
-            mainMenuPrompt();
+            std::cin.ignore();
+            addAdminPrompt();
         }
     } else {
-        if (input == "1") {
-            checkoutCart();
-        } else if (input == "2") {
-            returnPrompt();
-        } else if (input == "3") {
-            // renew a book
-        } else if (input == "4") {
-            browsePrompt();
-        } else if (input == "5") {
-            displayUserDetails();
-        } else if (input == "6") {
-            getRecommendationsPrompt();
-        } else if (input == "7") {
-            jsonManager::updateJSON(currentUser);
-            exit(0);
-        } else {
             std::cout << "Invalid input. Please try again" << std::endl;
-            mainMenuPrompt();
-        }
     }
-
     mainMenuPrompt();
 }
 
@@ -399,7 +392,6 @@ void LMS::browsePrompt() {
         default:
             return;
     }
-    //BELOW IS PART OF A PROTOTYPE/EXAMPLE
     
     int searchOption = 0;
     while(searchOption != 2) {
@@ -566,8 +558,154 @@ void LMS::viewAccountPrompt(const User &user) {
 
 // admin prompts
 
-void LMS::manageBooksPrompt() {
+Book::Genre stringToGenre(string genre){
+    if(genre=="Fiction"){
+        return Book::Genre::FICTION;
+    }
+    else if(genre=="Nonfiction"){
+        return Book::Genre::NONFICTION;
+    }
+    else if(genre=="Fantasy"){
+        return Book::Genre::FANTASY;
+    }
+    else if(genre=="Novel"){
+        return Book::Genre::NOVEL;
+    }
+    else if(genre=="Mystery"){
+        return Book::Genre::MYSTERY;
+    }
+    else if(genre=="SciFi"){
+        return Book::Genre::SCIFI;
+    }
+    else if(genre=="Historical Fiction"){
+        return Book::Genre::HISTORICAL_FICTION;
+    }
+    else if(genre=="Literary Fiction"){
+        return Book::Genre::LITERARY_FICTION;
+    }
+    else if(genre=="Narrative"){
+        return Book::Genre::NARRATIVE;
+    }
+    else{
+        return Book::Genre::ALWAYS_AT_END;
+        std::cout << "Invalid Genre. Try Again." << std::endl;
+    }
+}
 
+void LMS::manageBooksPrompt() {
+    string adminInput = " ";
+    std::cin.clear();
+    while(adminInput != "3"){
+        string input;
+        std::cout << "Manage Books in Library System" << std::endl;
+        std::cout << "1. Add Book to System" << std::endl;
+        std::cout << "2. Remove Book from System" << std::endl;
+        std::cout << "3. Back to Menu" << std::endl;
+        std::getline(std::cin, adminInput);
+
+        if(adminInput == "1"){
+            list<Book::Genre> genres;
+            string title, author;
+            int amount;
+
+            std::cout << "Enter the Book's Genre(s). At least 1 is required." << std::endl;
+            string genre;
+            while(genre!="q" || genres.empty()){
+                std::cout << "Enter 'q' to quit:" << std::endl;
+                std::getline(std::cin, genre);
+
+                Book::Genre genreToAdd = stringToGenre(genre);
+                if(genreToAdd!=Book::Genre::ALWAYS_AT_END){
+                    bool alreadyPresent = false;
+                    for(auto it : genres){
+                        if(it==genreToAdd){
+                            alreadyPresent = true;
+                            break;
+                        }
+                    }
+                    if(!alreadyPresent){
+                        genres.push_back(genreToAdd);
+                    }
+                }
+            }
+
+            std::cout << "Enter the Book's Title" << std::endl;
+            std::getline(std::cin, title);
+            std::cout << "Enter the Book's Author" << std::endl;
+            std::getline(std::cin, author);
+            std::cout << "How many of this Book is there" << std::endl;
+            std::cin.clear();
+            std::cin >> amount;
+            std::cin.clear();
+
+            Book book = Book(title, author, genres, amount);
+            searchBase.addBook(book);
+        }
+        else if(adminInput == "2"){
+            std::cout << "Delete Book by:" << std::endl;
+            std::cout << "1. Delete Book by Genre" << std::endl;
+            std::cout << "2. Delete Book by Title" << std::endl;
+            std::cout << "3. Delete Book by Keyword (Author or Title)" << std::endl;
+            std::getline(std::cin, adminInput);
+
+            //TODO: Delete Book through SearchBase
+            string searchTerm = "";
+            list<list<Book>::iterator> booksToDelete = list<list<Book>::iterator>();
+            if(adminInput=="1"){
+                std::cout << "Enter a genre: " << std::endl;
+                std::getline(std::cin, searchTerm);
+                Book::Genre genre = stringToGenre(searchTerm);
+                if(genre==Book::Genre::ALWAYS_AT_END){
+                    std::cout << "Invalid Genre" << std::endl;
+                }
+                else{
+                    booksToDelete = searchBase.searchByGenre(genre);
+                }
+            }
+            else if(adminInput=="2"){
+                std::cout << "Enter a title: " << std::endl;
+                std::getline(std::cin, searchTerm);
+                booksToDelete = searchBase.searchByTerm(searchTerm);
+            }
+            else if(adminInput=="3"){
+                std::cout << "Enter an keyword: " << std::endl;
+                std::getline(std::cin, searchTerm);
+                booksToDelete = searchBase.searchByTerms(searchTerm);
+            }
+            else{
+                std::cout << "Invalid Input" << std::endl;
+            }
+
+            if(adminInput=="1" || adminInput=="2" || adminInput=="3" && !booksToDelete.empty()){
+                std::cout << "Search Results:" << std::endl;
+                for(auto it : booksToDelete){
+                    std::cout << it->getTitle() << std::endl;
+                }
+
+                bool bookDeleted = false;
+                std::cout << std::endl << "Enter a book to Delete:" << std::endl;
+                std::getline(std::cin, adminInput);
+                for(auto it : booksToDelete){
+                    if(it->getTitle()==adminInput){
+                        bookDeleted = true;
+                        searchBase.removeBook(it);
+                        std::cout << adminInput << " has been deleted." << std::endl;
+                        break;
+                    }
+                }
+                if(!bookDeleted){
+                    std::cout << "Could not find " << adminInput << std::endl;
+                }
+            }
+            else{
+                std::cout << "No results found" << std::endl;
+            }
+        }
+        else{
+            std::cout << "Invalid Input" << std::endl << std::endl;
+        }
+        std::cin.clear();
+    }
 }
 
 void LMS::addAdminPrompt() {

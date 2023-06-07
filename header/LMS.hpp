@@ -11,7 +11,7 @@
 class LMS {
     private:
         User *currentUser;
-        list<Book> bookDatabase;
+        //list<Book> bookDatabase;
         SearchBase searchBase;
         list<Book> cart;
     public:
