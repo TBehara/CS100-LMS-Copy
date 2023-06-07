@@ -20,8 +20,7 @@ void Admin::displayMenu() {
     std::cout << std::endl;
     std::cout << "Additional Admin Controls" << std::endl;
     std::cout << "8. Manage Books in System" << std::endl;
-    std::cout << "9. Add Lower Level Admin" << std::endl;
-    
+    std::cout << "9. Add Lower Level Admin" << std::endl;    
 }
 
 bool Admin::getAdminStatus() {

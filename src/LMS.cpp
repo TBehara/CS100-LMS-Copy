@@ -458,7 +458,7 @@ void LMS::viewAccountPrompt(const User &user) {
 // admin prompts
 
 void LMS::manageBooksPrompt() {
-
+    //std::cout << 
 }
 
 void LMS::addAdminPrompt() {

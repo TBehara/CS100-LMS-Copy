@@ -4,6 +4,7 @@
 #include "../libraries/nlohmann/json.hpp"
 using json = nlohmann::json;
 #include "../header/user.hpp"
+#include "../header/admin.hpp"
 #include <iostream>
 #include <fstream>
 #include <cstdio>
