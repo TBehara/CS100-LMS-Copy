@@ -25,5 +25,6 @@ class jsonManager {
         static bool findBook(string bookTitle, Book& toReturn, string fileName);
         static list<Book> loadBooks();
         static list<Book> loadUserBooks(User* toLoad);
+        static void clearBookBase();
 };
 #endif

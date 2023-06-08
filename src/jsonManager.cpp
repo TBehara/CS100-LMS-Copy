@@ -363,3 +363,13 @@ list<Book> jsonManager::loadUserBooks(User* toLoad) {
     loadINFS.close();
     return toReturn;
 }
+
+void jsonManager::clearBookBase() {
+    string rmFile = "JSON/BookBase.json";
+    int deleteFile = remove(rmFile.c_str());
+    json bookBaseOBJ;
+    auto bookBaseList = bookBaseList.array();
+    ifstream bookBaseStream(rmFile);
+    bookBaseStream << bookBaseList.dump(4) << endl;
+    bookBaseStream.close();
+}

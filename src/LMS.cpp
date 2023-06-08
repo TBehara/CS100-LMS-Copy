@@ -569,9 +569,24 @@ void LMS::adminRemoveBookPrompt() {
     std::string removeTitle;
     std::cout << "Please enter the title of the book you want to remove." << std::endl;
     getline(std::cin, removeTitle);
-    
+    list<Book::Genre> tempGenreList;
+    Book toRemove("", "", tempGenreList);
+    bool foundBook = jsonManager::findBook(removeTitle, toRemove, "BookBase.json");
+    if (foundBook) {
+        list<Book> oldList = searchBase.getBooks();
+        list<Book> newList;
+        //loop through old list and pushback if iter is not equal to currBook
+        for (Book iter: oldList) {
+            if (iter != toRemove) {
+                newList.push_back(iter);
+            }
+        }
+        jsonManager::clearBookBase();
+        for (Book iter: newList) {
+            jsonManager::addToSearchBase(iter);
+        }
+    }
 }
-
 
 
 void LMS::addAdminPrompt() {
