@@ -243,7 +243,7 @@ void LMS::mainMenuPrompt() {
     } else if (input == "5") {
         displayUserDetails();
     } else if (input == "6") {
-        // get book recommendations
+        getRecommendationsPrompt();
     } else if (input == "7") {
         jsonManager::updateJSON(currentUser);
         exit(0);
@@ -255,11 +255,116 @@ void LMS::mainMenuPrompt() {
             addAdminPrompt();
         }
     } else {
-        std::cout << "Invalid input. Please try again" << std::endl;
-        mainMenuPrompt();
+            std::cout << "Invalid input. Please try again" << std::endl;
     }
     mainMenuPrompt();
 }
+
+void LMS::getRecommendationsPrompt() {
+    string keywords = getRecommendationKeywords();
+    set<Book> results = compressResults(searchBase.searchByTerms(keywords));
+    cout << endl << "Recommended Books: ";
+    for(auto it : results) {
+        cout << it.getTitle() << " by " << it.getAuthor() << ", ";
+    }
+    cout << endl << endl;
+}
+
+set<Book> LMS::compressResults(list<list<Book>::iterator> results) {
+    set<Book> compressedResults;
+    for(auto it : results) {
+        compressedResults.insert(*it);
+    }
+    return compressedResults;
+}
+
+string LMS::getRecommendationKeywords() {
+    string keywords;
+    for(auto it : currentUser->getPrevBookNames()) {
+        keywords += it + " ";
+    }
+    for(auto it : currentUser->getCheckedOutBooks()) {
+        keywords += it.getTitle() + " " + it.getAuthor() + " ";
+    }
+    for(auto it : currentUser->getInterestKeywords()) {
+        keywords += it + " ";
+    }
+    return keywords;
+}
+
+// switch case version of main menu prompt, keeping in case we need it later
+// void LMS::mainMenuPrompt() {
+//     currentUser->displayMenu();
+
+//     bool adminStatus = currentUser->getAdminStatus();
+
+//     int input;
+//     std::cin >> input;
+
+//     if (adminStatus) {
+//         switch (input) {
+//             case 1:
+//                 // manage books in system
+//                 break;
+//             case 2:
+//                 // add lower level admin
+//                 break;
+//             case 3:
+//                 checkoutCart();
+//                 break;
+//             case 4:
+//                 // return a book
+//                 break;
+//             case 5:
+//                 // renew a book
+//                 break;
+//             case 6:
+//                 browsePrompt();
+//                 break;
+//             case 7:
+//                 displayUserDetails();
+//                 break;
+//             case 8:
+//                 // get book recommendations
+//                 break;
+//             case 9:
+//                 jsonManager::updateJSON(currentUser);
+//                 return;
+//             default:
+//                 std::cout << "Invalid input. Please try again" << std::endl;
+//                 mainMenuPrompt();
+//                 break;
+//         }
+//     } else {
+//         switch (input) {
+//             case 1:
+//                 checkoutCart();
+//                 break;
+//             case 2:
+//                 // return a book
+//                 break;
+//             case 3:
+//                 // renew a book
+//                 break;
+//             case 4:
+//                 browsePrompt();
+//                 break;
+//             case 5:
+//                 displayUserDetails();
+//                 break;
+//             case 6:
+//                 // get book recommendations
+//                 break;
+//             case 7:
+//                 jsonManager::updateJSON(currentUser);
+//                 return;
+//             default:
+//                 std::cout << "Invalid input. Please try again" << std::endl;
+//                 mainMenuPrompt();
+//                 break;
+//         }
+//     }
+// }
 
 void LMS::browsePrompt() {
     std::cout << std::endl;
@@ -285,7 +390,6 @@ void LMS::browsePrompt() {
         default:
             return;
     }
-    //BELOW IS PART OF A PROTOTYPE/EXAMPLE
     
     int searchOption = 0;
     while(searchOption != 2) {
@@ -442,10 +546,6 @@ void LMS::returnPrompt() {
 }
 
 void LMS::renewPrompt() {
-
-}
-
-void LMS::getRecommendationsPrompt() {
 
 }
 

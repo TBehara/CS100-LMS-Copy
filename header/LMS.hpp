@@ -1,6 +1,8 @@
 #ifndef LMS_HPP
 #define LMS_HPP
 
+#include <set>
+
 #include "user.hpp"
 #include "search_base.hpp"
 #include "../libraries/hash/sha256.h"
@@ -33,6 +35,8 @@ class LMS {
         void returnPrompt();
         void renewPrompt();
         void getRecommendationsPrompt();
+        set<Book> compressResults(list<list<Book>::iterator>);
+        string getRecommendationKeywords();
         void viewAccountPrompt(const User&);
         // admin exclusive prompts
         void manageBooksPrompt();

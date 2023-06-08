@@ -45,6 +45,8 @@ class Book {
         bool operator==(const Book&) const;
 
         bool operator!=(const Book&) const;
+
+        bool operator<(const Book&) const;
     private:
         list<Genre> genres;
 };
