@@ -39,17 +39,47 @@ void LMS::welcomePrompt() {
                 << "Press S to sign up for a new account" << std::endl
                 << "Press Q to quit the program" << std::endl;
     std::cin >> input;
+    //std::cout << input;
+    bool inputValid = false;
+    
     if (input == "Q" || input == "q") {
+        //std::cout << "ENTERED IF FOR Q" << std::endl;
+        inputValid = true;
         return;
     }
     else if (input == "L" || input == "l") {
+        //std::cout << "ENTERED IF FOR L" << std::endl;
+        inputValid = true;
         loginPrompt();
-    } else if (input == "S" || input == "s") {
+    } 
+    else if (input == "S" || input == "s") {
+        //std::cout << "ENTERED IF FOR S" << std::endl;
+        inputValid = true;
         signUpPrompt();
-    } else {
-        std::cout << "Invalid input. Please try again" << std::endl;
-        welcomePrompt();
     }
+
+    while (!inputValid) {
+        //std::cout << "Invalid input. Please try again" << std::endl;
+        if (input == "Q" || input == "q") {
+            inputValid = true;
+            return;
+        }
+        else if (input == "L" || input == "l") {
+            inputValid = true;
+            loginPrompt();
+        } 
+        else if (input == "S" || input == "s") {
+            inputValid = true;
+            signUpPrompt();
+        }
+    } 
+
+
+
+    //else {
+    //     std::cout << "Invalid input. Please try again" << std::endl;
+    //     welcomePrompt();
+    // }
 }
 
 void LMS::signUpPrompt() {
@@ -66,7 +96,7 @@ void LMS::signUpPrompt() {
     if (userChoice == "Q" || userChoice == "q") {
         welcomePrompt();
         return;
-    }        
+    } 
     
     std::cout   << "Username: ";
     std::getline(std::cin, username);
@@ -174,6 +204,7 @@ void LMS::loginPrompt() {
     catch (...) {
         std::cout << "This username does not exist in our system. We will redirect you to the sign up page where you can create an account." << std::endl;
         signUpPrompt();
+        return;
     }
     string foundUser = currentUser->hashPassword();
     string userChoice;
@@ -202,6 +233,7 @@ void LMS::loginPrompt() {
             if (!successLog) {
                 std::cout << "You will be directed to the signup page to create a new account." << std::endl;
                 signUpPrompt();
+                return;
             }
             else {
                 if (adminStatus) {
@@ -214,6 +246,7 @@ void LMS::loginPrompt() {
         }
         else {
             signUpPrompt();
+            return;
         }
     }
     else {
