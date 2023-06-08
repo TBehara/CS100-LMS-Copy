@@ -18,6 +18,7 @@ string toLower(string mixed) {
 }
 
 void SearchBase::addBook(const Book& toAdd) {
+    //cout << "Called add book" << endl;
     bookDatabase.push_back(toAdd);
     list<Book>::iterator added = bookDatabase.end();
     --added;

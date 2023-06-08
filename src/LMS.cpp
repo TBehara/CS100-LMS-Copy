@@ -19,6 +19,7 @@ using json = nlohmann::json;
 #include <unistd.h>
 #endif
 
+Book::Genre stringToGenre(string genre);
 
 LMS::LMS() {
     welcomePrompt();
@@ -518,8 +519,9 @@ void LMS::adminAddBookPrompt() {
 }
 
 void LMS::adminRemoveBookPrompt() {
-
 }
+
+
 
 void LMS::addAdminPrompt() {
     std::cout   << "\t\tAdd Admin" << std::endl
