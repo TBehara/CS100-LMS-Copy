@@ -18,17 +18,21 @@ string toLower(string mixed) {
 }
 
 void SearchBase::addBook(const Book& toAdd) {
-    //cout << "Called add book" << endl;
+    std::cout << "Called add book" << std::endl;
     bookDatabase.push_back(toAdd);
+    std::cout << "BookDB size1: " << bookDatabase.size() << std::endl;
     list<Book>::iterator added = bookDatabase.end();
     --added;
+    std::cout << "BookDB size2: " << bookDatabase.size() << std::endl;
     vector<string> stringTerms = parseString(toAdd.getTitle() + " " + toAdd.getAuthor());
     for(auto it : stringTerms) {
         addBookTermEntry(added, it);
     }
+    std::cout << "BookDB size3: " << bookDatabase.size() << std::endl;
     for(auto it : toAdd.getGenres()) {
         addBookGenreEntry(added, it);
     }
+    std::cout << "BookDB size4: " << bookDatabase.size() << std::endl;
 }
 
 void SearchBase::removeBook(list<Book>::iterator toRemove) {
@@ -67,9 +71,15 @@ list<list<Book>::iterator> SearchBase::searchByTerm(const string& term) {
 list<list<Book>::iterator> SearchBase::searchByTerms(const string& fullEntry) {
     list<list<Book>::iterator> results;
     vector<string> individualEntries = parseString(fullEntry);
+    std::cout << "INDIVIDUAL ENTRIES SIZE: " << individualEntries.size() << std::endl;
+    int timesLoopRan = 0;
     for(auto it : individualEntries) {
+        timesLoopRan++;
         results.splice(results.end(), searchByTerm(it));
+        std::cout << "RESULTS SIZE: " << results.size() << std::endl;
     }
+    std::cout << timesLoopRan << std::endl;
+    std::cout << "RESULTS END SIZE: " << results.size() << std::endl;
     return results;
 }
 

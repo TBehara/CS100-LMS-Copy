@@ -154,6 +154,11 @@ void LMS::signUpPrompt() {
     currentUser->setInterestKeywords(userInterests);
     //add to JSON
     jsonManager::write(currentUser);
+    //load search base
+    list<Book> bookList = jsonManager::loadBooks();
+    for (Book iter: bookList) {
+        searchBase.addBook(iter);
+    }
     //display menu
     mainMenuPrompt();
 }
@@ -241,6 +246,10 @@ void LMS::loginPrompt() {
                     delete currentUser;
                     currentUser = admin;
                 }
+                list<Book> bookList = jsonManager::loadBooks();
+                for (Book iter: bookList) {
+                    searchBase.addBook(iter);
+                }
                 mainMenuPrompt();
             }
         }
@@ -254,6 +263,10 @@ void LMS::loginPrompt() {
             Admin *admin = new Admin(currentUser, 0);
             delete currentUser;
             currentUser = admin;
+        }
+        list<Book> bookList = jsonManager::loadBooks();
+        for (Book iter: bookList) {
+            searchBase.addBook(iter);
         }
         mainMenuPrompt();
     }
@@ -325,6 +338,7 @@ void LMS::browsePrompt() {
     int searchOption = 0;
     while(searchOption != 2) {
         std::cout << std::endl;
+        std::cout << "ResultsSize: " << results.size() << std::endl;
         std::cout << "Results:" << std::endl;
         auto it = results.begin();
         for(unsigned i = 0; i < results.size(); ++i) {
@@ -396,6 +410,7 @@ list<Book> LMS::browseByStringInput() {
 
 list<Book> LMS::bookEntriesToBooks(const list<list<Book>::iterator> &entries) {
     list<Book> rawBooks;
+    std::cout << "ENTRIES SIZE: " << entries.size() << std::endl;
     for(auto it : entries) {
         rawBooks.push_back(*it);
     }
@@ -530,8 +545,8 @@ void LMS::adminAddBookPrompt() {
     }
 
     std::cout << "Please enter some of the genres that this book pertains to. Enter Q to stop entering genres." << std::endl;
-    std::cout << "Your options are: FICTION, NONFICTION, FANTASY, NOVEL, MYSTERY, SCIFI, HISTORICAL_FICTION, LITERARY_FICTION, NARRATIVE, and ALWAYS_AT_END" << std::endl;
-    std::cout << "Entering a different value will automatically add FICTION as the book's genre." << std::endl;
+    std::cout << "Your options are: FICTION, NONFICTION, FANTASY, NOVEL, MYSTERY, SCIFI, HISTORICAL_FICTION, LITERARY_FICTION, and NARRATIVE" << std::endl;
+    std::cout << "Please enter one of these options in ALL CAPS. Entering a different value will automatically add ALWAYS_AT_END as the book's genre." << std::endl;
     getline(std::cin, bookGenresResponse);
     if (bookGenresResponse != "Q" && bookGenresResponse != "q") {
         bookGenreList.push_back(stringToGenre(bookGenresResponse));
@@ -544,14 +559,17 @@ void LMS::adminAddBookPrompt() {
     }
 
     const Book toAdd(bookTitleResponse, bookAuthorResponse, bookGenreList);
-    SearchBase bookBase;
-    bookBase.addBook(toAdd);
+    searchBase.addBook(toAdd);
     jsonManager::addToSearchBase(toAdd);
     std::cout << "You have successfully added a book to our system!" << std::endl;
     mainMenuPrompt();
 }
 
 void LMS::adminRemoveBookPrompt() {
+    std::string removeTitle;
+    std::cout << "Please enter the title of the book you want to remove." << std::endl;
+    getline(std::cin, removeTitle);
+    
 }
 
 
