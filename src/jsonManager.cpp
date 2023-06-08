@@ -368,8 +368,8 @@ void jsonManager::clearBookBase() {
     string rmFile = "JSON/BookBase.json";
     int deleteFile = remove(rmFile.c_str());
     json bookBaseOBJ;
-    auto bookBaseList = bookBaseList.array();
-    ifstream bookBaseStream(rmFile);
+    auto bookBaseList = bookBaseOBJ.array();
+    ofstream bookBaseStream(rmFile);
     bookBaseStream << bookBaseList.dump(4) << endl;
     bookBaseStream.close();
 }
