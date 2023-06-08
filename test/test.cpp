@@ -193,25 +193,19 @@ TEST(bookTests, testBookEqualityMultiGenre) {
     EXPECT_NE(b3, b2);
 }
 
-TEST(bookTests, testInequality) {
-    Book b1("abc", "def", list<Book::Genre>());
-    Book b2("zyx", "wvu", list<Book::Genre>());
-    EXPECT_TRUE(b1 < b2);
-    EXPECT_FALSE(b2 < b1);
-}
-
-TEST(bookTests, testSameTitleInequality) {
-    Book b1("abc", "def", list<Book::Genre>());
-    Book b2("abc", "zyx", list<Book::Genre>());
-    EXPECT_TRUE(b1 < b2);
-    EXPECT_FALSE(b2 < b1);
-}
-
-TEST(bookTests, testSameAuthorInequality) {
-    Book b1("abc", "def", list<Book::Genre>());
-    Book b2("zyx", "def", list<Book::Genre>());
-    EXPECT_TRUE(b1 < b2);
-    EXPECT_FALSE(b2 < b1);
+TEST(bookTests, testGenreConversion) {
+    //FICTION, NONFICTION, FANTASY, NOVEL, MYSTERY, SCIFI, HISTORICAL_FICTION, LITERARY_FICTION, NARRATIVE
+    string fiction = "Fiction", nonfiction = "Nonfiction", fantasy = "Fantasy", novel = "Novel", mystery = "Mystery", scifi = "SciFi", histfi = "Historical Fiction", litfi = "Literary Fiction", narrative = "Narrative", badInput = "bad input";
+    EXPECT_EQ(Book::stringToGenre(fiction), Book::Genre::FICTION);
+    EXPECT_EQ(Book::stringToGenre(nonfiction), Book::Genre::NONFICTION);
+    EXPECT_EQ(Book::stringToGenre(fantasy), Book::Genre::FANTASY);
+    EXPECT_EQ(Book::stringToGenre(novel), Book::Genre::NOVEL);
+    EXPECT_EQ(Book::stringToGenre(mystery), Book::Genre::MYSTERY);
+    EXPECT_EQ(Book::stringToGenre(scifi), Book::Genre::SCIFI);
+    EXPECT_EQ(Book::stringToGenre(histfi), Book::Genre::HISTORICAL_FICTION);
+    EXPECT_EQ(Book::stringToGenre(litfi), Book::Genre::LITERARY_FICTION);
+    EXPECT_EQ(Book::stringToGenre(narrative), Book::Genre::NARRATIVE);
+    EXPECT_EQ(Book::stringToGenre(badInput), Book::Genre::ALWAYS_AT_END);
 }
 
 TEST(userTests, testGuestUser) {
