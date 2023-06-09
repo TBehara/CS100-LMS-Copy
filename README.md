@@ -51,7 +51,7 @@
 ![Checkout Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007958447890473/Library.Management.System.Screen.Layout-11.png)
 
 ## Class Diagram
- ![Class Diagram](https://cdn.discordapp.com/attachments/903147534321582092/1111492444681412749/UML_Diagram-SOLID_incorporation.drawio_2.png) </br>
+ ![Class Diagram](https://cdn.discordapp.com/attachments/1098140638211485696/1116560452130971728/image.png) </br>
 The project is centered around the LMS class, of which there will exist only 1 LMS object. The purpose of the LMS object is to integrate the CLI (Command Line Interface) with the underlying systems of the project which will provide the desired features specified by the user. The LMS object will have a single reference to the currently signed-in user (or nullptr if the user has not yet logged in) in order to grant the user the ability to perform actions according to their administrative permissions (or lack thereof). There will be a class for users, called User, which will store the typical user data such as the user's name, account balance, and list of checked-out books, along with getter and setter methods to modify these attributes, and other methods that implement actions that all users have the necessary permissions to perform. User also has a virtual method to display the typical User's prompt. There is an admin account which inherits from User and overloads the virtual menu method to add administrative actions to the default menu, with a new attribute and getter method which records the level of clearance that the administrative user has within the system, called priority. The LMS will have a list of all Book objects that exist within the library. The LMS will also contain a single object of the type SearchBase, which will be the class that implements all searching methods required by the program to work as intended. SearchBase will have 2 unordered maps (hashtables), one which maps strings to pointers to the Book objects in LMS's list of books, and one which maps book genres to pointers to the real book objects. Searchbase will have a number of helper functions to break up multi-word strings into lists of single-word strings and methods to add and remove books from the searching database. Finally, the Book class will hold the data relevant to true books in the library, such as a title, author, and genre, number of that book available to check out, and total number of that book belonging to the library. Book will have a custom enum called Genre to list out the genres. Book will also have getter and setter functions for all listed attributes, along with methods to add a specific number of that book to the total or available number of that book (with adding negative values signifying books leaving the library).
  
  ## Phase III
@@ -69,9 +69,15 @@ We also added in a completely new class to manage JSON file I/O for our program'
  > * Make sure your README file and Project board are up-to-date reflecting the current status of your project (e.g. any changes that you have made during the project such as changes to your class diagram). Previous versions should still be visible through your commit history. 
  
  ## Screenshots
- > Screenshots of the input/output after running your application
+![Sign Up](https://cdn.discordapp.com/attachments/903147534321582092/1116567701654077490/Screen_Shot_2023-06-08_at_8.19.40_PM.png) </br>
+![Login](https://cdn.discordapp.com/attachments/903147534321582092/1116568320188096545/Screen_Shot_2023-06-08_at_8.23.43_PM.png) </br>
  ## Installation/Usage
- > Instructions on installing and running your application
+ Run the following terminal commands in the following order within the project directory: <br>
+ cmake . <br>
+ make <br>
+ ./bin/LMS
  ## Testing
- > How was your project tested/validated? If you used CI, you should have a "build passing" badge in this README.
+ We used googletest to unit test individual functions, adding new unit tests for new functions we added. Mimicking continuous integration, we made sure the tests succeeded after changes were made before and after pushing and merging into the master branch. <br>
+ We ran many manual tests to test functions on the front-end, making sure the program's output conformed to our planned screen layouts. <br>
+ We tested for memory leaks by running valgrind on the executible and executing the features we had implemented into the program.
 
