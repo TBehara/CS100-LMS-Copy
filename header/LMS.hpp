@@ -39,8 +39,13 @@ class LMS {
         set<Book> compressResults(list<list<Book>::iterator>);
         string getRecommendationKeywords();
         void viewAccountPrompt(const User&);
+        public:
+        enum Book::Genre stringToGenre(const string& genre);
         // admin exclusive prompts
+        private:
         void manageBooksPrompt();
         void addAdminPrompt();
+        void adminAddBookPrompt();
+        void adminRemoveBookPrompt();
 };
 #endif

@@ -36,11 +36,14 @@ void SearchBase::removeBook(list<Book>::iterator toRemove) {
     for(auto it : termsToRemove) {
         removeBookTermEntry(toRemove, it);
     }
+    int toRemoveSize = toRemove->getGenres().size();
+    int loopCount = 0;
     for(auto it : toRemove->getGenres()) {
         removeBookGenreEntry(toRemove, it);
     }
 
     bookDatabase.erase(toRemove);
+    
 }
 
 list<Book>& SearchBase::getBooks() {
@@ -66,9 +69,12 @@ list<list<Book>::iterator> SearchBase::searchByTerm(const string& term) {
 list<list<Book>::iterator> SearchBase::searchByTerms(const string& fullEntry) {
     list<list<Book>::iterator> results;
     vector<string> individualEntries = parseString(fullEntry);
+    int timesLoopRan = 0;
     for(auto it : individualEntries) {
+        timesLoopRan++;
         results.splice(results.end(), searchByTerm(it));
     }
+    std::cout << timesLoopRan << std::endl;
     return results;
 }
 
