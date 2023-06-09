@@ -44,10 +44,11 @@
 ![User Menu Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775285820506202/Screen_Layout_4.PNG)
 ![Admin Menu Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775286105710775/Screen_Layout_5.PNG)
 ![Browse Books Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775286403502100/Screen_Layout_6.PNG)
-![View Books Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775286638395512/Screen_Layout_7.PNG)
+![View Books Screen](https://cdn.discordapp.com/attachments/903147534321582092/1116857214590787647/Screen_Shot_2023-06-09_at_3.31.42_PM.png)
 ![Admin Manage Books Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775287036846220/Screen_Layout_8.PNG)
 ![Admin Add Admin Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775287330443425/Screen_Layout_9.PNG)
-![Checkout Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775287569531011/Screen_Layout_10.PNG)
+![Checkout Screen](https://cdn.discordapp.com/attachments/903147534321582092/1116857447655673948/Screen_Shot_2023-06-09_at_3.32.37_PM.png)
+![Return Screen](https://cdn.discordapp.com/attachments/903147534321582092/1116857664136298536/Screen_Shot_2023-06-09_at_3.33.29_PM.png)
 
 ## Class Diagram
  ![Class Diagram](https://cdn.discordapp.com/attachments/1098140638211485696/1116560452130971728/image.png) </br>
