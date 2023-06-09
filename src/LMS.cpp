@@ -252,8 +252,8 @@ void LMS::mainMenuPrompt() {
         getRecommendationsPrompt();
     } else if (input == "7") {
         jsonManager::updateJSON(currentUser);
-        delete currentUser;
-        exit(0);
+        //delete currentUser;
+        return;
     } else if (adminStatus) {
         if (input == "8") {
             manageBooksPrompt();
