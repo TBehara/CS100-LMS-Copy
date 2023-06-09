@@ -89,8 +89,8 @@ void LMS::signUpPrompt() {
     std::string confirmPassword;
     std::string userChoice;
     
-    std::cout   << "\t\t\tRegister" << std::endl
-                << "Type Q to exit back to the welcome page. Any other input to continue to signup." << std::endl;
+    std::cout   << "\t\t\tRegister" << std::endl;
+        
             
     std::getline(std::cin, userChoice);
     if (userChoice == "Q" || userChoice == "q") {
@@ -294,6 +294,7 @@ void LMS::mainMenuPrompt() {
         // get book recommendations
     } else if (input == "7") {
         jsonManager::updateJSON(currentUser);
+        //return;
         exit(0);
     } else if (adminStatus) {
         if (input == "8") {
@@ -410,7 +411,6 @@ list<Book> LMS::browseByStringInput() {
 
 list<Book> LMS::bookEntriesToBooks(const list<list<Book>::iterator> &entries) {
     list<Book> rawBooks;
-    std::cout << "ENTRIES SIZE: " << entries.size() << std::endl;
     for(auto it : entries) {
         rawBooks.push_back(*it);
     }
@@ -444,16 +444,10 @@ void LMS::displayUserDetails() {
 }
 
 // main menu prompts
-
-void LMS::checkoutPrompt() {
-
-}
-
 void LMS::returnPrompt() {
-    // Get the user's checked out books
+    //Get the users checked out books
     const list<Book>& checkedOutBooks = currentUser->getBooks();
-
-    // Check if the user has any books checked out
+    //Check if user has any books checked out
     if (checkedOutBooks.empty()) {
         cout << "You don't have any books checked out." << endl;
         return;
@@ -573,18 +567,27 @@ void LMS::adminRemoveBookPrompt() {
     Book toRemove("", "", tempGenreList);
     bool foundBook = jsonManager::findBook(removeTitle, toRemove, "BookBase.json");
     if (foundBook) {
-        list<Book> oldList = searchBase.getBooks();
-        list<Book> newList;
-        //loop through old list and pushback if iter is not equal to currBook
-        for (Book iter: oldList) {
-            if (iter != toRemove) {
-                newList.push_back(iter);
+        list<list<Book>::iterator> deleteBooks;
+        int marker = 1;
+        deleteBooks = searchBase.searchByTerms(removeTitle);
+        for (auto iter: deleteBooks) {
+            string checkTitle =  iter->getTitle();
+            if (checkTitle == removeTitle) {
+                searchBase.removeBook(iter);
+                break;
             }
         }
         jsonManager::clearBookBase();
+        list<Book> newList = searchBase.getBooks();
         for (Book iter: newList) {
+            std::cout << "Adding " << iter.getTitle() << " back to json" << std::endl;
             jsonManager::addToSearchBase(iter);
         }
+        std::cout << "Successfully deleted the book from our system." << std::endl;
+    }
+    else {
+        std::cout << "We could not find this book in our system. We will redirect you back to the main menu." << std::endl;
+        mainMenuPrompt();
     }
 }
 
@@ -609,7 +612,6 @@ void LMS::addAdminPrompt() {
     json userJson = json::parse(userFileStream);
 
     userJson["AdminStatus"] = true;
-    // TODO: add admin priority once it gets implemented
 
     std::ofstream userFileOutStream(userFile);
     userFileOutStream << userJson.dump(4) << std::endl;

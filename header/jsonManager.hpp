@@ -21,7 +21,7 @@ class jsonManager {
         static bool loadUser(User* toRead);
         static string findUserFile(const string&);
         static void addToSearchBase(const Book &book);
-        static void addToUserBase(Book &book, string fileName);
+        static void addToUserBase(list<Book> checkedOutList, string fileName);
         static bool findBook(string bookTitle, Book& toReturn, string fileName);
         static list<Book> loadBooks();
         static list<Book> loadUserBooks(User* toLoad);
