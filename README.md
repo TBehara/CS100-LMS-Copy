@@ -76,5 +76,7 @@ We also added in a completely new class to manage JSON file I/O for our program'
  > make <br>
  > ./bin/LMS
  ## Testing
- > How was your project tested/validated? If you used CI, you should have a "build passing" badge in this README.
+ > We used googletest to unit test individual functions, adding new unit tests for new functions we added. Mimicking continuous integration, we made sure the tests succeeded after changes were made before and after pushing and merging into the master branch. <br>
+ > We ran many manual tests to test functions on the front-end, making sure the program's output conformed to our planned screen layouts. <br>
+ > We tested for memory leaks by running valgrind on the executible and executing the features we had implemented into the program.
 
