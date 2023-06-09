@@ -71,7 +71,10 @@ We also added in a completely new class to manage JSON file I/O for our program'
  ## Screenshots
  > Screenshots of the input/output after running your application
  ## Installation/Usage
- > Instructions on installing and running your application
+ > Run the following terminal commands in the following order within the project directory:
+ > cmake .
+ > make
+ > ./bin/LMS
  ## Testing
  > How was your project tested/validated? If you used CI, you should have a "build passing" badge in this README.
 
