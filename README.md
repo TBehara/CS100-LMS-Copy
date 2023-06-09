@@ -10,8 +10,9 @@
  * Technologies we plan on using (This list may change over the course of the project):
       * We will be using C++ for our implementation of a library management system. 
       * We will use hashes to keep track of user passwords and accounts so users may securely log in.
-      * There will be classes for books/users/admins that will allow users to checkout books as well as keep information about each book such as ISB and page count. 
-      * We will create an automatic backend system that will keep track of checkout times and appropiately indicate when users are overdue for returning their books.
+      * There will be classes for books/users/admins that will allow users to checkout books as well as keep information about each book such as title and author
+      * We will be using nlohmann's JSON (https://github.com/nlohmann/json) for C++ library to save program data in JSON files
+      * We will be using an external sha256 hash library to keep password data secure
  * What will be the input/output of our project?
       * All user inputs and program outputs will be done in the terminal. 
       * The initial output will be a menu screen that will prompt the user for a username to login and password or sign up for accounts. 
@@ -27,13 +28,11 @@
       * Users will have to log in to access any features
       * Checking out or borrowing a book.
       * Returning a book.
-      * Paying a fine.
       * The program can recommend certain books in the data base based on a users checkout history.
       * Administrative users (ex. librarians) can add books to the system.
       * These administrative users will have their own account that they will log in to.
-      * Authors can edit and publish books and send a request to librarians to add the books to the library.
       * Users can search for books by Title, Genre, or Author
-      * Program can show a users debt and what book they owe the money for.
+      * Program can show a users debt.
 
 ### User Interface Specification/ Navigation Diagram
 ![Navigation Diagram](https://cdn.discordapp.com/attachments/1098140638211485696/1104182590895837237/image.png)
@@ -83,7 +82,7 @@ We also added in a completely new class to manage JSON file I/O for our program'
 ### Renewing Books
 Currently, there is no tracking of when a book must be returned, so attempting to renew a book returns the user to their regular menu options.
  ## Installation/Usage
- Clone this repo (or create a fork to clone from) locally</br>
+ Clone this repo (or create a fork to clone from) locally, making sure to recursively clone submodules (or init submodules after cloning)</br>
  Run the following terminal commands in the following order within the project directory: <br>
  cmake . <br>
  make <br>
