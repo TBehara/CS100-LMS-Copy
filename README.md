@@ -38,16 +38,16 @@
 ![Navigation Diagram](https://cdn.discordapp.com/attachments/1098140638211485696/1104182590895837237/image.png)
 
 ### Screen Layouts
-![Welcome Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007949857960017/Library.Management.System.Screen.Layout-02.png)
-![Register Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007950105432144/Library.Management.System.Screen.Layout-03.png)
-![Login Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007950369656842/Library.Management.System.Screen.Layout-04.png)
-![User Menu Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007950617128990/Library.Management.System.Screen.Layout-05.png)
-![Admin Menu Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007950881378365/Library.Management.System.Screen.Layout-06.png)
-![Browse Books Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007951133020170/Library.Management.System.Screen.Layout-07.png)
-![View Books Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007951472775218/Library.Management.System.Screen.Layout-08.png)
-![Admin Manage Books Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007951737000007/Library.Management.System.Screen.Layout-09.png)
-![Admin Add Admin Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007951992860724/Library.Management.System.Screen.Layout-10.png)
-![Checkout Screen](https://cdn.discordapp.com/attachments/1098140638211485696/1105007958447890473/Library.Management.System.Screen.Layout-11.png)
+![Welcome Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775284742557796/Screen_Layout_1.PNG)
+![Register Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775285061337200/Screen_Layout_2.PNG)
+![Login Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775285531091004/Screen_Layout_3.PNG)
+![User Menu Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775285820506202/Screen_Layout_4.PNG)
+![Admin Menu Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775286105710775/Screen_Layout_5.PNG)
+![Browse Books Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775286403502100/Screen_Layout_6.PNG)
+![View Books Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775286638395512/Screen_Layout_7.PNG)
+![Admin Manage Books Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775287036846220/Screen_Layout_8.PNG)
+![Admin Add Admin Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775287330443425/Screen_Layout_9.PNG)
+![Checkout Screen](https://media.discordapp.net/attachments/1098140638211485696/1116775287569531011/Screen_Layout_10.PNG)
 
 ## Class Diagram
  ![Class Diagram](https://cdn.discordapp.com/attachments/1098140638211485696/1116560452130971728/image.png) </br>
