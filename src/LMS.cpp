@@ -379,8 +379,7 @@ void LMS::browsePrompt() {
     std::cout << "1. Browse by Genre" << std::endl;
     std::cout << "2. Browse by Title" << std::endl;
     std::cout << "3. Browse by Author" << std::endl;
-    std::cout << "4. Browse by ISBN" << std::endl;
-    std::cout << "5. Exit" << std::endl;
+    std::cout << "4. Exit" << std::endl;
     int option = 0;
     std::cin >> option;
     std::list<Book> results; 
