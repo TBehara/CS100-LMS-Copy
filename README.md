@@ -10,8 +10,9 @@
  * Technologies we plan on using (This list may change over the course of the project):
       * We will be using C++ for our implementation of a library management system. 
       * We will use hashes to keep track of user passwords and accounts so users may securely log in.
-      * There will be classes for books/users/admins that will allow users to checkout books as well as keep information about each book such as ISB and page count. 
-      * We will create an automatic backend system that will keep track of checkout times and appropiately indicate when users are overdue for returning their books.
+      * There will be classes for books/users/admins that will allow users to checkout books as well as keep information about each book such as title and author
+      * We will be using nlohmann's JSON (https://github.com/nlohmann/json) for C++ library to save program data in JSON files
+      * We will be using an external sha256 hash library to keep password data secure
  * What will be the input/output of our project?
       * All user inputs and program outputs will be done in the terminal. 
       * The initial output will be a menu screen that will prompt the user for a username to login and password or sign up for accounts. 
@@ -27,13 +28,11 @@
       * Users will have to log in to access any features
       * Checking out or borrowing a book.
       * Returning a book.
-      * Paying a fine.
       * The program can recommend certain books in the data base based on a users checkout history.
       * Administrative users (ex. librarians) can add books to the system.
       * These administrative users will have their own account that they will log in to.
-      * Authors can edit and publish books and send a request to librarians to add the books to the library.
       * Users can search for books by Title, Genre, or Author
-      * Program can show a users debt and what book they owe the money for.
+      * Program can show a users debt.
 
 ### User Interface Specification/ Navigation Diagram
 ![Navigation Diagram](https://cdn.discordapp.com/attachments/1098140638211485696/1104182590895837237/image.png)
@@ -61,17 +60,29 @@ Another change that we made included moving the book database from the LMS class
 
 We also added in a completely new class to manage JSON file I/O for our program's long-term data. This helps us better follow the single responsibility principle so that we can easily read/write data to our files wherever necessary through the use of this helper class. As a result, our code will be more clear and organized whenevr we need to invoke the routines for file I/O that the program relies on to work between multiple instances.
  
- > ## Final deliverable
- > All group members will give a demo to the reader during lab time. ou should schedule your demo on Calendly with the same reader who took your second scrum meeting. The reader will check the demo and the project GitHub repository and ask a few questions to all the team members. 
- > Before the demo, you should do the following:
- > * Complete the sections below (i.e. Screenshots, Installation/Usage, Testing)
- > * Plan one more sprint (that you will not necessarily complete before the end of the quarter). Your In-progress and In-testing columns should be empty (you are not doing more work currently) but your TODO column should have a full sprint plan in it as you have done before. This should include any known bugs (there should be some) or new features you would like to add. These should appear as issues/cards on your Project board.
- > * Make sure your README file and Project board are up-to-date reflecting the current status of your project (e.g. any changes that you have made during the project such as changes to your class diagram). Previous versions should still be visible through your commit history. 
- 
  ## Screenshots
+### Signing up and Logging in
 ![Sign Up](https://cdn.discordapp.com/attachments/903147534321582092/1116567701654077490/Screen_Shot_2023-06-08_at_8.19.40_PM.png) </br>
 ![Login](https://cdn.discordapp.com/attachments/903147534321582092/1116568320188096545/Screen_Shot_2023-06-08_at_8.23.43_PM.png) </br>
+### Adding and Removing Books from the System
+![Add Books](https://cdn.discordapp.com/attachments/903147534321582092/1116609581733388328/Screen_Shot_2023-06-08_at_11.07.26_PM.png)</br>
+![Remove Books](https://cdn.discordapp.com/attachments/903147534321582092/1116610570834169916/Screen_Shot_2023-06-08_at_11.11.36_PM.png)</br>
+### Recommending Books to Users
+![Recommend Books](https://cdn.discordapp.com/attachments/903147534321582092/1116611985560322048/Screen_Shot_2023-06-08_at_11.17.14_PM.png)</br>
+### Searching for Books and Adding to Cart
+![Search by Genre and Add to Cart](https://cdn.discordapp.com/attachments/903147534321582092/1116612962992521257/Screen_Shot_2023-06-08_at_11.21.07_PM.png)</br>
+![Search by Title or Author](https://cdn.discordapp.com/attachments/903147534321582092/1116614605431656448/Screen_Shot_2023-06-08_at_11.27.38_PM.png)</br>
+### Checking out the Current Cart
+![Checkout Cart](https://cdn.discordapp.com/attachments/903147534321582092/1116613421073453077/Screen_Shot_2023-06-08_at_11.22.56_PM.png)</br>
+### Returning Books (and viewing fines/currently checked out books)
+![Returning Books](https://cdn.discordapp.com/attachments/903147534321582092/1116613868182044693/Screen_Shot_2023-06-08_at_11.24.43_PM.png)</br>
+### Making an existing user an admin
+![Making them an admin](https://cdn.discordapp.com/attachments/903147534321582092/1116615135071580160/Screen_Shot_2023-06-08_at_11.29.44_PM.png) </br>
+![Logging in as the new admin](https://cdn.discordapp.com/attachments/903147534321582092/1116615272502153336/Screen_Shot_2023-06-08_at_11.30.17_PM.png)</br>
+### Renewing Books
+Currently, there is no tracking of when a book must be returned, so attempting to renew a book returns the user to their regular menu options.
  ## Installation/Usage
+ Clone this repo (or create a fork to clone from) locally, making sure to recursively clone submodules (or init submodules after cloning)</br>
  Run the following terminal commands in the following order within the project directory: <br>
  cmake . <br>
  make <br>
@@ -79,5 +90,5 @@ We also added in a completely new class to manage JSON file I/O for our program'
  ## Testing
  We used googletest to unit test individual functions, adding new unit tests for new functions we added. Mimicking continuous integration, we made sure the tests succeeded after changes were made before and after pushing and merging into the master branch. <br>
  We ran many manual tests to test functions on the front-end, making sure the program's output conformed to our planned screen layouts. <br>
- We tested for memory leaks by running valgrind on the executible and executing the features we had implemented into the program.
+ We tested for memory leaks by running valgrind on the executable and going through the various options multiple times, with different combinations/scenarios, and ensured that we had achieved MEMCHECK-CLEAN when we quit the program.
 
