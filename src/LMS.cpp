@@ -20,7 +20,11 @@ using json = nlohmann::json;
 #endif
 
 LMS::LMS() {
+    currentUser = nullptr;
     welcomePrompt();
+}
+LMS::~LMS() {
+    if(currentUser != nullptr) delete currentUser;
 }
 
 void LMS::welcomePrompt() {
@@ -115,8 +119,9 @@ void LMS::signUpPrompt() {
     }
 
     //create password hash
-    string userHash = sha256(password);
+    string userHash = sha256(password); "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb";
     //create user
+    if(currentUser != nullptr) delete currentUser;
     currentUser = new User(username, userHash);
     currentUser->setFine(0.0);
     currentUser->setInterestKeywords(userInterests);
@@ -154,15 +159,16 @@ void LMS::setStdInEcho(bool enable = true) {
 }
 
 void LMS::loginPrompt() {
-    std::string username;
-    std::string password;
-    std::string hashPassword;
+    std::string username = "";
+    std::string password = "";
+    std::string hashPassword = "";
 
     std::cout << "\t\t\tLogin" << std::endl;
     std::cout << std::endl;
     std::cout << "Username: ";
     std::cin.ignore();
     std::getline(std::cin, username);
+    if(currentUser != nullptr) delete currentUser;
     currentUser = new User();
     currentUser->setUsername(username);
     bool adminStatus = false;
@@ -174,7 +180,7 @@ void LMS::loginPrompt() {
         signUpPrompt();
     }
     string foundUser = currentUser->hashPassword();
-    string userChoice;
+    string userChoice = "";
     std::cout << "Password: ";
     setStdInEcho(false);
     std::getline(std::cin, password);
@@ -246,6 +252,7 @@ void LMS::mainMenuPrompt() {
         getRecommendationsPrompt();
     } else if (input == "7") {
         jsonManager::updateJSON(currentUser);
+        delete currentUser;
         exit(0);
     } else if (adminStatus) {
         if (input == "8") {
@@ -424,10 +431,12 @@ void LMS::browsePrompt() {
                 std::cout << std::endl;
                 break;
             case 2:
-                mainMenuPrompt();
+                return;
+                //mainMenuPrompt();
                 break;
             default:
-                mainMenuPrompt();
+                return;
+                //mainMenuPrompt();
                 break;
         }
     }
@@ -477,7 +486,7 @@ void LMS::checkoutCart() {
     }
     std::cout << std::endl;
     cart.clear();
-    mainMenuPrompt();
+    //mainMenuPrompt();
 }
 
 void LMS::logoutPrompt() {
@@ -493,7 +502,8 @@ void LMS::displayUserDetails() {
         std::cout << it.getTitle() << ", ";
     }
     std::cout << std::endl;
-    mainMenuPrompt();
+    return;
+    //mainMenuPrompt();
 }
 
 // main menu prompts
@@ -678,7 +688,8 @@ void LMS::addAdminPrompt() {
     std::getline(std::cin, username);
 
     if (username == "quit") {
-        mainMenuPrompt();
+        return;
+        //mainMenuPrompt();
     }
 
     std::string userFile = jsonManager::findUserFile(username);
@@ -696,5 +707,5 @@ void LMS::addAdminPrompt() {
     userFileOutStream << userJson.dump(4) << std::endl;
 
     std::cout << "User " << username << " is now an admin." << std::endl;
-    mainMenuPrompt();
+    //mainMenuPrompt();
 }

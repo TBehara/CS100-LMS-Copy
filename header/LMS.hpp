@@ -16,6 +16,7 @@ class LMS {
         list<Book> cart;
     public:
         LMS();
+        ~LMS();
     private:
         void welcomePrompt();
         void signUpPrompt();
