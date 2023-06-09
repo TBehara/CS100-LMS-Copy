@@ -685,7 +685,7 @@ void LMS::adminRemoveBookPrompt() {
         jsonManager::clearBookBase();
         list<Book> newList = searchBase.getBooks();
         for (Book iter: newList) {
-            std::cout << "Adding " << iter.getTitle() << " back to json" << std::endl;
+            //
             jsonManager::addToSearchBase(iter);
         }
         std::cout << "Successfully deleted the book from our system." << std::endl;

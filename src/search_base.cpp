@@ -74,7 +74,6 @@ list<list<Book>::iterator> SearchBase::searchByTerms(const string& fullEntry) {
         timesLoopRan++;
         results.splice(results.end(), searchByTerm(it));
     }
-    std::cout << timesLoopRan << std::endl;
     return results;
 }
 
