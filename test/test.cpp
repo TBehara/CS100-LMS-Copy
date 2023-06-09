@@ -3,6 +3,7 @@
 #include "../header/user.hpp"
 #include "../header/book.hpp"
 #include "../header/search_base.hpp"
+#include "../header/admin.hpp"
 
 #include "../libraries/hash/sha256.h"
 
@@ -340,6 +341,40 @@ TEST(userTests, testSetInterestKeywords) {
 
     defaultUser.getInterestKeywords().push_back("adventure");
     EXPECT_EQ(defaultUser.getInterestKeywords(), keywords);
+}
+
+TEST(adminTests, getAndSetPriorityTest) {
+    Admin a;
+    a.setPriority(3);
+    EXPECT_EQ(a.getPriority(), 3);
+}
+
+TEST(adminTests, adminStatusTest) {
+    Admin a;
+    EXPECT_TRUE(a.getAdminStatus());
+}
+
+TEST(adminTests, adminCustomConstructor) {
+    Admin a("admin", sha256("password"), 3);
+    EXPECT_EQ(a.getUsername(), "admin");
+    EXPECT_EQ(a.hashPassword(), sha256("password"));
+    EXPECT_EQ(a.getPriority(), 3);
+}
+
+TEST(adminTests, userToAdminConstructor) {
+    vector<string> interests = {"Fantasy", "Fiction"}, prevBooks = {"Lord of the Rings", "Harry Potter"};
+    list<Book> checkedOut = {Book("A Game of Thrones", "George R.R. Martin", list<Book::Genre>(Book::Genre::FICTION, Book::Genre::FANTASY))};
+    User* testUser = new User("User", sha256("password"));
+    testUser->setInterestKeywords(interests);
+    testUser->setPrevBookNames(prevBooks);
+    testUser->setCheckedOutBooks(checkedOut);
+    testUser->setFine(3.0);
+    Admin newUser(testUser, 3);
+
+    EXPECT_EQ(newUser.getPriority(), 3);
+    EXPECT_EQ(newUser.getInterestKeywords(), interests);
+    EXPECT_EQ(newUser.getPrevBookNames(), prevBooks);
+    EXPECT_EQ(newUser.getCheckedOutBooks(), checkedOut);
 }
 
 TEST(searchBaseTests, addBook) {
