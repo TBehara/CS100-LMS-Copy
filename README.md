@@ -69,12 +69,13 @@ We also added in a completely new class to manage JSON file I/O for our program'
  > * Make sure your README file and Project board are up-to-date reflecting the current status of your project (e.g. any changes that you have made during the project such as changes to your class diagram). Previous versions should still be visible through your commit history. 
  
  ## Screenshots
- > Screenshots of the input/output after running your application
+![Sign Up](https://cdn.discordapp.com/attachments/903147534321582092/1116567701654077490/Screen_Shot_2023-06-08_at_8.19.40_PM.png) </br>
+![Login](https://cdn.discordapp.com/attachments/903147534321582092/1116568320188096545/Screen_Shot_2023-06-08_at_8.23.43_PM.png) </br>
  ## Installation/Usage
  Run the following terminal commands in the following order within the project directory: <br>
- > cmake . <br>
- > make <br>
- > ./bin/LMS
+ cmake . <br>
+ make <br>
+ ./bin/LMS
  ## Testing
  We used googletest to unit test individual functions, adding new unit tests for new functions we added. Mimicking continuous integration, we made sure the tests succeeded after changes were made before and after pushing and merging into the master branch. <br>
  We ran many manual tests to test functions on the front-end, making sure the program's output conformed to our planned screen layouts. <br>
