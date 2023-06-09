@@ -446,7 +446,6 @@ void LMS::browsePrompt() {
     int searchOption = 0;
     while(searchOption != 2) {
         std::cout << std::endl;
-        std::cout << "ResultsSize: " << results.size() << std::endl;
         std::cout << "Results:" << std::endl;
         auto it = results.begin();
         for(unsigned i = 0; i < results.size(); ++i) {
