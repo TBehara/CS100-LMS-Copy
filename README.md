@@ -87,7 +87,7 @@ Currently, there is no tracking of when a book must be returned, so attempting t
  Run the following terminal commands in the following order within the project directory: <br>
  cmake . <br>
  make <br>
- ./bin/LMS
+ ./bin/LMS <br>
 Additionally, to be able to add books to the system, you will need an admin account. Create a new account through the executable, then save and quit when you get the option to. Go to the JSON folder, then look for a subfolder named after your new account. Open it, then the open the file <username>.json. There should be a line that looks like this: 
  "AdminStatus": false, 
  Change the "false" to "true" (no quotes), and you log back in to that account. It will now have administrator permissions, including the ability to manage books in the system and turn non-admin accounts into new admins from the executable. As long as you have at least 1 administrator account in the system, you will be able to use it to add new admins inside the program without touching the files yourself in the future.
