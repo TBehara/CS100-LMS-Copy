@@ -19,6 +19,8 @@ void jsonManager::write(User* toWrite) {
     string jsonFine = to_string(userFine);
     bool adminStatus = toWrite->getAdminStatus();
 
+    //learned how to create a directory through c++ from here: https://www.geeksforgeeks.org/create-directoryfolder-cc-program/#
+    //this applies to each time I call mkdir
     string dirName = "./JSON/" + userName;
     int makeUserDir = mkdir(dirName.c_str(), 0777);
 
@@ -27,6 +29,7 @@ void jsonManager::write(User* toWrite) {
     ofstream userBooksFS("JSON/" + userName + "/" + booksFileName);
     ofstream userCurrBooksFS("JSON/" + userName + "/" + currBooksFileName);
     
+    //learned how to write a json object to a file from here: https://stackoverflow.com/questions/60947363/create-a-valid-json-file-using-nlohmannjson
     json userObj;
     unsigned int userPriority = toWrite->getPriority();
     userObj = {
@@ -37,6 +40,7 @@ void jsonManager::write(User* toWrite) {
         {"Priority", userPriority}
     };
 
+    //learned about json array and how you can push back an element to a json array in a file from here: https://json.nlohmann.me/api/basic_json/array/
     json userInterests;
     auto interestsData = userInterests.array();
     unsigned int iterOne;
@@ -90,6 +94,7 @@ bool jsonManager::loadUser(User* toRead) {
     ifstream userPrevBooksFS("JSON/" + userName + "/" + booksFileName);
     ifstream userInterestsFS("JSON/" + userName + "/" + interestsFileName);
 
+// learned how to parse through a json file from here: https://stackoverflow.com/questions/70684671/how-do-i-read-write-json-with-c#:~:text=Using%20a%20library%2C%20it%20can%20be%20done%20quite,std%3A%3Acout%20%3C%3C%20json%3B%20%2F%2F%20print%20the%20json%20%7D
     json dataObj = json::parse(userDataFS);
     toRead->setUsername(dataObj["Username"]);
     string userFine = dataObj["UserFine"];
@@ -101,6 +106,7 @@ bool jsonManager::loadUser(User* toRead) {
 
     json interestObj = json::parse(userInterestsFS);
     vector<string> userInterests;
+// learned how to loop through a json array object from here: https://stackoverflow.com/questions/38099308/accessing-elements-from-nlohmann-json#:~:text=for%20%28auto%26%20el%20%3A%20object%20%5B%22list1%22%5D.items%20%28%29%29%20%7B,%7D%20It%20will%20loop%20over%20the%20the%20array.
     for (auto& elem : interestObj) {
         userInterests.push_back(elem["Interest"]);
     }
@@ -120,6 +126,11 @@ bool jsonManager::loadUser(User* toRead) {
     
     return adminStatus;
 }
+
+/*
+For all of the methods in this class we just reused our newfound knowledge methods in the json library to add to the logic of our save
+user data functionality to save the user's data.
+*/
 
 string jsonManager::findUserFile(const string &username) {
     string filePath;
@@ -210,6 +221,7 @@ void jsonManager::addToSearchBase(const Book &book) {
 
 
 void jsonManager::addToUserBase(list<Book> checkedOutList, string fileName) {
+    //learned how to remove a file from a directory in c++ from here: https://en.cppreference.com/w/cpp/io/c/remove
     string rmFile = "JSON/" + fileName;
     int deleteFile = remove(rmFile.c_str());
     ofstream bookBaseOFS("JSON/" + fileName);

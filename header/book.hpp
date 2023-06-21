@@ -26,6 +26,8 @@ class Book {
 
         void removeGenre(Genre);
 
+        static Genre stringToGenre(const string &genre);
+
         string getAuthor() const;
 
         void setAuthor(const string&);
@@ -43,6 +45,8 @@ class Book {
         bool operator==(const Book&) const;
 
         bool operator!=(const Book&) const;
+
+        bool operator<(const Book&) const;
     private:
         list<Genre> genres;
 };

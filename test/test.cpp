@@ -3,6 +3,7 @@
 #include "../header/user.hpp"
 #include "../header/book.hpp"
 #include "../header/search_base.hpp"
+#include "../header/admin.hpp"
 
 #include "../libraries/hash/sha256.h"
 
@@ -193,6 +194,42 @@ TEST(bookTests, testBookEqualityMultiGenre) {
     EXPECT_NE(b3, b2);
 }
 
+TEST(bookTests, testGenreConversion) {
+    //FICTION, NONFICTION, FANTASY, NOVEL, MYSTERY, SCIFI, HISTORICAL_FICTION, LITERARY_FICTION, NARRATIVE
+    string fiction = "Fiction", nonfiction = "Nonfiction", fantasy = "Fantasy", novel = "Novel", mystery = "Mystery", scifi = "SciFi", histfi = "Historical Fiction", litfi = "Literary Fiction", narrative = "Narrative", badInput = "bad input";
+    EXPECT_EQ(Book::stringToGenre(fiction), Book::Genre::FICTION);
+    EXPECT_EQ(Book::stringToGenre(nonfiction), Book::Genre::NONFICTION);
+    EXPECT_EQ(Book::stringToGenre(fantasy), Book::Genre::FANTASY);
+    EXPECT_EQ(Book::stringToGenre(novel), Book::Genre::NOVEL);
+    EXPECT_EQ(Book::stringToGenre(mystery), Book::Genre::MYSTERY);
+    EXPECT_EQ(Book::stringToGenre(scifi), Book::Genre::SCIFI);
+    EXPECT_EQ(Book::stringToGenre(histfi), Book::Genre::HISTORICAL_FICTION);
+    EXPECT_EQ(Book::stringToGenre(litfi), Book::Genre::LITERARY_FICTION);
+    EXPECT_EQ(Book::stringToGenre(narrative), Book::Genre::NARRATIVE);
+    EXPECT_EQ(Book::stringToGenre(badInput), Book::Genre::ALWAYS_AT_END);
+}
+
+TEST(bookTests, testInequality) {
+    Book b1("abc", "def", list<Book::Genre>());
+    Book b2("zyx", "wvu", list<Book::Genre>());
+    EXPECT_TRUE(b1 < b2);
+    EXPECT_FALSE(b2 < b1);
+}
+
+TEST(bookTests, testSameTitleInequality) {
+    Book b1("abc", "def", list<Book::Genre>());
+    Book b2("abc", "zyx", list<Book::Genre>());
+    EXPECT_TRUE(b1 < b2);
+    EXPECT_FALSE(b2 < b1);
+}
+
+TEST(bookTests, testSameAuthorInequality) {
+    Book b1("abc", "def", list<Book::Genre>());
+    Book b2("zyx", "def", list<Book::Genre>());
+    EXPECT_TRUE(b1 < b2);
+    EXPECT_FALSE(b2 < b1);
+}
+
 TEST(userTests, testGuestUser) {
     User defaultUser;
     EXPECT_EQ(defaultUser.getUsername(), "Guest");
@@ -304,6 +341,40 @@ TEST(userTests, testSetInterestKeywords) {
 
     defaultUser.getInterestKeywords().push_back("adventure");
     EXPECT_EQ(defaultUser.getInterestKeywords(), keywords);
+}
+
+TEST(adminTests, getAndSetPriorityTest) {
+    Admin a;
+    a.setPriority(3);
+    EXPECT_EQ(a.getPriority(), 3);
+}
+
+TEST(adminTests, adminStatusTest) {
+    Admin a;
+    EXPECT_TRUE(a.getAdminStatus());
+}
+
+TEST(adminTests, adminCustomConstructor) {
+    Admin a("admin", sha256("password"), 3);
+    EXPECT_EQ(a.getUsername(), "admin");
+    EXPECT_EQ(a.hashPassword(), sha256("password"));
+    EXPECT_EQ(a.getPriority(), 3);
+}
+
+TEST(adminTests, userToAdminConstructor) {
+    vector<string> interests = {"Fantasy", "Fiction"}, prevBooks = {"Lord of the Rings", "Harry Potter"};
+    list<Book> checkedOut = {Book("A Game of Thrones", "George R.R. Martin", list<Book::Genre>(Book::Genre::FICTION, Book::Genre::FANTASY))};
+    User* testUser = new User("User", sha256("password"));
+    testUser->setInterestKeywords(interests);
+    testUser->setPrevBookNames(prevBooks);
+    testUser->setCheckedOutBooks(checkedOut);
+    testUser->setFine(3.0);
+    Admin newUser(testUser, 3);
+
+    EXPECT_EQ(newUser.getPriority(), 3);
+    EXPECT_EQ(newUser.getInterestKeywords(), interests);
+    EXPECT_EQ(newUser.getPrevBookNames(), prevBooks);
+    EXPECT_EQ(newUser.getCheckedOutBooks(), checkedOut);
 }
 
 TEST(searchBaseTests, addBook) {

@@ -19,10 +19,12 @@ using json = nlohmann::json;
 #include <unistd.h>
 #endif
 
-Book::Genre stringToGenre(string genre);
-
 LMS::LMS() {
+    currentUser = nullptr;
     welcomePrompt();
+}
+LMS::~LMS() {
+    if(currentUser != nullptr) delete currentUser;
 }
 
 void LMS::welcomePrompt() {
@@ -147,8 +149,9 @@ void LMS::signUpPrompt() {
     }
 
     //create password hash
-    string userHash = sha256(password);
+    string userHash = sha256(password); "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb";
     //create user
+    if(currentUser != nullptr) delete currentUser;
     currentUser = new User(username, userHash);
     currentUser->setFine(0.0);
     currentUser->setInterestKeywords(userInterests);
@@ -191,15 +194,16 @@ void LMS::setStdInEcho(bool enable = true) {
 }
 
 void LMS::loginPrompt() {
-    std::string username;
-    std::string password;
-    std::string hashPassword;
+    std::string username = "";
+    std::string password = "";
+    std::string hashPassword = "";
 
     std::cout << "\t\t\tLogin" << std::endl;
     std::cout << std::endl;
     std::cout << "Username: ";
     std::cin.ignore();
     std::getline(std::cin, username);
+    if(currentUser != nullptr) delete currentUser;
     currentUser = new User();
     currentUser->setUsername(username);
     bool adminStatus = false;
@@ -212,7 +216,7 @@ void LMS::loginPrompt() {
         return;
     }
     string foundUser = currentUser->hashPassword();
-    string userChoice;
+    string userChoice = "";
     std::cout << "Password: ";
     setStdInEcho(false);
     std::getline(std::cin, password);
@@ -291,11 +295,11 @@ void LMS::mainMenuPrompt() {
     } else if (input == "5") {
         displayUserDetails();
     } else if (input == "6") {
-        // get book recommendations
+        getRecommendationsPrompt();
     } else if (input == "7") {
         jsonManager::updateJSON(currentUser);
-        //return;
-        exit(0);
+        //delete currentUser;
+        return;
     } else if (adminStatus) {
         if (input == "8") {
             manageBooksPrompt();
@@ -304,11 +308,116 @@ void LMS::mainMenuPrompt() {
             addAdminPrompt();
         }
     } else {
-        std::cout << "Invalid input. Please try again" << std::endl;
-        mainMenuPrompt();
+            std::cout << "Invalid input. Please try again" << std::endl;
     }
     mainMenuPrompt();
 }
+
+void LMS::getRecommendationsPrompt() {
+    string keywords = getRecommendationKeywords();
+    set<Book> results = compressResults(searchBase.searchByTerms(keywords));
+    cout << endl << "Recommended Books: ";
+    for(auto it : results) {
+        cout << it.getTitle() << " by " << it.getAuthor() << ", ";
+    }
+    cout << endl << endl;
+}
+
+set<Book> LMS::compressResults(list<list<Book>::iterator> results) {
+    set<Book> compressedResults;
+    for(auto it : results) {
+        compressedResults.insert(*it);
+    }
+    return compressedResults;
+}
+
+string LMS::getRecommendationKeywords() {
+    string keywords;
+    for(auto it : currentUser->getPrevBookNames()) {
+        keywords += it + " ";
+    }
+    for(auto it : currentUser->getCheckedOutBooks()) {
+        keywords += it.getTitle() + " " + it.getAuthor() + " ";
+    }
+    for(auto it : currentUser->getInterestKeywords()) {
+        keywords += it + " ";
+    }
+    return keywords;
+}
+
+// switch case version of main menu prompt, keeping in case we need it later
+// void LMS::mainMenuPrompt() {
+//     currentUser->displayMenu();
+
+//     bool adminStatus = currentUser->getAdminStatus();
+
+//     int input;
+//     std::cin >> input;
+
+//     if (adminStatus) {
+//         switch (input) {
+//             case 1:
+//                 // manage books in system
+//                 break;
+//             case 2:
+//                 // add lower level admin
+//                 break;
+//             case 3:
+//                 checkoutCart();
+//                 break;
+//             case 4:
+//                 // return a book
+//                 break;
+//             case 5:
+//                 // renew a book
+//                 break;
+//             case 6:
+//                 browsePrompt();
+//                 break;
+//             case 7:
+//                 displayUserDetails();
+//                 break;
+//             case 8:
+//                 // get book recommendations
+//                 break;
+//             case 9:
+//                 jsonManager::updateJSON(currentUser);
+//                 return;
+//             default:
+//                 std::cout << "Invalid input. Please try again" << std::endl;
+//                 mainMenuPrompt();
+//                 break;
+//         }
+//     } else {
+//         switch (input) {
+//             case 1:
+//                 checkoutCart();
+//                 break;
+//             case 2:
+//                 // return a book
+//                 break;
+//             case 3:
+//                 // renew a book
+//                 break;
+//             case 4:
+//                 browsePrompt();
+//                 break;
+//             case 5:
+//                 displayUserDetails();
+//                 break;
+//             case 6:
+//                 // get book recommendations
+//                 break;
+//             case 7:
+//                 jsonManager::updateJSON(currentUser);
+//                 return;
+//             default:
+//                 std::cout << "Invalid input. Please try again" << std::endl;
+//                 mainMenuPrompt();
+//                 break;
+//         }
+//     }
+// }
 
 void LMS::browsePrompt() {
     std::cout << std::endl;
@@ -316,8 +425,7 @@ void LMS::browsePrompt() {
     std::cout << "1. Browse by Genre" << std::endl;
     std::cout << "2. Browse by Title" << std::endl;
     std::cout << "3. Browse by Author" << std::endl;
-    std::cout << "4. Browse by ISBN" << std::endl;
-    std::cout << "5. Exit" << std::endl;
+    std::cout << "4. Exit" << std::endl;
     int option = 0;
     std::cin >> option;
     std::list<Book> results; 
@@ -334,12 +442,10 @@ void LMS::browsePrompt() {
         default:
             return;
     }
-    //BELOW IS PART OF A PROTOTYPE/EXAMPLE
     
     int searchOption = 0;
     while(searchOption != 2) {
         std::cout << std::endl;
-        std::cout << "ResultsSize: " << results.size() << std::endl;
         std::cout << "Results:" << std::endl;
         auto it = results.begin();
         for(unsigned i = 0; i < results.size(); ++i) {
@@ -370,10 +476,12 @@ void LMS::browsePrompt() {
                 std::cout << std::endl;
                 break;
             case 2:
-                mainMenuPrompt();
+                return;
+                //mainMenuPrompt();
                 break;
             default:
-                mainMenuPrompt();
+                return;
+                //mainMenuPrompt();
                 break;
         }
     }
@@ -385,8 +493,7 @@ list<Book> LMS::browseByGenre() {
     string userInput = "";
     cin.get();
     getline(cin, userInput);
-    //TODO: search by actual genre input
-    auto resultEntries = searchBase.searchByGenre(Book::Genre::FICTION); //Hardcoded for now
+    auto resultEntries = searchBase.searchByGenre(Book::stringToGenre(userInput)); 
     return bookEntriesToBooks(resultEntries);
 }
 
@@ -424,7 +531,7 @@ void LMS::checkoutCart() {
     }
     std::cout << std::endl;
     cart.clear();
-    mainMenuPrompt();
+    //mainMenuPrompt();
 }
 
 void LMS::logoutPrompt() {
@@ -440,7 +547,8 @@ void LMS::displayUserDetails() {
         std::cout << it.getTitle() << ", ";
     }
     std::cout << std::endl;
-    mainMenuPrompt();
+    return;
+    //mainMenuPrompt();
 }
 
 // main menu prompts
@@ -490,16 +598,11 @@ void LMS::renewPrompt() {
 
 }
 
-void LMS::getRecommendationsPrompt() {
-
-}
-
 void LMS::viewAccountPrompt(const User &user) {
 
 }
 
 // admin prompts
-
 void LMS::manageBooksPrompt() {
     std::string adminResponse;
     cin.ignore();
@@ -512,11 +615,11 @@ void LMS::manageBooksPrompt() {
         adminRemoveBookPrompt();
     }
     else if (adminResponse == "Q" || adminResponse == "q") {
-        mainMenuPrompt();
+        return;
     }
     else {
         std::cout << "Invalid response. You will be directed back to the main menu where you can select an option." << std::endl;
-        mainMenuPrompt();
+        return;
     }
 }
 
@@ -538,6 +641,7 @@ void LMS::adminAddBookPrompt() {
         getline(std::cin, bookAuthorResponse);
     }
 
+
     std::cout << "Please enter some of the genres that this book pertains to. Enter Q to stop entering genres." << std::endl;
     std::cout << "Your options are: FICTION, NONFICTION, FANTASY, NOVEL, MYSTERY, SCIFI, HISTORICAL_FICTION, LITERARY_FICTION, and NARRATIVE" << std::endl;
     std::cout << "Please enter one of these options in ALL CAPS. Entering a different value will automatically add ALWAYS_AT_END as the book's genre." << std::endl;
@@ -556,7 +660,7 @@ void LMS::adminAddBookPrompt() {
     searchBase.addBook(toAdd);
     jsonManager::addToSearchBase(toAdd);
     std::cout << "You have successfully added a book to our system!" << std::endl;
-    mainMenuPrompt();
+    return;
 }
 
 void LMS::adminRemoveBookPrompt() {
@@ -580,14 +684,14 @@ void LMS::adminRemoveBookPrompt() {
         jsonManager::clearBookBase();
         list<Book> newList = searchBase.getBooks();
         for (Book iter: newList) {
-            std::cout << "Adding " << iter.getTitle() << " back to json" << std::endl;
+            //
             jsonManager::addToSearchBase(iter);
         }
         std::cout << "Successfully deleted the book from our system." << std::endl;
     }
     else {
         std::cout << "We could not find this book in our system. We will redirect you back to the main menu." << std::endl;
-        mainMenuPrompt();
+        return;
     }
 }
 
@@ -600,7 +704,8 @@ void LMS::addAdminPrompt() {
     std::getline(std::cin, username);
 
     if (username == "quit") {
-        mainMenuPrompt();
+        return;
+        //mainMenuPrompt();
     }
 
     std::string userFile = jsonManager::findUserFile(username);
@@ -617,7 +722,6 @@ void LMS::addAdminPrompt() {
     userFileOutStream << userJson.dump(4) << std::endl;
 
     std::cout << "User " << username << " is now an admin." << std::endl;
-    mainMenuPrompt();
 }
 
 enum Book::Genre LMS::stringToGenre(const string& genre) {
@@ -653,4 +757,5 @@ enum Book::Genre LMS::stringToGenre(const string& genre) {
         enumGenre = Book::Genre::ALWAYS_AT_END;
     }
     return enumGenre;
+    //mainMenuPrompt();
 }

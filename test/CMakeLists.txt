@@ -8,6 +8,7 @@ ADD_EXECUTABLE(LMSTests
     ../src/user.cpp
     ../src/book.cpp
     ../src/search_base.cpp
+    ../src/admin.cpp
     ../libraries/hash/sha256.cpp
 )
 
